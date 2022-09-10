@@ -15,7 +15,8 @@ select /* my_plan_example */e.*, d.department_name
   join hr.departments d on e.department_id = d.department_id;
 
 -- ищем его sql_id
-select t.sql_id, t.child_number, t.* from v$sql t where t.sql_text like '%my_plan_example%';
+select t.sql_id, t.child_number, t.*
+  from v$sql t where t.sql_text like '%my_plan_example%';
 
 
 ---- 2) Примеры форматирования
@@ -31,7 +32,7 @@ select * from dbms_xplan.display_cursor(sql_id          => '7s4ujcxm6dq0r',
                                         cursor_child_no => 0,                                                           
                                         format          => 'ADVANCED');
 
--- можно убирать некоторые блоки через "-НАЗВАНИЕ" (PREDICATE, COST, BYTES, ROWS, NOTE, PARTITION, PARALLEL...)
+-- можно убирать некоторые блоки через "-НАЗВАНИЕ" (PREDICATE, COST, BYTES, ROWS, NOTE, PARTITION, PARALLEL, QBREGISTRY...)
 select * from dbms_xplan.display_cursor(sql_id          => '7s4ujcxm6dq0r',
                                         cursor_child_no => 0,                                                           
                                         format          => 'ALL -PREDICATE -COST');
@@ -66,5 +67,10 @@ select * from dbms_xplan.display_cursor(sql_id          => 'arapcvy9qnncb',
                                         format          => 'ADVANCED ALLSTATS LAST');
 
 
+---- 4) IDE вносит много мусора, поэтому нижний подход не будет работать (обход проблем с IDE)
+-- sqlplus vs ide
 
+select 123 from dual, dual;
+select * from dbms_xplan.display_cursor();
+                                        
 
