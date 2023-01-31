@@ -11,6 +11,7 @@
 
 -- Уникальный индекс: EMP_EMP_ID_PK -> create unique index emp_emp_id_pk on employees(employee_id);
 select * from hr.employees t where t.employee_id = 100;
+select t.employee_id from hr.employees t where t.employee_id = 100;-- в чем разница
 
 -- IN -> inlist iterator
 select * from hr.employees t where t.employee_id in (100, 110);
@@ -38,6 +39,7 @@ select * from hr.employees t where t.manager_id > 149;
 -- условия больше/меньше (больше 5%) -> table access full
 select * from hr.employees t where t.manager_id > 19;
 
+
 -- index range scan descending
 select * 
   from employees t
@@ -56,12 +58,12 @@ select *
 -- Не уникальный индекс: EMP_NAME_IX -> create index emp_name_ix on employees (last_name, first_name);
 
 select * 
-  from employees t
+  from hr.employees t
 where t.first_name = 'Alexander';
 
 -- 102 поддерева
 select count(distinct t.last_name)
-  from employees t;
+  from hr.employees t;
 
 
 ---- 4. Index Full Scan
