@@ -1,0 +1,5 @@
+select *
+  from hr.employees e   
+ where e.employee_id = 180
+    or (e.last_name = 'Smith' and e.employee_id != 180)
+ 
