@@ -37,7 +37,8 @@ select t.department_id, count(*)
 
 select t.department_id, count(*)
   from hr.employees t 
- group by t.department_id 
+ group by t.department_id; 
+
 
 
 ---- Пример 4. INSERT/UPDATE/SELECT STATEMENT

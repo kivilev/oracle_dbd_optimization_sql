@@ -8,16 +8,13 @@
    
 */
 
----- 1. Ограничение результатов до 10
-select *
+---- Пример 1. Уникальный индекс с диапазоном -> Range index scan (min/max)
+select min(t.employee_id)
   from hr.employees t
  where t.employee_id >= 170
-   and rownum <= 10;
-
----- 2. Подзапрос обработает все записи, только потом count stop
-select *
-  from (select /*+ full(t)*/ *
-          from hr.employees t
-         where t.employee_id >= 160
-         order by t.employee_id desc)
- where rownum <= 10
+ 
+---- Пример 2. Обычный индекс предикат равенство -> Range index scan (min/max)  
+select min(t.department_id)
+  from hr.employees t
+ where t.department_id = 10;
+ 

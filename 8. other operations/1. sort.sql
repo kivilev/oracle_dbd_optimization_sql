@@ -21,6 +21,9 @@ execute immediate q'{alter session set optimizer_features_enable  = '10.1.0'}';-
 select /*+ no_use_hash_aggregation */ distinct t.department_id 
   from hr.employees t;
 
+select distinct t.country_name from hr.countries t;
+  
+
 ---- 3. SORT JOIN - использование в Merge join
 select /*+ FULL(d) use_merge(e d)*/
        e.*
@@ -58,6 +61,5 @@ select id, sum(amount)
   from t2
  group by id;
 
-
-SELECT id, ora_hash(id, 4), amount from t2;
+select id, ora_hash(id, 4), amount from t2;
 
