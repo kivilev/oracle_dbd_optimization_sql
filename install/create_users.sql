@@ -28,7 +28,7 @@ declare
 
   v_ts_name dba_tablespaces.tablespace_name%type := 'users';
   v_role_name varchar2(20 char) := 'student_role';
-  v_quota   varchar2(20 char) := '15G';
+  v_quota   varchar2(20 char) := '15360';
 
   procedure exec_sql(sql_cmd varchar2)is
   begin
@@ -61,4 +61,3 @@ begin
 
 end;
 /
-

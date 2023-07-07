@@ -260,7 +260,9 @@ alter table COUNTRY_CURRENCY
   add constraint COUNTRY_CURRENCY_PK primary key (CURRENCY_ID, COUNTRY_ID);
 alter table COUNTRY_CURRENCY
   add constraint COUNTRY_CURRENCY_CURRENCY_ID_FK foreign key (CURRENCY_ID)
-  references CURRENCY (CURRENCY_ID);
+  references CURRENCY (CURRENCY_ID)
+  disable
+  novalidate;
 
 prompt
 prompt Creating table COUNTRY_PHONE
@@ -276,7 +278,9 @@ comment on table COUNTRY_PHONE
   is 'Country to phone prefix';
 create index COUNTRY_PHONE_PHONE_PREFIX_I on COUNTRY_PHONE (PHONE_PREFIX);
 alter table COUNTRY_PHONE
-  add constraint COUNTRY_PHONE_PK unique (COUNTRY_ID, PHONE_PREFIX);
+  add constraint COUNTRY_PHONE_PK unique (COUNTRY_ID, PHONE_PREFIX)
+  disable
+  novalidate;
 
 prompt
 prompt Creating table EVENT_QUEUE
@@ -293,7 +297,7 @@ create table EVENT_QUEUE
 partition by range (NEXT_PROCESSING_DATE) interval (NUMTODSINTERVAL(1,'DAY'))
 (
   partition PMIN values less than (TO_DATE(' 2023-01-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
-    tablespace USERS
+    tablespace users
 );
 
 prompt
@@ -341,7 +345,7 @@ create table PAYMENT
 partition by range (CREATE_DTIME) interval (NUMTODSINTERVAL(1,'DAY'))
 (
   partition PMIN values less than (TIMESTAMP' 2023-01-01 00:00:00')
-    tablespace USERS
+    tablespace users
 );
 comment on table PAYMENT
   is 'Платеж';
@@ -421,33 +425,33 @@ prompt =============================
 prompt
 create table PAYMENT_DETAIL
 (
-  payment_id    NUMBER(38) not null,
-  payment_create_dtime  TIMESTAMP(6) not null,  
-  field_id      NUMBER(10) not null,
-  field_value   VARCHAR2(200 CHAR) not null
+  payment_id           NUMBER(38) not null,
+  payment_create_dtime TIMESTAMP(6) not null,
+  field_id             NUMBER(10) not null,
+  field_value          VARCHAR2(200 CHAR) not null
 )
-partition by range (payment_create_dtime) interval (NUMTODSINTERVAL(1,'DAY'))
+partition by range (PAYMENT_CREATE_DTIME) interval (NUMTODSINTERVAL(1,'DAY'))
 (
   partition PMIN values less than (TIMESTAMP' 2023-01-01 00:00:00')
-    tablespace USERS
+    tablespace users
 );
-
 comment on table PAYMENT_DETAIL
   is 'Детали платежа';
 comment on column PAYMENT_DETAIL.payment_id
   is 'ID платежа';
 comment on column PAYMENT_DETAIL.payment_create_dtime
-  is 'Дата платежа';  
+  is 'Дата платежа';
 comment on column PAYMENT_DETAIL.field_id
   is 'ID поля';
 comment on column PAYMENT_DETAIL.field_value
   is 'Значение поля (сами данные)';
-create index PAYMENT_DETAIL_FIELD_I on PAYMENT_DETAIL (FIELD_ID);
-alter table PAYMENT_DETAIL
-  add constraint PAYMENT_DETAIL_PK primary key (payment_create_dtime, PAYMENT_ID, FIELD_ID);
+create unique index PAYMENT_DETAIL_DTIME_PAYMENT_ID_FIELD_ID_UQ on PAYMENT_DETAIL (PAYMENT_CREATE_DTIME, PAYMENT_ID, FIELD_ID)
+  nologging  local;
 alter table PAYMENT_DETAIL
   add constraint PAYMENT_DETAIL_FIELD_FK foreign key (FIELD_ID)
-  references PAYMENT_DETAIL_FIELD (FIELD_ID) disable;
+  references PAYMENT_DETAIL_FIELD (FIELD_ID)
+  disable
+  novalidate;
 
 prompt
 prompt Creating table TERRORIST
@@ -482,7 +486,7 @@ prompt
 create sequence ACCOUNT_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 19617008
+start with 30957108
 increment by 1
 cache 100;
 
@@ -493,7 +497,7 @@ prompt
 create sequence CLIENT_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 19696908
+start with 31057008
 increment by 1
 cache 100;
 
@@ -504,7 +508,7 @@ prompt
 create sequence EVENT_QUEUE_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 2607
+start with 2707
 increment by 1
 cache 100;
 
@@ -515,7 +519,7 @@ prompt
 create sequence PAYMENT_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 1
+start with 3200001
 increment by 1
 cache 100;
 
@@ -526,7 +530,7 @@ prompt
 create sequence WALLET_SEQ
 minvalue 1
 maxvalue 9999999999999999999999999999
-start with 19646808
+start with 30996908
 increment by 1
 cache 100;
 
