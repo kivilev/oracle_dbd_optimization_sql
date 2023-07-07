@@ -15,3 +15,5 @@ grant select on v_$sql to optimization_role;
 grant select on v_$sql_plan_statistics_all to optimization_role;
 
 grant optimization_role to hr;
+
+grant alter session to hr;

@@ -8,6 +8,7 @@
   
 */
 
+explain plan for 
 select /* ao example */
  e.first_name
 ,e.last_name
@@ -17,14 +18,16 @@ select /* ao example */
       ,departments d
  where e.department_id = d.department_id
    and d.department_name in ('Marketing', 'Sales');
+select * from dbms_xplan.
 
+select * from v$sqlarea t where t.sql_fulltext like '%ao example%';
 
 -- посмотреть адаптивный план
 select * 
-  from table(dbms_xplan.display_cursor(sql_id => 'cy47zfs7ubh0s', cursor_child_no => 0, format => 'ADAPTIVE LAST'));
+  from table(dbms_xplan.display_cursor(sql_id => 'awvww67f1qkdz', cursor_child_no => 0, format => 'ADAPTIVE LAST'));
 
 select * 
-  from table(dbms_xplan.display_cursor(sql_id => 'cy47zfs7ubh0s', cursor_child_no => 0, format => 'LAST'));
+  from table(dbms_xplan.display_cursor(sql_id => 'awvww67f1qkdz', cursor_child_no => 0, format => 'LAST'));
 
 
 -- найти курсоры с адаптивными планами

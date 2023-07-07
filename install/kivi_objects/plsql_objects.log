@@ -1,0 +1,316 @@
+
+Creating package ACCOUNT_API_PACK
+=================================
+
+
+Package created.
+
+
+Creating type T_CLIENT_DATA
+===========================
+
+
+Type created.
+
+
+Creating type T_CLIENT_DATA_ARRAY
+=================================
+
+
+Type created.
+
+
+Creating package CLIENT_API_PACK
+================================
+
+
+Package created.
+
+
+Creating package CLIENT_CHECK_PACK
+==================================
+
+
+Package created.
+
+
+Creating type T_NUMBER_ARRAY
+============================
+
+
+Type created.
+
+
+Creating package CLIENT_DATA_API_PACK
+=====================================
+
+
+Package created.
+
+
+Creating package CLIENT_MANAGE_PACK
+===================================
+
+
+Package created.
+
+
+Creating package COMMON_PACK
+============================
+
+
+Package created.
+
+
+Creating package COUNTRY_API_PACK
+=================================
+
+
+Package created.
+
+
+Creating package EVENT_API_PACK
+===============================
+
+
+Package created.
+
+
+Creating package EXCEPTION_PACK
+===============================
+
+
+Package created.
+
+
+Creating type T_PAYMENT_DETAIL
+==============================
+
+
+Type created.
+
+
+Creating type T_PAYMENT_DETAIL_ARRAY
+====================================
+
+
+Type created.
+
+
+Creating package PAYMENT_API_PACK
+=================================
+
+
+Package created.
+
+
+Creating package PAYMENT_CHECK_PACK
+===================================
+
+
+Package created.
+
+
+Creating package PAYMENT_DETAIL_API_PACK
+========================================
+
+
+Package created.
+
+
+Creating package PAYMENT_PROCESSING_PACK
+========================================
+
+
+Package created.
+
+
+Creating package WALLET_API_PACK
+================================
+
+
+Package created.
+
+
+Creating type T_NUMBER_PAIR
+===========================
+
+
+Type created.
+
+
+Creating type T_NUMBER_PAIR_ARRAY
+=================================
+
+
+Type created.
+
+
+Creating type T_STRING_ARRAY
+============================
+
+
+Type created.
+
+
+Creating function GET_CLIENT_NAME
+=================================
+
+
+Function created.
+
+
+Creating package body ACCOUNT_API_PACK
+======================================
+
+
+Package body created.
+
+
+Creating package body CLIENT_API_PACK
+=====================================
+
+
+Package body created.
+
+
+Creating package body CLIENT_CHECK_PACK
+=======================================
+
+
+Package body created.
+
+
+Creating package body CLIENT_DATA_API_PACK
+==========================================
+
+
+Package body created.
+
+
+Creating package body CLIENT_MANAGE_PACK
+========================================
+
+
+Package body created.
+
+
+Creating package body COMMON_PACK
+=================================
+
+
+Package body created.
+
+
+Creating package body COUNTRY_API_PACK
+======================================
+
+
+Package body created.
+
+
+Creating package body EVENT_API_PACK
+====================================
+
+
+Package body created.
+
+
+Creating package body PAYMENT_API_PACK
+======================================
+
+
+Package body created.
+
+
+Creating package body PAYMENT_CHECK_PACK
+========================================
+
+
+Package body created.
+
+
+Creating package body PAYMENT_DETAIL_API_PACK
+=============================================
+
+
+Package body created.
+
+
+Creating package body PAYMENT_PROCESSING_PACK
+=============================================
+
+
+Package body created.
+
+
+Creating package body WALLET_API_PACK
+=====================================
+
+
+Package body created.
+
+
+Creating trigger CLIENT_B_D_RESTRICT
+====================================
+
+
+Trigger created.
+
+
+Creating trigger CLIENT_B_IU_API
+================================
+
+
+Trigger created.
+
+
+Creating trigger CLIENT_B_IU_TECH_FIELDS
+========================================
+
+
+Trigger created.
+
+
+Creating trigger CLIENT_DATA_B_IU_API
+=====================================
+
+
+Trigger created.
+
+
+Creating trigger PAYMENT_B_D_RESTRICT
+=====================================
+
+
+Trigger created.
+
+
+Creating trigger PAYMENT_B_IU_API
+=================================
+
+
+Trigger created.
+
+
+Creating trigger PAYMENT_B_IU_TECH_FIELDS
+=========================================
+
+
+Trigger created.
+
+
+Creating trigger PAYMENT_DETAIL_B_IU_API
+========================================
+
+
+Trigger created.
+
+
+Creating trigger WALLET_B_IU_TECH_FIELDS
+========================================
+
+
+Trigger created.
+
+Done

@@ -23,9 +23,9 @@ drop table demo$tab$stat;
 create table demo$tab$stat as
 select level col1, 'sssss' col2, rpad('я',50,'ъ') col3, decode(mod(level,2), 0, 1) nullcol4
   from dual
-connect by level <= 1000000;
+connect by level <= 1000000;--1M
 
--- статистика по таблице
+-- статистика по столбцам
 select t.num_distinct, t.num_nulls, t.sample_size, t.last_analyzed,
        notes, t.histogram,
        t.*

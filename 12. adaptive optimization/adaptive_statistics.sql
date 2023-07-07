@@ -7,6 +7,7 @@
   Описание скрипта: примеры адаптивной статистики
   
 */
+alter session set optimizer_adaptive_statistics = false;
 
 ---- 1. Пример 
 drop  table del$tab;
@@ -29,19 +30,27 @@ select level, level, level, level, level
 connect by level <= 100000;
 commit;
 
+select * from user_tab_statistics t where t.table_name = 'DEL$TAB';
+
 -- некий запрос со сложными предикатами -> трудно точно предуагадать -> E-rows будет отличаться от A-rows (показывать с выводом плана)
 select /*+ GATHER_PLAN_STATISTICS */
         *
   from del$tab t
-  join del$tab t2 on t.id = t2.id and t2.v5 like '%999%'                 
- where t.id between 1000 and 3000 or t.v2 like '32%'
-    or t.v4 like '46%';
+  join del$tab t2 on t.id = t2.id and t2.v5 like '%99%'                 
+ where t.id between 10200 and 1022000 or t.v2 like '%32%'
+    or t.v4 like '%46%';
+
+select * from dbms_xplan.display_cursor(sql_id => 'bnuf32savw8q9', cursor_child_no =>  0, format => 'ALLSTATS ADVANCED LAST');
+
+
+select * from v$sqlarea t where t.sql_fulltext like '%del$tab t%';
+
 
 -- после первого выполнения будет child-курсор с Y в use_feedback_stats
 select t.use_feedback_stats, t.reason, c.sql_text, c.plan_hash_value
   from v$sql_shared_cursor t
   join v$sql c on c.child_address = t.child_address
- where t.sql_id = '6nux4b64radqu';
+ where t.sql_id = '1c9q4nqtnyk61';
 
 -- после повторного выполнения будет E-rows = A-rows + в Note: statistics feedback used for this statement
 
@@ -56,12 +65,12 @@ select t.is_reoptimizable, t.*
 -- все child-курсоры кокретного запроса
 select t.is_reoptimizable, t.child_number, t.*
   from v$sql t 
- where t.sql_id = '9aky80d5as5yp' order by t.child_number;
+ where t.sql_id = '1c9q4nqtnyk61' order by t.child_number;
 
 -- причины изменения
 select * 
   from v$sql_shared_cursor t
- where t.sql_id = '9aky80d5as5yp';
+ where t.sql_id = '1c9q4nqtnyk61';
 
 
 ---- 3. Директивы

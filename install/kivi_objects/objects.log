@@ -1,0 +1,482 @@
+
+Creating table CLIENT
+=====================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table CURRENCY
+=======================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table WALLET
+=====================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table ACCOUNT
+======================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Index created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table CLIENT_DATA_FIELD
+================================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table CLIENT_DATA
+==========================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Index created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table COUNTRY
+======================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table COUNTRY_CURRENCY
+===============================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table COUNTRY_PHONE
+============================
+
+
+Table created.
+
+
+Comment created.
+
+
+Index created.
+
+
+Table altered.
+
+
+Creating table EVENT_QUEUE
+==========================
+
+
+Table created.
+
+
+Creating table IP_LIST
+======================
+
+
+Table created.
+
+
+Index created.
+
+
+Creating table PASSPORT_BLACK_LIST
+==================================
+
+
+Table created.
+
+
+Creating table PAYMENT
+======================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Index created.
+
+
+Index created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table PAYMENT_DETAIL_FIELD
+===================================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table PAYMENT_DETAIL
+=============================
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Index created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Creating table TERRORIST
+========================
+
+
+Table created.
+
+
+Index created.
+
+
+Creating table WORD_BLACK_LIST
+==============================
+
+
+Table created.
+
+
+Creating sequence ACCOUNT_SEQ
+=============================
+
+
+Sequence created.
+
+
+Creating sequence CLIENT_SEQ
+============================
+
+
+Sequence created.
+
+
+Creating sequence EVENT_QUEUE_SEQ
+=================================
+
+
+Sequence created.
+
+
+Creating sequence PAYMENT_SEQ
+=============================
+
+
+Sequence created.
+
+
+Creating sequence WALLET_SEQ
+============================
+
+
+Sequence created.
+
+Done

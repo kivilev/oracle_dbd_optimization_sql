@@ -11,7 +11,7 @@
 ---- 1) Статистика по таблице
 select t.num_rows, t.blocks, t.avg_row_len,
        t.stale_stats, t.last_analyzed, 
-       t.sample_size, t.*
+       t.sample_size, t.shared, t.*
   from all_tab_statistics t
  where t.table_name = 'EMPLOYEES'
    and t.owner = 'HR';
@@ -73,4 +73,9 @@ select  t.num_rows, t.blocks, t.avg_row_len,
 -- where table_owner = 'my_schema'
 --   and table_name = 'my_table'
 ;
+
+select t.* from all_tab_partitions t;
+
+select t.* from all_tab_statistics t where t.partition_name = 'SYS_P4';
+
 

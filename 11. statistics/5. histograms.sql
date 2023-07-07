@@ -65,7 +65,7 @@ select *
  where t.order_date = date'2000-01-02';
 
 -- 10К строк
-select *
+select count(*)
   from sale$del t
  where t.order_date = date'1999-12-31';
   

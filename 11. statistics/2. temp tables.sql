@@ -41,7 +41,7 @@ select t.*
 call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO1_GTT');
 
 
----- Пример 2. Cardinality
+---- Пример 2. Демо хинта Cardinality
 drop table demo1;
 create table demo1
 (
@@ -63,10 +63,11 @@ select t.scope, t.num_rows, t.blocks, t.avg_row_len,
 
 -- от изменения числа происходит выбор плана (по факту demo1_gtt - пустая)
 explain plan for 
-select /*+ cardinality(g 100000)*/g.col2, t.col2 
+select /* + cardinality(g 800)*/g.col2, t.col2 
   from demo1_gtt g
   join demo1 t on t.id = g.id;
 select * from dbms_xplan.display();
+
 
 
 ---- Пример 3. Коллекции
