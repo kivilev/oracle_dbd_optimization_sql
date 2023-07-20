@@ -1,18 +1,18 @@
 ﻿/*
   Creating role, kivi, hr schemas
   
-	-- role
-	drop role student_role;
-	create role student_role;
-	grant connect to student_role;
-	grant resource to student_role;
-	grant debug connect session to student_role;
-	grant create view to student_role;
-	grant select any dictionary to student_role;
+  -- role
+  drop role student_role;
+  create role student_role;
+  grant connect to student_role;
+  grant resource to student_role;
+  grant debug connect session to student_role;
+  grant create view to student_role;
+  grant select any dictionary to student_role;
 
     grant alter session to kivi, hr;
-	grant select_catalog_role to kivi,hr;
-	grant select any dictionary to kivi,hr;
+  grant select_catalog_role to kivi,hr;
+  grant select any dictionary to kivi,hr;
 */
 
 create role student_role;
@@ -43,9 +43,7 @@ begin
     for i in v_users.first .. v_users.last loop
       exec_sql(' create user '||v_users(i)||' identified by booble12
       default tablespace '|| v_ts_name ||
-      ' temporary tablespace temp profile       
-      default quota '|| v_quota ||' on '||v_ts_name || '
-      password expire');
+      ' temporary tablespace temp');
       
       exec_sql('grant '||v_role_name||' to '|| v_users(i));
       exec_sql('alter user '||v_users(i) ||' quota '||v_quota||' on '||v_ts_name);
@@ -61,3 +59,5 @@ begin
 
 end;
 /
+alter user kivi quota 15g on users;
+alter user hr quota 200m on users;
