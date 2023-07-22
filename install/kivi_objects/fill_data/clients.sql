@@ -1,5 +1,5 @@
 ﻿declare
-  c_client_count constant number := 3500000;
+  c_client_count constant number := 7000000;
   c_step_count number := 10000;
   c_initial_balance constant account.balance%type := 0;
   v_cnt         number := 0;

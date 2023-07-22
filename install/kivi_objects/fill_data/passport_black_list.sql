@@ -1,6 +1,6 @@
 ﻿-- black list
 declare 
- v_total number := 20000000;--10000000
+ v_total number := 20000000;
  v_step number := 10000;
 begin
   

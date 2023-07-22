@@ -856,7 +856,8 @@ create or replace package body client_check_pack is
      where fn.client_id = p_client_id
        and fn.field_id = client_api_pack.c_first_name_field_id;
 
-    select count(*)
+    select /*+ index(t TERRORIST_FLB_I)*/
+           count(*)
       into v_cnt
       from terrorist t
      where t.birthday = to_date(v_birthday, 'YYYY-MM-DD')
@@ -1429,40 +1430,40 @@ create or replace package body payment_check_pack is
       into v_payment
       from payment p
      where p.payment_id = p_payment_id;
-  
+
     select t_payment_detail(pd.field_id, pd.field_value)
       bulk collect
       into v_payment_details
       from payment_detail pd
      where pd.payment_id = p_payment_id;
-  
+
     -- checking ip in black list
     if (v_payment_details.exists(payment_api_pack.с_ip_field_id)) then
       select count(*)
         into v_cnt
         from ip_list ip
        where ip.type = c_black_type_id
-         and ip.ip = trim(v_payment_details(payment_api_pack.с_ip_field_id).field_value);
-    
+         and trim(ip.ip) = trim(v_payment_details(payment_api_pack.с_ip_field_id).field_value);
+
       if v_cnt <> 0 then
         raise_application_error(exception_pack.c_error_code_object_check_failed,
                                 exception_pack.c_error_msg_object_check_failed);
       end if;
     end if;
-  
+
     -- checking note
     if (v_payment_details.exists(payment_api_pack.с_note_field_id)) then
       select count(*)
         into v_cnt
         from word_black_list w
        where lower(v_payment_details(payment_api_pack.с_note_field_id).field_value) like lower('%' || w.word || '%');
-    
+
       if v_cnt <> 0 then
         raise_application_error(exception_pack.c_error_code_object_check_failed,
                                 exception_pack.c_error_msg_object_check_failed);
       end if;
     end if;
-  
+
     -- month limit outcome (w/o convertation)
     select /*+ index(p PAYMENT_TO_CLIENT_I) */sum(p.summa)
       into v_outcome_sum
@@ -1471,12 +1472,12 @@ create or replace package body payment_check_pack is
        and p.create_dtime < sysdate
        and p.status = payment_api_pack.c_successful_finished
        and p.from_client_id = v_payment.from_client_id;
-  
+
     if v_outcome_sum >= c_outcome_limit then
       raise_application_error(exception_pack.c_error_code_object_check_failed,
                               exception_pack.c_error_msg_object_check_failed);
     end if;
-  
+
     -- month limit income (w/o convertation)
     select /*+ index(p PAYMENT_FROM_CLIENT_I) */sum(p.summa)
       into v_income_sum
@@ -1485,12 +1486,12 @@ create or replace package body payment_check_pack is
        and p.create_dtime < sysdate
        and p.status = payment_api_pack.c_successful_finished
        and p.to_client_id = v_payment.to_client_id;
-  
+
     if v_income_sum >= c_income_limit then
       raise_application_error(exception_pack.c_error_code_object_check_failed,
                               exception_pack.c_error_msg_object_check_failed);
     end if;
-  
+
   end;
 
 end payment_check_pack;
