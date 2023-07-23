@@ -1,5 +1,12 @@
--- Client registration example
--- Schema: kivi
+/*
+  Course: Oracle SQL Optimization. Basic
+  Author: Denis Kivilev (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Description: First homework. Client registration example
+  
+  Schema: kivi  
+
+*/
 
 declare
   v_client_id   client.client_id%type;
