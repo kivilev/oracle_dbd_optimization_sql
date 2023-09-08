@@ -1,0 +1,48 @@
+SQL Monitoring Report
+
+SQL Text
+------------------------------
+-- выполняем запрос select /*my query mon 1*/count(*) from hr.employees cross join hr.employees cross join hr.employees cross join hr.employees
+
+Global Information
+------------------------------
+ Status              :  DONE (ALL ROWS)                                    
+ Instance ID         :  1                                                  
+ Session             :  HR (50:15381)                                      
+ SQL ID              :  9cdu9fr7cbwzm                                      
+ SQL Execution ID    :  16777216                                           
+ Execution Started   :  07/29/2023 10:59:20                                
+ First Refresh Time  :  07/29/2023 10:59:26                                
+ Last Refresh Time   :  07/29/2023 10:59:27                                
+ Duration            :  7s                                                 
+ Module/Action       :  PL/SQL Developer/1. sql_monitor_with_automatic.sql 
+ Service             :  db1                                                
+ Program             :  plsqldev.exe                                       
+ Fetch Calls         :  1                                                  
+
+Global Stats
+=================================================
+| Elapsed |   Cpu   |  Other   | Fetch | Buffer |
+| Time(s) | Time(s) | Waits(s) | Calls |  Gets  |
+=================================================
+|    7.17 |    7.14 |     0.03 |     1 |     13 |
+=================================================
+
+SQL Plan Monitoring Details (Plan Hash Value=3207538161)
+=================================================================================================================================================
+| Id |          Operation          |     Name     |  Rows   | Cost |   Time    | Start  | Execs |   Rows   |  Mem  | Activity | Activity Detail |
+|    |                             |              | (Estim) |      | Active(s) | Active |       | (Actual) | (Max) |   (%)    |   (# samples)   |
+=================================================================================================================================================
+|  0 | SELECT STATEMENT            |              |         |      |         2 |     +6 |     1 |        1 |     . |          |                 |
+|  1 |   SORT AGGREGATE            |              |       1 |      |         5 |     +3 |     1 |        1 |     . |    14.29 | Cpu (1)         |
+|  2 |    MERGE JOIN CARTESIAN     |              |    131M | 465K |         2 |     +6 |     1 |     131M |     . |          |                 |
+|  3 |     MERGE JOIN CARTESIAN    |              |      1M | 4346 |         2 |     +6 |     1 |       1M |     . |          |                 |
+|  4 |      MERGE JOIN CARTESIAN   |              |   11449 |   43 |         2 |     +6 |     1 |    11449 |     . |          |                 |
+|  5 |       INDEX FULL SCAN       | EMP_EMAIL_UK |     107 |    1 |         2 |     +6 |     1 |      107 |     . |          |                 |
+|  6 |       BUFFER SORT           |              |     107 |   42 |         2 |     +6 |   107 |    11449 |  4096 |          |                 |
+|  7 |        INDEX FAST FULL SCAN | EMP_EMAIL_UK |     107 |      |         1 |     +6 |     1 |      107 |     . |          |                 |
+|  8 |      BUFFER SORT            |              |     107 | 4345 |         2 |     +6 | 11449 |       1M |  4096 |          |                 |
+|  9 |       INDEX FAST FULL SCAN  | EMP_EMAIL_UK |     107 |      |         1 |     +6 |     1 |      107 |     . |          |                 |
+| 10 |     BUFFER SORT             |              |     107 | 465K |         7 |     +1 |    1M |     131M |  4096 |    85.71 | Cpu (6)         |
+| 11 |      INDEX FAST FULL SCAN   | EMP_EMAIL_UK |     107 |      |         1 |     +6 |     1 |      107 |     . |          |                 |
+=================================================================================================================================================

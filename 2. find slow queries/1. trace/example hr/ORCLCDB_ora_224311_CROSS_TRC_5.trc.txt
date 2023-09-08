@@ -1,0 +1,629 @@
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Jul 24 06:59:02 2023
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: ORCLCDB_ora_224311_CROSS_TRC_5.trc
+Sort options: prsela  fchela  exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+-- >>> начало. исследемый функционал
+select /*my_query1*/ count(*)
+  from hr.countries
+  cross join hr.departments
+  cross join hr.employees
+  cross join hr.employees
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        1      0.98       0.99          0         13          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.99       0.99          0         13          0           1
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  SORT AGGREGATE (cr=13 pr=0 pw=0 time=992441 us starts=1)
+   7728075    7728075    7728075   MERGE JOIN CARTESIAN (cr=13 pr=0 pw=0 time=1695399 us starts=1 cost=27402 size=0 card=7728075)
+     72225      72225      72225    MERGE JOIN CARTESIAN (cr=9 pr=0 pw=0 time=28640 us starts=1 cost=267 size=0 card=72225)
+       675        675        675     MERGE JOIN CARTESIAN (cr=5 pr=0 pw=0 time=539 us starts=1 cost=12 size=0 card=675)
+        25         25         25      INDEX FULL SCAN COUNTRY_C_ID_PK (cr=1 pr=0 pw=0 time=72 us starts=1 cost=1 size=0 card=25)(object id 73156)
+       675        675        675      BUFFER SORT (cr=4 pr=0 pw=0 time=290 us starts=25 cost=11 size=0 card=27)
+        27         27         27       INDEX FAST FULL SCAN DEPT_ID_PK (cr=4 pr=0 pw=0 time=169 us starts=1 cost=0 size=0 card=27)(object id 73161)
+     72225      72225      72225     BUFFER SORT (cr=4 pr=0 pw=0 time=9403 us starts=675 cost=267 size=0 card=107)
+       107        107        107      INDEX FAST FULL SCAN EMP_EMAIL_UK (cr=4 pr=0 pw=0 time=42 us starts=1 cost=0 size=0 card=107)(object id 73166)
+   7728075    7728075    7728075    BUFFER SORT (cr=4 pr=0 pw=0 time=709403 us starts=72225 cost=27402 size=0 card=107)
+       107        107        107     INDEX FAST FULL SCAN EMP_EMAIL_UK (cr=4 pr=0 pw=0 time=8 us starts=1 cost=0 size=0 card=107)(object id 73166)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                            4        0.00          0.00
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.12          0.23
+********************************************************************************
+
+select /*my_query2*/ count(*)
+  from hr.employees
+  cross join hr.employees
+  cross join hr.employees
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        1      0.15       0.15          0          9          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.15       0.15          0          9          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  SORT AGGREGATE (cr=9 pr=0 pw=0 time=158409 us starts=1)
+   1225043    1225043    1225043   MERGE JOIN CARTESIAN (cr=9 pr=0 pw=0 time=253782 us starts=1 cost=4346 size=0 card=1225043)
+     11449      11449      11449    MERGE JOIN CARTESIAN (cr=5 pr=0 pw=0 time=3860 us starts=1 cost=43 size=0 card=11449)
+       107        107        107     INDEX FULL SCAN EMP_EMAIL_UK (cr=1 pr=0 pw=0 time=149 us starts=1 cost=1 size=0 card=107)(object id 73166)
+     11449      11449      11449     BUFFER SORT (cr=4 pr=0 pw=0 time=1891 us starts=107 cost=42 size=0 card=107)
+       107        107        107      INDEX FAST FULL SCAN EMP_EMAIL_UK (cr=4 pr=0 pw=0 time=168 us starts=1 cost=0 size=0 card=107)(object id 73166)
+   1225043    1225043    1225043    BUFFER SORT (cr=4 pr=0 pw=0 time=110149 us starts=11449 cost=4345 size=0 card=107)
+       107        107        107     INDEX FAST FULL SCAN EMP_EMAIL_UK (cr=4 pr=0 pw=0 time=114 us starts=1 cost=0 size=0 card=107)(object id 73166)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.12          0.23
+********************************************************************************
+
+SQL ID: afdghxjjxrmyk Plan Hash: 0
+
+SELECT * 
+FROM
+ hr.departments
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          2           0
+Execute      0      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        1      0.00       0.00          0          0          2           0
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       1        0.00          0.00
+  log file sync                                   1        0.00          0.00
+  SQL*Net message from client                     1        0.35          0.35
+********************************************************************************
+
+-- >>> конец
+
+
+call dbms_session.session_trace_disable()
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+********************************************************************************
+
+SQL ID: 2nd2g2s0jyz3v Plan Hash: 3580537945
+
+select /*my_query3*/ count(1) 
+from
+ hr.employees
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        1      0.00       0.00          0          1          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.00       0.00          0          1          0           1
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  SORT AGGREGATE (cr=1 pr=0 pw=0 time=86 us starts=1)
+       107        107        107   INDEX FULL SCAN EMP_EMAIL_UK (cr=1 pr=0 pw=0 time=155 us starts=1 cost=1 size=0 card=107)(object id 73166)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                            3        0.00          0.00
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.11          0.23
+********************************************************************************
+
+SQL ID: 3jgchrvs2kaju Plan Hash: 373888742
+
+select /*my_query4*/ count(1) 
+from
+ hr.departments
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        1      0.00       0.00          0          1          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.00       0.00          0          1          0           1
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  SORT AGGREGATE (cr=1 pr=0 pw=0 time=57 us starts=1)
+        27         27         27   INDEX FULL SCAN DEPT_ID_PK (cr=1 pr=0 pw=0 time=60 us starts=1 cost=1 size=0 card=27)(object id 73161)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.12          0.23
+********************************************************************************
+
+select column_name, data_type, virtual_column, hidden_column from sys.all_tab_cols
+where owner        = :object_owner
+and table_name     = :object_name
+and (virtual_column = 'YES' or hidden_column = 'YES')
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        3      0.00       0.00          0          0          0           0
+Execute      3      0.00       0.00          0          0          0           0
+Fetch        3      0.00       0.00          0         36          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        9      0.00       0.00          0         36          0           0
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=40 card=1)
+         0          0          0   INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)(object id 36)
+         0          0          0  TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=40 card=1)
+         0          0          0   INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)(object id 36)
+         0          0          0  TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=40 card=1)
+         0          0          0   INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)(object id 36)
+         0          0          0  TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=40 card=1)
+         0          0          0   INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)(object id 36)
+         0          0          0  TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=40 card=1)
+         0          0          0   INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)(object id 36)
+         0          0          0  FILTER  (cr=12 pr=0 pw=0 time=493 us starts=1)
+         0          0          0   HASH JOIN OUTER (cr=12 pr=0 pw=0 time=490 us starts=1 cost=14 size=226 card=1)
+         0          0          0    NESTED LOOPS OUTER (cr=12 pr=0 pw=0 time=478 us starts=1 cost=14 size=226 card=1)
+         0          0          0     STATISTICS COLLECTOR  (cr=12 pr=0 pw=0 time=472 us starts=1)
+         0          0          0      HASH JOIN  (cr=12 pr=0 pw=0 time=449 us starts=1 cost=13 size=222 card=1)
+         0          0          0       NESTED LOOPS  (cr=12 pr=0 pw=0 time=426 us starts=1 cost=13 size=222 card=1)
+         0          0          0        STATISTICS COLLECTOR  (cr=12 pr=0 pw=0 time=423 us starts=1)
+         0          0          0         HASH JOIN OUTER (cr=12 pr=0 pw=0 time=419 us starts=1 cost=12 size=197 card=1)
+         0          0          0          NESTED LOOPS OUTER (cr=12 pr=0 pw=0 time=415 us starts=1 cost=12 size=197 card=1)
+         0          0          0           STATISTICS COLLECTOR  (cr=12 pr=0 pw=0 time=411 us starts=1)
+         0          0          0            HASH JOIN OUTER (cr=12 pr=0 pw=0 time=409 us starts=1 cost=11 size=187 card=1)
+         0          0          0             NESTED LOOPS OUTER (cr=12 pr=0 pw=0 time=398 us starts=1 cost=11 size=187 card=1)
+         0          0          0              STATISTICS COLLECTOR  (cr=12 pr=0 pw=0 time=397 us starts=1)
+         0          0          0               HASH JOIN OUTER (cr=12 pr=0 pw=0 time=394 us starts=1 cost=7 size=143 card=1)
+         0          0          0                NESTED LOOPS OUTER (cr=12 pr=0 pw=0 time=389 us starts=1 cost=7 size=143 card=1)
+         0          0          0                 STATISTICS COLLECTOR  (cr=12 pr=0 pw=0 time=386 us starts=1)
+         0          0          0                  NESTED LOOPS  (cr=12 pr=0 pw=0 time=381 us starts=1 cost=6 size=115 card=1)
+         1          1          1                   HASH JOIN OUTER (cr=9 pr=0 pw=0 time=328 us starts=1 cost=5 size=80 card=1)
+         1          1          1                    NESTED LOOPS OUTER (cr=9 pr=0 pw=0 time=320 us starts=1 cost=5 size=80 card=1)
+         1          1          1                     STATISTICS COLLECTOR  (cr=6 pr=0 pw=0 time=228 us starts=1)
+         1          1          1                      NESTED LOOPS  (cr=6 pr=0 pw=0 time=216 us starts=1 cost=4 size=75 card=1)
+         1          1          1                       TABLE ACCESS BY INDEX ROWID USER$ (cr=2 pr=0 pw=0 time=80 us starts=1 cost=1 size=18 card=1)
+         1          1          1                        INDEX UNIQUE SCAN I_USER1 (cr=1 pr=0 pw=0 time=49 us starts=1 cost=0 size=0 card=1)(object id 46)
+         1          1          1                       TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=4 pr=0 pw=0 time=131 us starts=1 cost=3 size=57 card=1)
+         1          1          1                        INDEX RANGE SCAN I_OBJ5 (cr=3 pr=0 pw=0 time=95 us starts=1 cost=2 size=0 card=1)(object id 40)
+         1          1          1                     TABLE ACCESS CLUSTER TAB$ (cr=3 pr=0 pw=0 time=87 us starts=1 cost=1 size=5 card=1)
+         1          1          1                      INDEX UNIQUE SCAN I_OBJ# (cr=2 pr=0 pw=0 time=39 us starts=1 cost=0 size=0 card=1)(object id 3)
+         0          0          0                    TABLE ACCESS FULL TAB$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=5 card=1)
+         0          0          0                   TABLE ACCESS CLUSTER COL$ (cr=3 pr=0 pw=0 time=49 us starts=1 cost=1 size=35 card=1)
+         1          1          1                    INDEX UNIQUE SCAN I_OBJ# (cr=2 pr=0 pw=0 time=5 us starts=1 cost=0 size=0 card=1)(object id 3)
+         0          0          0                 TABLE ACCESS CLUSTER COLTYPE$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=28 card=1)
+         0          0          0                TABLE ACCESS BY INDEX ROWID BATCHED COLTYPE$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=28 card=1)
+         0          0          0                 INDEX FULL SCAN I_COLTYPE2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=9 size=0 card=3006)(object id 114)
+         0          0          0              TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=4 size=44 card=1)
+         0          0          0               INDEX RANGE SCAN I_OBJ3 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=21)(object id 38)
+         0          0          0             TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=4 size=44 card=1)
+         0          0          0              INDEX SKIP SCAN I_OBJ1 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=21)(object id 36)
+         0          0          0           INDEX RANGE SCAN I_HH_OBJ#_INTCOL# (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=10 card=1)(object id 70)
+         0          0          0          INDEX FAST FULL SCAN I_HH_OBJ#_INTCOL# (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=10 card=1)(object id 70)
+         0          0          0        INDEX RANGE SCAN I_USER2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=25 card=1)(object id 47)
+         0          0          0       INDEX FULL SCAN I_USER2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=25 card=1)(object id 47)
+         0          0          0     INDEX RANGE SCAN I_USER2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=4 card=1)(object id 47)
+         0          0          0    INDEX FULL SCAN I_USER2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=4 card=1)(object id 47)
+         0          0          0   TABLE ACCESS CLUSTER TAB$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=13 card=1)
+         0          0          0    INDEX UNIQUE SCAN I_OBJ# (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 3)
+         0          0          0   NESTED LOOPS SEMI (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=15 card=1)
+         0          0          0    FIXED TABLE FULL X$KZSRO (cr=0 pr=0 pw=0 time=0 us starts=0 cost=0 size=6 card=1)
+         0          0          0    INDEX RANGE SCAN I_OBJAUTH2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=9 card=1)(object id 63)
+         0          0          0   FIXED TABLE FULL X$KZSPR (cr=0 pr=0 pw=0 time=0 us starts=0 cost=0 size=9 card=1)
+         0          0          0   TABLE ACCESS BY INDEX ROWID BATCHED USER_EDITIONING$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=6 card=1)
+         0          0          0    INDEX RANGE SCAN I_USER_EDITIONING (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=2)(object id 133)
+         0          0          0   TABLE ACCESS BY INDEX ROWID BATCHED USER_EDITIONING$ (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=6 card=1)
+         0          0          0    INDEX RANGE SCAN I_USER_EDITIONING (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=2)(object id 133)
+         0          0          0   NESTED LOOPS SEMI (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=29 card=1)
+         0          0          0    INDEX SKIP SCAN I_USER2 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=20 card=1)(object id 47)
+         0          0          0    INDEX RANGE SCAN I_OBJ4 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=9 card=1)(object id 39)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       6        0.00          0.00
+  SQL*Net message from client                     6        0.12          0.71
+  PGA memory operation                            1        0.00          0.00
+********************************************************************************
+
+declare
+  c integer := 0;
+  p1 varchar2(500);
+  p2 varchar2(500);
+  expr varchar2(500);
+  dblink varchar2(500);
+  part1_type integer;
+  object_number integer;
+  dp integer;
+  guard_error exception;
+  pragma exception_init(guard_error, -16224);
+begin
+  :object_type := null;
+  :object_owner := null;
+  :object_name := null;
+  :sub_object := null;
+  expr := :part1;
+  if :part2 is not null then expr := expr || '.' || :part2; end if;
+  if :part3 is not null then expr := expr || '.' || :part3; end if;
+  loop
+    begin
+      sys.dbms_utility.name_resolve(name => expr,
+                                    context => c,
+                                    schema => :object_owner,
+                                    part1 => p1,
+                                    part2 => p2,
+                                    dblink => dblink,
+                                    part1_type => part1_type,
+                                    object_number => object_number);
+      if part1_type = 1 then :object_type := 'INDEX'; end if;
+      if part1_type = 2 then :object_type := 'TABLE'; end if;
+      if part1_type = 4 then :object_type := 'VIEW'; end if;
+      if part1_type = 5 then :object_type := 'SYNONYM'; end if;
+      if part1_type = 6 then :object_type := 'SEQUENCE'; end if;
+      if part1_type = 7 then :object_type := 'PROCEDURE'; end if;
+      if part1_type = 8 then :object_type := 'FUNCTION'; end if;
+      if part1_type = 9 then :object_type := 'PACKAGE'; end if;
+      if part1_type = 12 then :object_type := 'TRIGGER'; end if;
+      if part1_type = 13 then :object_type := 'TYPE'; end if;
+      if part1_type = 28 then :object_type := 'JAVA SOURCE'; end if;
+      if part1_type = 29 then :object_type := 'JAVA CLASS'; end if;
+      if :object_type is null then
+        select object_type into :object_type
+          from sys.all_objects
+         where object_id = object_number;
+      end if;
+    exception
+      when guard_error then
+        raise;
+      when others then
+        null;
+    end;
+    c := c + 1;
+    if c > 9 then
+      dp := instr(expr, '.', -1);
+      if dp > 0 then
+        if :sub_object is not null then
+          :sub_object := '.' || :sub_object;
+        end if;
+        :sub_object := upper(substr(expr, dp + 1)) || :sub_object;
+        expr := substr(expr, 1, dp - 1);
+        c := 0;
+      end if; 
+    end if;
+    exit when (:object_type is not null) or (c > 9);
+  end loop;
+  if :object_type is not null then
+    if p1 is null then
+      :object_name := p2;
+    elsif p2 is null then
+      :object_name := p1;
+      if :object_name = :part1 and :part2 is not null then
+        :sub_object := :part2;
+      end if;
+      if :object_name = :part2 and :part3 is not null then
+        :sub_object := :part3;
+      end if;   
+    else
+      :object_name := p1;
+      :sub_object := p2;
+    end if;
+    return;
+  end if;
+  begin
+    if :part2 is null and :part3 is null then
+      select 'USER', null, :part1
+        into :object_type, :object_owner, :object_name
+        from sys.all_users u
+       where u.username = :part1
+         and rownum = 1;
+      return;
+    end if;
+  exception
+    when no_data_found then
+      null;
+  end;
+  begin
+    if :part2 is null and :part3 is null and :deep != 0 then
+      select 'ROLE', null, :part1
+        into :object_type, :object_owner, :object_name
+        from sys.session_roles r
+       where r.role = :part1
+         and rownum = 1;
+      return;
+    end if;
+  exception
+    when no_data_found then
+      null;
+  end;  
+  if :deep != 0 then
+    begin
+      if :part2 is null then
+        select constraint_type, owner, constraint_name
+          into :object_type, :object_owner, :object_name
+          from sys.all_constraints c
+         where c.constraint_name = :part1
+           and c.owner = :cur_schema
+           and rownum = 1;
+      else
+        select constraint_type, owner, constraint_name, :part3
+          into :object_type, :object_owner, :object_name, :sub_object
+          from sys.all_constraints c
+         where c.constraint_name = :part2
+           and c.owner = :part1
+           and rownum = 1;
+      end if;
+      if :object_type = 'P' then
+        :object_type := 'PRIMARY KEY';
+      end if;
+      if :object_type = 'U' then
+        :object_type := 'UNIQUE KEY';
+      end if;
+      if :object_type = 'R' then
+        :object_type := 'FOREIGN KEY';
+      end if;
+      if :object_type = 'C' then
+        :object_type := 'CHECK CONSTRAINT';
+      end if;
+      return;
+    exception
+      when no_data_found then
+        null;
+    end;
+  end if;
+end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        3      0.00       0.00          0          0          0           0
+Execute      3      0.00       0.00          0          0          0           3
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        6      0.00       0.00          0          0          0           3
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       3        0.00          0.00
+  SQL*Net message from client                     3        0.35          1.05
+********************************************************************************
+
+SQL ID: 9m7787camwh4m Plan Hash: 0
+
+begin :id := sys.dbms_transaction.local_transaction_id; end;
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        5      0.00       0.00          0          0          0           0
+Execute      5      0.00       0.00          0          0          0           5
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       10      0.00       0.00          0          0          0           5
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                            1        0.00          0.00
+  SQL*Net message to client                       5        0.00          0.00
+  SQL*Net message from client                     5        0.13          0.64
+********************************************************************************
+
+SQL ID: 2tsjyp3bj5w05 Plan Hash: 0
+
+call dbms_session.session_trace_enable()
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        0      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        1      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.14          0.14
+********************************************************************************
+
+SQL ID: 4n1y5b742t5uc Plan Hash: 0
+
+SELECT * 
+FROM
+ hr.employees
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        2      0.00       0.00          0          0          0           0
+Execute      0      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.35          0.47
+********************************************************************************
+
+SQL ID: bm5ycrdcx7ra2 Plan Hash: 0
+
+SELECT * 
+FROM
+ hr.countries
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      0      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        1      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 112  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.35          0.35
+
+
+
+********************************************************************************
+
+OVERALL TOTALS FOR ALL NON-RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse       20      0.01       0.01          0          0          2           0
+Execute     17      0.00       0.00          0          0          0           8
+Fetch        7      1.14       1.15          0         60          0           4
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       44      1.16       1.17          0         60          2          12
+
+Misses in library cache during parse: 5
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                      27        0.00          0.00
+  SQL*Net message from client                    27        0.35          4.68
+  PGA memory operation                            9        0.00          0.00
+  log file sync                                   1        0.00          0.00
+
+
+OVERALL TOTALS FOR ALL RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        4      0.00       0.00          0          0          0           0
+Execute     11      0.00       0.00          0          1         10           2
+Fetch        9      0.00       0.00          0         21          0          13
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       24      0.00       0.00          0         22         10          15
+
+Misses in library cache during parse: 4
+Misses in library cache during execute: 4
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                            4        0.00          0.00
+
+   12  user  SQL statements in session.
+    4  internal SQL statements in session.
+   16  SQL statements in session.
+********************************************************************************
+Trace file: ORCLCDB_ora_224311_CROSS_TRC_5.trc
+Trace file compatibility: 12.2.0.0
+Sort options: prsela  fchela  exeela  
+       1  session in tracefile.
+      12  user  SQL statements in trace file.
+       4  internal SQL statements in trace file.
+      16  SQL statements in trace file.
+      16  unique SQL statements in trace file.
+     535  lines in trace file.
+       5  elapsed seconds in trace file.
+
+

@@ -1,0 +1,46 @@
+SQL Monitoring Report
+
+SQL Text
+------------------------------
+select /*+ leading(e d) monitor*/ e.employee_id, d.* from hr.employees e join hr.departments d on e.department_id = d.department_id where e.last_name = 'Smith'
+
+Global Information
+------------------------------
+ Status              :  DONE (ALL ROWS)                   
+ Instance ID         :  1                                 
+ Session             :  ODBA (448:62837)                  
+ SQL ID              :  4vrvk7h01rnc4                     
+ SQL Execution ID    :  16777216                          
+ Execution Started   :  08/16/2023 11:10:53               
+ First Refresh Time  :  08/16/2023 11:10:53               
+ Last Refresh Time   :  08/16/2023 11:10:53               
+ Duration            :  .000218s                          
+ Module/Action       :  PL/SQL Developer/get_example3.sql 
+ Service             :  SYS$USERS                         
+ Program             :  plsqldev.exe                      
+ Fetch Calls         :  1                                 
+
+Global Stats
+======================================
+| Elapsed |   Cpu   | Fetch | Buffer |
+| Time(s) | Time(s) | Calls |  Gets  |
+======================================
+|    0.00 |    0.00 |     1 |      6 |
+======================================
+
+SQL Plan Monitoring Details (Plan Hash Value=3892127698)
+======================================================================================================================================================
+| Id |                 Operation                 |    Name     |  Rows   | Cost |   Time    | Start  | Execs |   Rows   | Activity | Activity Detail |
+|    |                                           |             | (Estim) |      | Active(s) | Active |       | (Actual) |   (%)    |   (# samples)   |
+======================================================================================================================================================
+|  0 | SELECT STATEMENT                          |             |         |      |         1 |     +0 |     1 |        1 |          |                 |
+|  1 |   HASH JOIN                               |             |       1 |    3 |         1 |     +0 |     1 |        1 |          |                 |
+|  2 |    NESTED LOOPS                           |             |       1 |    3 |         1 |     +0 |     1 |        2 |          |                 |
+|  3 |     NESTED LOOPS                          |             |       1 |    3 |         1 |     +0 |     1 |        2 |          |                 |
+|  4 |      STATISTICS COLLECTOR                 |             |         |      |         1 |     +0 |     1 |        2 |          |                 |
+|  5 |       TABLE ACCESS BY INDEX ROWID BATCHED | EMPLOYEES   |       1 |    2 |         1 |     +0 |     1 |        2 |          |                 |
+|  6 |        INDEX RANGE SCAN                   | EMP_NAME_IX |       1 |    1 |         1 |     +0 |     1 |        2 |          |                 |
+|  7 |      INDEX UNIQUE SCAN                    | DEPT_ID_PK  |       1 |      |         1 |     +0 |     2 |        2 |          |                 |
+|  8 |     TABLE ACCESS BY INDEX ROWID           | DEPARTMENTS |       1 |    1 |         1 |     +0 |     2 |        2 |          |                 |
+|  9 |    TABLE ACCESS FULL                      | DEPARTMENTS |       1 |    1 |           |        |       |          |          |                 |
+======================================================================================================================================================

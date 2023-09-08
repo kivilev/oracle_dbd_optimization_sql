@@ -1,0 +1,23 @@
+SQL Monitoring Report
+
+Global Information
+------------------------------
+ Status              :  DONE                             
+ Instance ID         :  1                                
+ Session             :  KIVI (49:62775)                  
+ DBOP Name           :  CHECK_USER                       
+ DBOP Execution ID   :  1                                
+ First Refresh Time  :  07/29/2023 09:14:34              
+ Last Refresh Time   :  07/29/2023 09:14:43              
+ Duration            :  9s                               
+ Module/Action       :  PL/SQL Developer/sql_monitor.sql 
+ Service             :  db1                              
+ Program             :  plsqldev.exe                     
+
+Global Stats
+====================================================================
+| Elapsed |   Cpu   |    IO    |  Other   | Buffer | Read  | Read  |
+| Time(s) | Time(s) | Waits(s) | Waits(s) |  Gets  | Reqs  | Bytes |
+====================================================================
+|    8.49 |    3.59 |     0.81 |     4.08 |  29767 | 73409 | 458MB |
+====================================================================
