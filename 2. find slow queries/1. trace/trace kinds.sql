@@ -3,6 +3,7 @@
 ---- Способ 1. Только в текущей сессии, параметры задать нельзя
 alter session set sql_trace = true; -- самый урезанный вариант
 
+
 alter session set sql_trace = false;
 
 
@@ -15,7 +16,7 @@ alter session set events '10046 trace name context off';
 
 ---- Способ 3. Мощный пакет для трассировки любых сессий. Нужны доп гранты
 -- grant execute on dbms_monitor to kivi, hr;
-call dbms_monitor.session_trace_enable(client_id => 
+call dbms_monitor.session_trace_enable(client_id=>'tim_hall');
 call dbms_monitor.session_trace_enable( waits=>true, binds=>false);
 
 call dbms_monitor.client_id_trace_disable(client_id=>'tim_hall');

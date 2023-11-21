@@ -15,7 +15,7 @@ select *
    and t.session_serial# = 37774
  order by t.sample_id;
 
----- Пример 2. Архиваня история сеансов (dba_hist_active_sess_history)
+---- Пример 2. Архивная история сеансов (dba_hist_active_sess_history)
 
 -- границы диапазона
 select min(t.sample_time), max(t.sample_time) from dba_hist_active_sess_history t;

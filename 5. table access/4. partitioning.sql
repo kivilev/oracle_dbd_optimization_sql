@@ -19,7 +19,10 @@ partition by range (payment_date)
 interval (interval '1' day)
 (partition part_min values less than (to_date('01.01.2023','dd.mm.yyyy')));
 
-insert into demo_payment_range select * from dual conn
+insert into demo_payment_range 
+ select level, trunc(sysdate) + level from dual connect by level <= 100;
+
+select * from user_tab_partitions t where t.table_name = 'DEMO_PAYMENT_RANGE'
 
 -- LIST
 create table demo_country_list(
@@ -68,11 +71,9 @@ select * from demo_client_hash t where t.id = 1000 or t.id = 2000
 select * from demo_payment_range t;
 
 -- Partition list ALL
-select * from demo_country_list t where t.country_id in('GB', 'UZ');
+select * from demo_country_list t;
+select * from demo_country_list t where t.country_id in('GB', 'UZ', 'KZ');-- забавный случай, когда inlist, но по факту ALL
 
 -- Partition hash ALL
 select * from demo_client_hash t where t.id between 1000 and 1010;
-
-
-
 

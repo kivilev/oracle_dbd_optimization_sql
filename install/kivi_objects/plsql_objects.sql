@@ -1073,8 +1073,7 @@ create or replace package body client_manage_pack is
           on cl.client_id = cd.client_id
        where cd.field_id = client_api_pack.c_mobile_phone_field_id
          and cd.field_value = v_mobile_phone
-         and cl.is_active = client_api_pack.c_active
-         for update of cl.client_id nowait;
+         and cl.is_active = client_api_pack.c_active;
 
       raise exception_pack.e_object_already_exists;
 
