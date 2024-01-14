@@ -4,3 +4,4 @@
 *.sql REPLACE
 *.bak
 *.gz
+*.~*

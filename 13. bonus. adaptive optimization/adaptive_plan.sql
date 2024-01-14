@@ -18,6 +18,7 @@ select /* ao example */
       ,departments d
  where e.department_id = d.department_id
    and d.department_name in ('Marketing', 'Sales');
+
 select * from dbms_xplan.
 
 select * from v$sqlarea t where t.sql_fulltext like '%ao example%';

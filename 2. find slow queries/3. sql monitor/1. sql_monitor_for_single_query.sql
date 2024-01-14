@@ -1,22 +1,22 @@
-п»ї/*
- РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ СЃРЅСЏС‚РёРµ РјРѕРЅРёС‚РѕСЂРёРЅРіР° (HR)
+/*
+ Автоматическое снятие мониторинга (HR)
 */ 
 
----- РџСЂРёРјРµСЂ 1. > 5 СЃРµРєСѓРЅРґ
+---- Пример 1. > 5 секунд
 
--- РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ
+-- выполняем запрос
 select /*my query mon 1*/count(*)
   from hr.employees
   cross join hr.employees
   cross join hr.employees
   cross join hr.employees;
 
--- РїРѕР»СѓС‡Р°РµРј SID, SERIAL С‚РµРєСѓС‰РµР№ СЃРµСЃСЃРёРё
+-- получаем SID, SERIAL текущей сессии
 select sid, serial#
   from v$session
  where sid in (select sid from v$mystat where rownum <=1);
 
--- Р·Р°РїСЂРѕСЃС‹ РІ РјРѕРЅРёС‚РѕСЂРёРЅРіРµ
+-- запросы в мониторинге
 select key
        ,status, sql_id, t.sql_text
        ,to_char(elapsed_time/1000000,'000.00') as elapsed_sec -- exeela
@@ -26,36 +26,36 @@ select key
 
 select * from v$sql_plan_monitor t where t.key =  25769807090;
 
----- СЃСѓС‰РµСЃС‚РІСѓРµС‚ 4Рµ СЃРїРѕСЃРѕР±Р° СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РѕС‚С‡РµС‚:
+---- существует 4е способа сформировать отчет:
 
--- СЃРїРѕСЃРѕР± 1. РїРѕ СЃР°РјРѕРјСѓ РїРѕСЃР»РµРґРЅРµРјСѓ Р·Р°РїСЂРѕСЃСѓ РїРѕРїР°РІС€РµРјСѓ РІ РјРѕРЅРёС‚РѕСЂРёРЅРі (РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РЅР°С€ Р·Р°РїСЂРѕСЃ)
+-- способ 1. по самому последнему запросу попавшему в мониторинг (не обязательно наш запрос)
 select dbms_sqltune.report_sql_monitor(report_level => 'all', type => 'HTML') from dual;
 
--- СЃРїРѕСЃРѕР± 2. РїРѕ СЃР°РјРѕРјСѓ РїРѕСЃР»РµРґРЅРµРјСѓ Р·Р°РїСЂРѕСЃСѓ РІ РєРѕРЅРєСЂРµС‚РЅРѕР№ СЃРµСЃСЃРёРё (РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РЅР°С€ Р·Р°РїСЂРѕСЃР°_
+-- способ 2. по самому последнему запросу в конкретной сессии (не обязательно наш запроса_
 select dbms_sqltune.report_sql_monitor(session_id => 50, session_serial => 15381, report_level => 'all', type => 'HTML') from dual;
 
--- СЃРїРѕСЃРѕР± 3. РїРѕ СЃР°РјРѕРјСѓ РїРѕСЃР»РµРґРЅРµРјСѓ Р·Р°РїСѓСЃРєСѓ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ Р·Р°РїСЂРѕСЃР° sql_id (РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РЅР°С€ Р·Р°РїСѓСЃРє)
-select t.sql_id, t.sql_text from v$sqlarea t where t.sql_text like '%/*my query mon 1*/%'; -- РЅР°С…РѕРґРёРј РЅР°С€ Р·Р°РїСЂРѕСЃ
+-- способ 3. по самому последнему запуску конкретного запроса sql_id (не обязательно наш запуск)
+select t.sql_id, t.sql_text from v$sqlarea t where t.sql_text like '%/*my query mon 1*/%'; -- находим наш запрос
 
 select dbms_sqltune.report_sql_monitor(sql_id => '9q6jxpvnvk01b', report_level => 'all', type => 'HTML') from dual;
 
--- СЃРїРѕСЃРѕР± 4. РєРѕРЅРєСЂРµС‚РЅС‹Р№ Р·Р°РїСЂРѕСЃ СЃ РєРѕРЅРєСЂРµС‚РЅС‹Рј РЅР°С‡Р°Р»РѕРј РІС‹РїРѕР»РЅРµРЅРёСЏ (РјРѕР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ РІ Detail РІ PL/SQL Developer)
+-- способ 4. конкретный запрос с конкретным началом выполнения (можно добавить в Detail в PL/SQL Developer)
 select sysdate
        ,t.sql_exec_start
        ,sql_id, t.sql_text
-       ,to_char(elapsed_time/1000000,'000.00') as elapsed_sec -- exeela
+       ,to_char(elapsed_time/1000000,'00000.00') as elapsed_sec -- exeela
        ,dbms_sqltune.report_sql_monitor(sql_id => t.sql_id, sql_exec_start => t.sql_exec_start, report_level => 'all', type => 'TEXT')
   from v$sql_monitor t
  where t.sid = 50 and t.session_serial# = 15381;
  
  
----- РџСЂРёРјРµСЂ 2. РҐРёРЅС‚ monitoring
+---- Пример 2. Хинт monitoring
 
--- РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ
+-- выполняем запрос
 select /*my query mon 2*/ /*+ monitor */count(*)
   from hr.employees;
 
--- Р·Р°РїСЂРѕСЃС‹ РІ РјРѕРЅРёС‚РѕСЂРёРЅРіРµ (РјРѕР¶РµС‚ РїРѕСЏРІРёС‚СЊСЃСЏ РЅРµ СЃСЂР°Р·Сѓ)
+-- запросы в мониторинге (может появиться не сразу)
 select key
        ,status, sql_id, t.sql_text
        ,to_char(elapsed_time/1000000,'000.00') as elapsed_sec -- exeela
@@ -65,9 +65,9 @@ select key
 
 
 
----- РџСЂРёРјРµСЂ 3. Parallel Р·Р°РїСЂРѕСЃС‹
+---- Пример 3. Parallel запросы
 
--- РЅР° РїСЂРёРјРµСЂРµ СЃРёСЃС‚РµРјРЅС‹С… Р·Р°РїСЂРѕСЃРѕРІ, РІС‹РїРѕР»РЅСЏСЋС‰РёС…СЃСЏ РїР°СЂР°Р»Р»РµР»СЊРЅРѕ
+-- на примере системных запросов, выполняющихся параллельно
 select sysdate
        ,t.sql_exec_start
        ,sql_id, t.sql_text
