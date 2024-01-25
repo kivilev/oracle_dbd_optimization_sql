@@ -1,0 +1,379 @@
+
+TKPROF: Release 21.0.0.0.0 - Development on Fri Jan 19 21:52:09 2024
+
+Copyright (c) 1982, 2021, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: ORCLCDB_ora_575368_AZV_TRC.trc
+Sort options: prsela  fchela  exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+SQL ID: 2a9x2btkab470 Plan Hash: 4070027741
+
+SELECT P.PAYMENT_ID 
+FROM
+ PAYMENT P WHERE P.STATUS = :B2 AND ROWNUM <= :B1 AND (TRUNC(SYSDATE)- 
+  TRUNC(P.CREATE_DTIME)) <=7 FOR UPDATE SKIP LOCKED
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        1      0.49       0.50          0      29523          3           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.49       0.50          0      29523          3           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  FOR UPDATE  (cr=29523 pr=0 pw=0 time=507682 us starts=1)
+         1          1          1   COUNT STOPKEY (cr=29523 pr=0 pw=0 time=507559 us starts=1)
+         1          1          1    PARTITION RANGE ALL PARTITION: 1 1048575 (cr=29523 pr=0 pw=0 time=507369 us starts=1 cost=10 size=200 card=10)
+         1          1          1     TABLE ACCESS FULL PAYMENT PARTITION: 1 1048575 (cr=29523 pr=0 pw=0 time=507185 us starts=36 cost=10 size=200 card=10)
+
+********************************************************************************
+
+SQL ID: 6bs973yh0249k Plan Hash: 932845351
+
+SELECT AC.BALANCE, AC.ACCOUNT_ID 
+FROM
+ ACCOUNT AC WHERE AC.WALLET_ID = :B2 AND AC.CURRENCY_ID = :B1 FOR UPDATE WAIT 
+  2
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.01          3          3          0           0
+Fetch        1      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.00       0.01          3          3          0           0
+
+Misses in library cache during parse: 1
+Misses in library cache during execute: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 111     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  FOR UPDATE  (cr=3 pr=3 pw=0 time=2854 us starts=1)
+         0          0          0   TABLE ACCESS BY INDEX ROWID ACCOUNT (cr=3 pr=3 pw=0 time=2851 us starts=1 cost=3 size=18 card=1)
+         0          0          0    INDEX UNIQUE SCAN ACCOUNT_WALLET_CURRENCY_UNQ (cr=3 pr=3 pw=0 time=2848 us starts=1 cost=2 size=0 card=1)(object id 73194)
+
+********************************************************************************
+
+declare
+  c_processing_payment_count constant number := 10;
+begin
+  kivi.payment_processing_pack.processing(p_bulk_size => c_processing_payment_count);
+end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          3          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          3          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  log file sync                                   1        0.00          0.00
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.03          0.03
+********************************************************************************
+
+SQL ID: 7gv438as5ddyv Plan Hash: 0
+
+BEGIN dbms_session.session_trace_enable(); END;
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        0      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        1      0.00       0.00          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.05          0.05
+********************************************************************************
+
+SQL ID: 46qfu10x4chrf Plan Hash: 0
+
+BEGIN dbms_session.session_trace_disable(); END;
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111  
+********************************************************************************
+
+declare
+    l_line varchar2(32767);
+    l_done number;
+    l_buffer varchar2(32767) := '';
+    l_lengthbuffer number := 0;
+    l_lengthline number := 0;
+begin 
+  loop 
+    dbms_output.get_line( l_line, l_done ); 
+    if (l_buffer is null) then 
+      l_lengthbuffer := 0; 
+    else 
+      l_lengthbuffer := length(l_buffer); 
+    end if; 
+    if (l_line is null) then 
+      l_lengthline := 0; 
+    else 
+      l_lengthline := length(l_line); 
+    end if; 
+  exit when l_lengthbuffer + l_lengthline > :maxbytes OR l_lengthbuffer + l_lengthline > 32767 OR l_done = 1; 
+  l_buffer := l_buffer || l_line || chr(10); 
+    end loop; 
+    :done := l_done; 
+    :buffer := l_buffer; 
+    :line := l_line; 
+end;
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        2      0.00       0.00          0          0          0           0
+Execute      2      0.00       0.00          0          0          0           2
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        4      0.00       0.00          0          0          0           2
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.41          0.47
+********************************************************************************
+
+SQL ID: 74d1x1azbqx4t Plan Hash: 4084268687
+
+UPDATE PAYMENT SET STATUS = :B4 ,STATUS_CHANGE_REASON = :B3 
+WHERE
+ PAYMENT_ID = :B2 AND STATUS = :B1 
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          4          2           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          4          2           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  UPDATE  PAYMENT (cr=4 pr=0 pw=0 time=160 us starts=1)
+         1          1          1   TABLE ACCESS BY GLOBAL INDEX ROWID PAYMENT PARTITION: ROW LOCATION ROW LOCATION (cr=4 pr=0 pw=0 time=19 us starts=1 cost=3 size=34 card=1)
+         1          1          1    INDEX UNIQUE SCAN PAYMENT_PK (cr=3 pr=0 pw=0 time=11 us starts=1 cost=2 size=0 card=1)(object id 73221)
+
+********************************************************************************
+
+SQL ID: 8ggw94h7mvxd7 Plan Hash: 0
+
+COMMIT
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          1           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          1           0
+
+Misses in library cache during parse: 0
+Parsing user id: 111     (recursive depth: 1)
+********************************************************************************
+
+SQL ID: 17v4mm880jvbj Plan Hash: 3531769248
+
+SELECT /*+ cardinality(pi 10) leading(pi p)*/ P.PAYMENT_ID ,P.CURRENCY_ID ,
+  P.SUMMA ,P.FROM_CLIENT_ID ,P.TO_CLIENT_ID 
+FROM
+ TABLE(:B1 ) PI JOIN PAYMENT P ON P.PAYMENT_ID = VALUE(PI) 
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        1      0.00       0.00          0          4          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.00       0.00          0          4          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  NESTED LOOPS  (cr=4 pr=0 pw=0 time=44 us starts=1 cost=59 size=290 card=10)
+         1          1          1   NESTED LOOPS  (cr=3 pr=0 pw=0 time=27 us starts=1 cost=59 size=290 card=10)
+         1          1          1    COLLECTION ITERATOR PICKLER FETCH (cr=0 pr=0 pw=0 time=7 us starts=1 cost=39 size=20 card=10)
+         1          1          1    INDEX UNIQUE SCAN PAYMENT_PK (cr=3 pr=0 pw=0 time=18 us starts=1 cost=1 size=0 card=1)(object id 73221)
+         1          1          1   TABLE ACCESS BY GLOBAL INDEX ROWID PAYMENT PARTITION: ROW LOCATION ROW LOCATION (cr=1 pr=0 pw=0 time=12 us starts=1 cost=2 size=27 card=1)
+
+********************************************************************************
+
+SQL ID: d5av69sw2khqz Plan Hash: 903945237
+
+SELECT /*+ index(w WALLET_CL_I) */ CL.IS_ACTIVE ,CL.IS_BLOCKED ,W.WALLET_ID ,
+  W.STATUS_ID 
+FROM
+ CLIENT CL LEFT JOIN WALLET W ON W.CLIENT_ID = CL.CLIENT_ID WHERE 
+  CL.CLIENT_ID = :B1 
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      2      0.00       0.00          0          0          0           0
+Fetch        2      0.00       0.00          0         16          0           2
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        5      0.00       0.00          0         16          0           2
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  NESTED LOOPS OUTER (cr=8 pr=0 pw=0 time=40 us starts=1 cost=5 size=25 card=1)
+         1          1          1   TABLE ACCESS BY INDEX ROWID CLIENT (cr=4 pr=0 pw=0 time=19 us starts=1 cost=3 size=11 card=1)
+         1          1          1    INDEX UNIQUE SCAN CLIENT_PK (cr=3 pr=0 pw=0 time=12 us starts=1 cost=2 size=0 card=1)(object id 73188)
+         1          1          1   TABLE ACCESS BY INDEX ROWID WALLET (cr=4 pr=0 pw=0 time=18 us starts=1 cost=2 size=14 card=1)
+         1          1          1    INDEX UNIQUE SCAN WALLET_CL_I (cr=3 pr=0 pw=0 time=13 us starts=1 cost=1 size=0 card=1)(object id 73773)
+
+********************************************************************************
+
+SQL ID: 7q99gpk8d9chb Plan Hash: 1619918866
+
+SELECT STATUS 
+FROM
+ PAYMENT T WHERE T.PAYMENT_ID = :B1 FOR UPDATE NOWAIT
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          4          1           0
+Fetch        1      0.00       0.00          0          0          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.00       0.00          0          4          1           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  FOR UPDATE  (cr=4 pr=0 pw=0 time=47 us starts=1)
+         1          1          1   TABLE ACCESS BY GLOBAL INDEX ROWID PAYMENT PARTITION: ROW LOCATION ROW LOCATION (cr=4 pr=0 pw=0 time=32 us starts=1 cost=3 size=9 card=1)
+         1          1          1    INDEX UNIQUE SCAN PAYMENT_PK (cr=3 pr=0 pw=0 time=19 us starts=1 cost=2 size=0 card=1)(object id 73221)
+
+
+
+
+********************************************************************************
+
+OVERALL TOTALS FOR ALL NON-RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        4      0.00       0.00          0          0          0           0
+Execute      5      0.01       0.01          0          3          0           5
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        9      0.01       0.01          0          3          0           5
+
+Misses in library cache during parse: 0
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       4        0.00          0.00
+  SQL*Net message from client                     4        0.41          0.56
+  log file sync                                   1        0.00          0.00
+
+
+OVERALL TOTALS FOR ALL RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse       30      0.00       0.00          0          0          0           0
+Execute     50      0.00       0.01          3         11          4           1
+Fetch      103      0.49       0.51          2      29739          3          75
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total      183      0.51       0.53          5      29750          7          76
+
+Misses in library cache during parse: 5
+Misses in library cache during execute: 6
+
+   11  user  SQL statements in session.
+   20  internal SQL statements in session.
+   31  SQL statements in session.
+********************************************************************************
+Trace file: ORCLCDB_ora_575368_AZV_TRC.trc
+Trace file compatibility: 12.2.0.0
+Sort options: prsela  fchela  exeela  
+       1  session in tracefile.
+      11  user  SQL statements in trace file.
+      20  internal SQL statements in trace file.
+      31  SQL statements in trace file.
+      31  unique SQL statements in trace file.
+     531  lines in trace file.
+       1  elapsed seconds in trace file.
+
+

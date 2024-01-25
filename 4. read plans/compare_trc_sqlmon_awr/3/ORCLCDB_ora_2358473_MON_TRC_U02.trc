@@ -1,0 +1,512 @@
+Trace file /opt/oracle/diag/rdbms/orclcdb/ORCLCDB/trace/ORCLCDB_ora_2358473_MON_TRC_U02.trc
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+Build label:    RDBMS_19.3.0.0.0DBRU_LINUX.X64_190417
+ORACLE_HOME:    /opt/oracle/product/19c/dbhome_1
+System name:	Linux
+Node name:	5928df6d835b
+Release:	5.4.0-167-generic
+Version:	#184-Ubuntu SMP Tue Oct 31 09:21:49 UTC 2023
+Machine:	x86_64
+Instance name: ORCLCDB
+Redo thread mounted by this instance: 1
+Oracle process number: 75
+Unix process pid: 2358473, image: oracle@5928df6d835b
+
+
+*** 2024-01-21T10:51:26.009192+00:00 (DB00(19))
+*** SESSION ID:(291.23098) 2024-01-21T10:51:26.009212+00:00
+*** CLIENT ID:() 2024-01-21T10:51:26.009219+00:00
+*** SERVICE NAME:(db00) 2024-01-21T10:51:26.009225+00:00
+*** MODULE NAME:(PL/SQL Developer) 2024-01-21T10:51:26.009231+00:00
+*** ACTION NAME:(SQL Window) 2024-01-21T10:51:26.009237+00:00
+*** CLIENT DRIVER:(OCI) 2024-01-21T10:51:26.009243+00:00
+*** CONTAINER ID:(19) 2024-01-21T10:51:26.009249+00:00
+ 
+
+*** TRACE CONTINUED FROM FILE /opt/oracle/diag/rdbms/orclcdb/ORCLCDB/trace/ORCLCDB_ora_2358473_MON_TRC_U01.trc ***
+
+WAIT #139809185395080: nam='SQL*Net message to client' ela= 2 driver id=1413697536 #bytes=1 p3=0 obj#=766 tim=3970869659758
+WAIT #139809185395080: nam='SQL*Net message from client' ela= 141804 driver id=1413697536 #bytes=1 p3=0 obj#=766 tim=3970869802190
+CLOSE #139809185395080:c=66,e=66,dep=0,type=1,tim=3970869802400
+=====================
+PARSING IN CURSOR #139809175429312 len=61 dep=0 uid=113 oct=47 lid=113 tim=3970869802499 hv=356401299 ad='fa1301b0' sqlid='9m7787camwh4m'
+begin :id := sys.dbms_transaction.local_transaction_id; end;
+
+END OF STMT
+PARSE #139809175429312:c=51,e=51,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=0,tim=3970869802498
+WAIT #139809175429312: nam='SQL*Net message to client' ela= 2 driver id=1413697536 #bytes=1 p3=0 obj#=766 tim=3970869802712
+EXEC #139809175429312:c=158,e=158,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=0,tim=3970869802737
+WAIT #139809175429312: nam='SQL*Net message from client' ela= 116490 driver id=1413697536 #bytes=1 p3=0 obj#=766 tim=3970869919266
+CLOSE #139809175429312:c=37,e=37,dep=0,type=3,tim=3970869919437
+EXEC #139809185556728:c=66,e=66,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=813480514,tim=3970869920524
+FETCH #139809185556728:c=114,e=113,p=1,cr=4,cu=0,mis=0,r=1,dep=1,og=4,plh=813480514,tim=3970869920690
+STAT #139809185556728 id=1 cnt=1 pid=0 pos=1 obj=18 op='TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=4 pr=1 pw=0 str=1 time=115 us cost=4 size=111 card=1)'
+STAT #139809185556728 id=2 cnt=1 pid=1 pos=1 obj=37 op='INDEX RANGE SCAN I_OBJ2 (cr=3 pr=0 pw=0 str=1 time=37 us cost=3 size=0 card=1)'
+CLOSE #139809185556728:c=129,e=129,dep=1,type=3,tim=3970869920851
+=====================
+PARSING IN CURSOR #139809185281296 len=662 dep=1 uid=0 oct=3 lid=0 tim=3970869920959 hv=252648283 ad='11d55fb50' sqlid='9zbjgq87hy6uv'
+select t.ts#,t.file#,t.block#,nvl(t.bobj#,0),nvl(t.tab#,0),t.intcols,nvl(t.clucols,0),t.flags,t.pctfree$,t.pctused$,t.initrans,t.maxtrans,t.rowcnt,t.blkcnt,t.empcnt,t.avgspc,t.chncnt,t.avgrln,t.analyzetime,t.samplesize,t.cols,t.property,nvl(t.degree,1),nvl(t.instances,1),t.avgspc_flb,t.flbcnt,t.kernelcols,nvl(t.trigflag, 0),nvl(t.spare1,0),nvl(t.spare2,0),t.spare4,t.spare6,ts.cachedblk,ts.cachehit,ts.logicalread,ts.im_imcu_count,ts.im_block_count,ts.im_sys_incarnation,ts.im_stat_update_time,ts.scanrate,nvl(t.acdrflags, 0),nvl(t.acdrtsobj#, 0),t.acdrdefaulttime, nvl(t.acdrrowtsintcol#, 0) from tab$ t,tab_stats$ ts where t.obj#= :1 and t.obj# = ts.obj# (+)
+END OF STMT
+EXEC #139809185281296:c=34,e=34,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=2035254952,tim=3970869920958
+FETCH #139809185281296:c=92,e=92,p=2,cr=5,cu=0,mis=0,r=1,dep=1,og=4,plh=2035254952,tim=3970869921112
+STAT #139809185281296 id=1 cnt=1 pid=0 pos=1 obj=0 op='MERGE JOIN OUTER (cr=5 pr=2 pw=0 str=1 time=90 us cost=2 size=176 card=1)'
+STAT #139809185281296 id=2 cnt=1 pid=1 pos=1 obj=4 op='TABLE ACCESS CLUSTER TAB$ (cr=3 pr=2 pw=0 str=1 time=65 us cost=2 size=136 card=1)'
+STAT #139809185281296 id=3 cnt=1 pid=2 pos=1 obj=3 op='INDEX UNIQUE SCAN I_OBJ# (cr=2 pr=1 pw=0 str=1 time=40 us cost=1 size=0 card=1)'
+STAT #139809185281296 id=4 cnt=0 pid=1 pos=2 obj=0 op='BUFFER SORT (cr=2 pr=0 pw=0 str=1 time=20 us cost=0 size=40 card=1)'
+STAT #139809185281296 id=5 cnt=0 pid=4 pos=1 obj=73 op='TABLE ACCESS BY INDEX ROWID TAB_STATS$ (cr=2 pr=0 pw=0 str=1 time=10 us cost=0 size=40 card=1)'
+STAT #139809185281296 id=6 cnt=0 pid=5 pos=1 obj=74 op='INDEX UNIQUE SCAN I_TAB_STATS$_OBJ# (cr=2 pr=0 pw=0 str=1 time=8 us cost=0 size=0 card=1)'
+CLOSE #139809185281296:c=311,e=311,dep=1,type=3,tim=3970869921444
+=====================
+PARSING IN CURSOR #139809184617424 len=359 dep=1 uid=0 oct=3 lid=0 tim=3970869922068 hv=3461447171 ad='11d4ef780' sqlid='5say587752zh3'
+select name,online$,contents$,undofile#,undoblock#,blocksize,dflmaxext,dflinit,dflincr,dflextpct,dflminext, dflminlen, owner#,scnwrp,scnbas, NVL(pitrscnwrp, 0), NVL(pitrscnbas, 0), dflogging, bitmapped, inc#, MOD(flags,(4294967296 * 4294967296)), plugged, NVL(spare1,0), NVL(spare2,0), affstrength, FLOOR(flags/(4294967296 * 4294967296)) from ts$ where ts#=:1
+END OF STMT
+PARSE #139809184617424:c=0,e=581,p=0,cr=0,cu=0,mis=1,r=0,dep=1,og=4,plh=0,tim=3970869922067
+EXEC #139809184617424:c=0,e=1357,p=0,cr=0,cu=0,mis=1,r=0,dep=1,og=4,plh=2397009925,tim=3970869923570
+FETCH #139809184617424:c=0,e=68,p=1,cr=2,cu=0,mis=0,r=1,dep=1,og=4,plh=2397009925,tim=3970869923693
+STAT #139809184617424 id=1 cnt=1 pid=0 pos=1 obj=16 op='TABLE ACCESS CLUSTER TS$ (cr=2 pr=1 pw=0 str=1 time=59 us cost=1 size=92 card=1)'
+STAT #139809184617424 id=2 cnt=1 pid=1 pos=1 obj=7 op='INDEX UNIQUE SCAN I_TS# (cr=1 pr=0 pw=0 str=1 time=9 us cost=0 size=0 card=1)'
+CLOSE #139809184617424:c=0,e=106,dep=1,type=0,tim=3970869923826
+=====================
+PARSING IN CURSOR #139809183532832 len=226 dep=1 uid=0 oct=3 lid=0 tim=3970869923899 hv=1011610568 ad='11d58c020' sqlid='9tgj4g8y4rwy8'
+select type#,blocks,extents,minexts,maxexts,extsize,extpct,user#,iniexts,NVL(lists,65535),NVL(groups,65535),cachehint,hwmincr, NVL(spare1,0),NVL(scanhint,0),NVL(bitmapranges,0) from seg$ where ts#=:1 and file#=:2 and block#=:3
+END OF STMT
+EXEC #139809183532832:c=0,e=25,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=3755742892,tim=3970869923899
+FETCH #139809183532832:c=0,e=42,p=1,cr=3,cu=0,mis=0,r=1,dep=1,og=4,plh=3755742892,tim=3970869923998
+STAT #139809183532832 id=1 cnt=1 pid=0 pos=1 obj=14 op='TABLE ACCESS CLUSTER SEG$ (cr=3 pr=1 pw=0 str=1 time=41 us cost=2 size=68 card=1)'
+STAT #139809183532832 id=2 cnt=1 pid=1 pos=1 obj=9 op='INDEX UNIQUE SCAN I_FILE#_BLOCK# (cr=2 pr=0 pw=0 str=1 time=11 us cost=1 size=0 card=1)'
+CLOSE #139809183532832:c=2955,e=114,dep=1,type=3,tim=3970869924165
+EXEC #139809185118392:c=32,e=32,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=3,plh=2239883476,tim=3970869924753
+FETCH #139809185118392:c=26,e=26,p=0,cr=3,cu=0,mis=0,r=1,dep=2,og=3,plh=2239883476,tim=3970869924814
+STAT #139809185118392 id=1 cnt=1 pid=0 pos=1 obj=68 op='TABLE ACCESS BY INDEX ROWID HIST_HEAD$ (cr=3 pr=0 pw=0 str=1 time=27 us)'
+STAT #139809185118392 id=2 cnt=1 pid=1 pos=1 obj=70 op='INDEX RANGE SCAN I_HH_OBJ#_INTCOL# (cr=2 pr=0 pw=0 str=1 time=17 us)'
+CLOSE #139809185118392:c=84,e=84,dep=2,type=3,tim=3970869924920
+=====================
+PARSING IN CURSOR #139809183758000 len=39 dep=1 uid=0 oct=3 lid=0 tim=3970869925323 hv=2576572266 ad='11d5ac2a8' sqlid='gd28w82ct6rva'
+select audit$ from tab$ where obj# = :1
+END OF STMT
+EXEC #139809183758000:c=674,e=1074,p=0,cr=3,cu=0,mis=1,r=0,dep=1,og=4,plh=2970138452,tim=3970869925320
+FETCH #139809183758000:c=0,e=16,p=0,cr=3,cu=0,mis=0,r=1,dep=1,og=4,plh=2970138452,tim=3970869925410
+STAT #139809183758000 id=1 cnt=1 pid=0 pos=1 obj=4 op='TABLE ACCESS CLUSTER TAB$ (cr=3 pr=0 pw=0 str=1 time=17 us cost=2 size=44 card=1)'
+STAT #139809183758000 id=2 cnt=1 pid=1 pos=1 obj=3 op='INDEX UNIQUE SCAN I_OBJ# (cr=2 pr=0 pw=0 str=1 time=8 us cost=1 size=0 card=1)'
+CLOSE #139809183758000:c=0,e=102,dep=1,type=3,tim=3970869925536
+=====================
+PARSING IN CURSOR #139809176080688 len=868 dep=1 uid=0 oct=3 lid=0 tim=3970869925712 hv=3633507567 ad='11d52e510' sqlid='121ffmrc95v7g'
+select i.obj#,i.ts#,i.file#,i.block#,i.intcols,i.type#,i.flags,i.property,i.pctfree$,i.initrans,i.maxtrans,i.blevel,i.leafcnt,i.distkey,i.lblkkey,i.dblkkey,i.clufac,i.cols,i.analyzetime,i.samplesize,i.dataobj#,nvl(i.degree,1),nvl(i.instances,1),i.rowcnt,mod(i.pctthres$,256),i.indmethod#,i.trunccnt,nvl(c.unicols,0),nvl(c.deferrable#+c.valid#,0),nvl(i.spare1,i.intcols),i.spare4,i.spare2,i.spare6,decode(i.pctthres$,null,null,mod(trunc(i.pctthres$/256),256)),nvl(i.evaledition#,1),nvl(i.unusablebefore#,0),nvl(i.unusablebeginning#,0), ist.cachedblk,ist.cachehit,ist.logicalread from ind$ i, ind_stats$ ist, (select enabled, min(intcols) unicols,min(to_number(bitand(defer,1))) deferrable#,min(to_number(bitand(defer,4))) valid# from cdef$ where obj#=:1 and enabled > 1 group by enabled) c where i.obj#=c.enabled(+) and i.obj# = ist.obj#(+) and i.bo#=:1 order by i.obj#
+END OF STMT
+EXEC #139809176080688:c=0,e=101,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=2542797530,tim=3970869925709
+FETCH #139809176080688:c=0,e=358,p=2,cr=7,cu=0,mis=0,r=1,dep=1,og=4,plh=2542797530,tim=3970869926149
+=====================
+PARSING IN CURSOR #139809176142584 len=74 dep=1 uid=0 oct=3 lid=0 tim=3970869926225 hv=3309402135 ad='11d5a2e58' sqlid='5n1fs4m2n2y0r'
+select pos#,intcol#,col#,spare1,bo#,spare2,spare3 from icol$ where obj#=:1
+END OF STMT
+EXEC #139809176142584:c=0,e=25,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=452367486,tim=3970869926224
+FETCH #139809176142584:c=0,e=38,p=1,cr=3,cu=0,mis=0,r=1,dep=1,og=4,plh=452367486,tim=3970869926318
+FETCH #139809176142584:c=0,e=2,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=452367486,tim=3970869926339
+STAT #139809176142584 id=1 cnt=1 pid=0 pos=1 obj=20 op='TABLE ACCESS BY INDEX ROWID BATCHED ICOL$ (cr=3 pr=1 pw=0 str=1 time=41 us cost=2 size=54 card=2)'
+STAT #139809176142584 id=2 cnt=1 pid=1 pos=1 obj=42 op='INDEX RANGE SCAN I_ICOL1 (cr=2 pr=1 pw=0 str=1 time=36 us cost=1 size=0 card=2)'
+CLOSE #139809176142584:c=0,e=2,dep=1,type=3,tim=3970869926458
+FETCH #139809176080688:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=2542797530,tim=3970869926478
+STAT #139809176080688 id=1 cnt=1 pid=0 pos=1 obj=0 op='SORT ORDER BY (cr=7 pr=2 pw=0 str=1 time=361 us cost=6 size=368 card=2)'
+STAT #139809176080688 id=2 cnt=1 pid=1 pos=1 obj=0 op='HASH JOIN OUTER (cr=7 pr=2 pw=0 str=1 time=312 us cost=5 size=368 card=2)'
+STAT #139809176080688 id=3 cnt=1 pid=2 pos=1 obj=0 op='NESTED LOOPS OUTER (cr=4 pr=0 pw=0 str=1 time=23 us cost=2 size=282 card=2)'
+STAT #139809176080688 id=4 cnt=1 pid=3 pos=1 obj=19 op='TABLE ACCESS CLUSTER IND$ (cr=3 pr=0 pw=0 str=1 time=14 us cost=2 size=178 card=2)'
+STAT #139809176080688 id=5 cnt=1 pid=4 pos=1 obj=3 op='INDEX UNIQUE SCAN I_OBJ# (cr=2 pr=0 pw=0 str=1 time=6 us cost=1 size=0 card=1)'
+STAT #139809176080688 id=6 cnt=0 pid=3 pos=2 obj=75 op='TABLE ACCESS BY INDEX ROWID IND_STATS$ (cr=1 pr=0 pw=0 str=1 time=6 us cost=0 size=52 card=1)'
+STAT #139809176080688 id=7 cnt=0 pid=6 pos=1 obj=76 op='INDEX UNIQUE SCAN I_IND_STATS$_OBJ# (cr=1 pr=0 pw=0 str=1 time=4 us cost=0 size=0 card=1)'
+STAT #139809176080688 id=8 cnt=1 pid=2 pos=2 obj=0 op='VIEW  (cr=3 pr=2 pw=0 str=1 time=118 us cost=3 size=43 card=1)'
+STAT #139809176080688 id=9 cnt=1 pid=8 pos=1 obj=0 op='SORT GROUP BY (cr=3 pr=2 pw=0 str=1 time=116 us cost=3 size=15 card=1)'
+STAT #139809176080688 id=10 cnt=1 pid=9 pos=1 obj=31 op='TABLE ACCESS CLUSTER CDEF$ (cr=3 pr=2 pw=0 str=1 time=74 us cost=2 size=15 card=1)'
+STAT #139809176080688 id=11 cnt=1 pid=10 pos=1 obj=30 op='INDEX UNIQUE SCAN I_COBJ# (cr=2 pr=1 pw=0 str=1 time=48 us cost=1 size=0 card=1)'
+CLOSE #139809176080688:c=0,e=2,dep=1,type=3,tim=3970869926956
+=====================
+PARSING IN CURSOR #139809185286368 len=585 dep=1 uid=0 oct=3 lid=0 tim=3970869927066 hv=3191600260 ad='11d59ebb0' sqlid='g0t052az3rx44'
+select name,intcol#,segcol#,type#,length,nvl(precision#,0),decode(type#,2,nvl(scale,-127/*MAXSB1MINAL*/),178,scale,179,scale,180,scale,181,scale,182,scale,183,scale,231,scale,0),null$,fixedstorage,nvl(deflength,0),default$,rowid,col#,property, nvl(charsetid,0),nvl(charsetform,0),spare1,spare2,nvl(spare3,0), nvl(evaledition#,1),nvl(unusablebefore#,0),nvl(unusablebeginning#,0), case when (type# in (1,8,9,96,112)) then nvl(collid, 16382) else 0 end case, nvl(collintcol#,0), nvl(acdrrescol#, 0), nvl(spare7, 0), nvl(spare9, 0), nvl(spare10, 0) from col$ where obj#=:1 order by intcol#
+END OF STMT
+EXEC #139809185286368:c=0,e=81,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=3765558045,tim=3970869927064
+FETCH #139809185286368:c=0,e=41,p=0,cr=3,cu=0,mis=0,r=1,dep=1,og=4,plh=3765558045,tim=3970869927189
+FETCH #139809185286368:c=0,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=1,og=4,plh=3765558045,tim=3970869927223
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=4,plh=3765558045,tim=3970869927245
+STAT #139809185286368 id=1 cnt=2 pid=0 pos=1 obj=0 op='SORT ORDER BY (cr=3 pr=0 pw=0 str=1 time=47 us cost=3 size=897 card=13)'
+STAT #139809185286368 id=2 cnt=2 pid=1 pos=1 obj=21 op='TABLE ACCESS CLUSTER COL$ (cr=3 pr=0 pw=0 str=1 time=18 us cost=2 size=897 card=13)'
+STAT #139809185286368 id=3 cnt=1 pid=2 pos=1 obj=3 op='INDEX UNIQUE SCAN I_OBJ# (cr=2 pr=0 pw=0 str=1 time=6 us cost=1 size=0 card=1)'
+CLOSE #139809185286368:c=0,e=2,dep=1,type=3,tim=3970869927397
+=====================
+PARSING IN CURSOR #139809184662960 len=93 dep=0 uid=113 oct=47 lid=113 tim=3970869948384 hv=534206790 ad='10942a2a0' sqlid='8yz2p1sgxfqa6'
+begin
+ update del$tab1 t
+   set t.col2 = col2 || '+'
+  where mod(t.id, 2) = 0;
+ commit;
+end;
+
+END OF STMT
+PARSE #139809184662960:c=8689,e=28907,p=9,cr=34,cu=0,mis=1,r=0,dep=0,og=1,plh=0,tim=3970869948383
+=====================
+PARSING IN CURSOR #139809176736048 len=90 dep=2 uid=0 oct=3 lid=0 tim=3970869948953 hv=3433193208 ad='11d4ab3d8' sqlid='cn6hhn36a4rrs'
+select con#,obj#,rcon#,enabled,nvl(defer,0),spare2,spare3,refact from cdef$ where robj#=:1
+END OF STMT
+EXEC #139809176736048:c=41,e=40,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=3845132125,tim=3970869948952
+FETCH #139809176736048:c=14,e=15,p=0,cr=1,cu=0,mis=0,r=0,dep=2,og=4,plh=3845132125,tim=3970869949037
+STAT #139809176736048 id=1 cnt=0 pid=0 pos=1 obj=31 op='TABLE ACCESS BY INDEX ROWID BATCHED CDEF$ (cr=1 pr=0 pw=0 str=1 time=22 us cost=2 size=90 card=3)'
+STAT #139809176736048 id=2 cnt=0 pid=1 pos=1 obj=55 op='INDEX RANGE SCAN I_CDEF3 (cr=1 pr=0 pw=0 str=1 time=19 us cost=1 size=0 card=3)'
+CLOSE #139809176736048:c=1,e=1,dep=2,type=3,tim=3970869949184
+=====================
+PARSING IN CURSOR #139809185946304 len=160 dep=2 uid=0 oct=3 lid=0 tim=3970869949241 hv=2880999359 ad='11d56e400' sqlid='gx4mv66pvj3xz'
+select con#,type#,condlength,intcols,robj#,rcon#,match#,refact,nvl(enabled,0),rowid,cols,nvl(defer,0),mtime,nvl(spare1,0),spare2,spare3 from cdef$ where obj#=:1
+END OF STMT
+EXEC #139809185946304:c=31,e=31,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=2570921597,tim=3970869949241
+FETCH #139809185946304:c=29,e=29,p=0,cr=3,cu=0,mis=0,r=1,dep=2,og=4,plh=2570921597,tim=3970869949325
+=====================
+PARSING IN CURSOR #139809177061800 len=70 dep=2 uid=0 oct=3 lid=0 tim=3970869949373 hv=3849548163 ad='11d49fb70' sqlid='53saa2zkr6wc3'
+select intcol#,nvl(pos#,0),col#,nvl(spare1,0) from ccol$ where con#=:1
+END OF STMT
+EXEC #139809177061800:c=0,e=21,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=3038981986,tim=3970869949373
+FETCH #139809177061800:c=0,e=68,p=1,cr=3,cu=0,mis=0,r=1,dep=2,og=4,plh=3038981986,tim=3970869949492
+FETCH #139809177061800:c=0,e=1,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=3038981986,tim=3970869949537
+STAT #139809177061800 id=1 cnt=1 pid=0 pos=1 obj=32 op='TABLE ACCESS BY INDEX ROWID BATCHED CCOL$ (cr=3 pr=1 pw=0 str=1 time=69 us cost=3 size=15 card=1)'
+STAT #139809177061800 id=2 cnt=1 pid=1 pos=1 obj=57 op='INDEX RANGE SCAN I_CCOL1 (cr=2 pr=1 pw=0 str=1 time=63 us cost=2 size=0 card=1)'
+CLOSE #139809177061800:c=0,e=2,dep=2,type=3,tim=3970869949655
+FETCH #139809185946304:c=0,e=3,p=0,cr=1,cu=0,mis=0,r=0,dep=2,og=4,plh=2570921597,tim=3970869949673
+STAT #139809185946304 id=1 cnt=1 pid=0 pos=1 obj=31 op='TABLE ACCESS CLUSTER CDEF$ (cr=4 pr=0 pw=0 str=1 time=27 us cost=2 size=196 card=4)'
+STAT #139809185946304 id=2 cnt=1 pid=1 pos=1 obj=30 op='INDEX UNIQUE SCAN I_COBJ# (cr=2 pr=0 pw=0 str=1 time=10 us cost=1 size=0 card=1)'
+CLOSE #139809185946304:c=0,e=2,dep=2,type=3,tim=3970869949815
+=====================
+PARSING IN CURSOR #139809183531376 len=97 dep=2 uid=0 oct=3 lid=0 tim=3970869949921 hv=791757000 ad='11d587f78' sqlid='87gaftwrm2h68'
+select o.owner#,o.name,o.namespace,o.remoteowner,o.linkname,o.subname from obj$ o where o.obj#=:1
+END OF STMT
+EXEC #139809183531376:c=0,e=22,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=1072382624,tim=3970869949919
+FETCH #139809183531376:c=0,e=16,p=0,cr=3,cu=0,mis=0,r=1,dep=2,og=4,plh=1072382624,tim=3970869949992
+STAT #139809183531376 id=1 cnt=1 pid=0 pos=1 obj=18 op='TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=3 pr=0 pw=0 str=1 time=19 us cost=3 size=111 card=1)'
+STAT #139809183531376 id=2 cnt=1 pid=1 pos=1 obj=36 op='INDEX RANGE SCAN I_OBJ1 (cr=2 pr=0 pw=0 str=1 time=12 us cost=2 size=0 card=1)'
+CLOSE #139809183531376:c=0,e=96,dep=2,type=3,tim=3970869950104
+EXEC #139809185556728:c=0,e=24,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=813480514,tim=3970869950179
+FETCH #139809185556728:c=0,e=17,p=0,cr=4,cu=0,mis=0,r=1,dep=2,og=4,plh=813480514,tim=3970869950212
+CLOSE #139809185556728:c=0,e=4,dep=2,type=3,tim=3970869950234
+EXEC #139809183532832:c=0,e=16,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=3755742892,tim=3970869950279
+FETCH #139809183532832:c=1312,e=106,p=1,cr=3,cu=0,mis=0,r=1,dep=2,og=4,plh=3755742892,tim=3970869950400
+CLOSE #139809183532832:c=6,e=7,dep=2,type=3,tim=3970869950443
+=====================
+PARSING IN CURSOR #139809183473296 len=682 dep=2 uid=0 oct=3 lid=0 tim=3970869951110 hv=3753817479 ad='f82e14c0' sqlid='622ufbrgvxdc7'
+select decode(u.type#, 2, u.ext_username, u.name), o.name,        t.update$, t.insert$, t.delete$, t.enabled,        decode(bitand(t.property, 8192),8192, 1, 0),        decode(bitand(t.property, 65536), 65536, 1, 0),       decode(bitand(t.property, 131072), 131072, 1, 0),       (select o.name from obj$ o          where o.obj# = u.spare2 and o.type# =57),        decode(bitand(t.property, 524288), 524288, 1, 0)  from sys.obj$ o, sys.user$ u, sys.trigger$ t, sys.obj$ bo where t.baseobject=bo.obj# and bo.name = :1 and bo.spare3 = :2  and bo.namespace = 1  and t.obj#=o.obj# and o.owner#=u.user#  and o.type# = 12 and bitand(property,16)=0 and bitand(property,8)=0  order by o.obj#
+END OF STMT
+PARSE #139809183473296:c=354,e=354,p=0,cr=0,cu=0,mis=1,r=0,dep=2,og=4,plh=0,tim=3970869951109
+EXEC #139809185556728:c=28,e=28,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=813480514,tim=3970869951356
+FETCH #139809185556728:c=0,e=106,p=2,cr=4,cu=0,mis=0,r=1,dep=3,og=4,plh=813480514,tim=3970869951484
+CLOSE #139809185556728:c=0,e=6,dep=3,type=3,tim=3970869951517
+EXEC #139809185281296:c=0,e=27,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=2035254952,tim=3970869951644
+FETCH #139809185281296:c=0,e=81,p=2,cr=6,cu=0,mis=0,r=1,dep=3,og=4,plh=2035254952,tim=3970869951743
+CLOSE #139809185281296:c=0,e=7,dep=3,type=3,tim=3970869951773
+EXEC #139809176080688:c=694,e=121,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=2542797530,tim=3970869952092
+FETCH #139809176080688:c=331,e=331,p=1,cr=8,cu=0,mis=0,r=1,dep=3,og=4,plh=2542797530,tim=3970869952456
+EXEC #139809176142584:c=21,e=22,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=452367486,tim=3970869952520
+FETCH #139809176142584:c=16,e=16,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=452367486,tim=3970869952555
+FETCH #139809176142584:c=8,e=8,p=0,cr=1,cu=0,mis=0,r=0,dep=3,og=4,plh=452367486,tim=3970869952596
+CLOSE #139809176142584:c=1,e=1,dep=3,type=3,tim=3970869952632
+FETCH #139809176080688:c=13,e=13,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=2542797530,tim=3970869952660
+EXEC #139809176142584:c=12,e=12,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=452367486,tim=3970869952693
+FETCH #139809176142584:c=6,e=6,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=452367486,tim=3970869952713
+FETCH #139809176142584:c=2,e=2,p=0,cr=1,cu=0,mis=0,r=0,dep=3,og=4,plh=452367486,tim=3970869952730
+CLOSE #139809176142584:c=1,e=1,dep=3,type=3,tim=3970869952747
+FETCH #139809176080688:c=4,e=4,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=2542797530,tim=3970869952763
+CLOSE #139809176080688:c=0,e=0,dep=3,type=3,tim=3970869952798
+EXEC #139809185286368:c=71,e=71,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3765558045,tim=3970869952917
+FETCH #139809185286368:c=70,e=71,p=0,cr=4,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953004
+FETCH #139809185286368:c=6,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953039
+FETCH #139809185286368:c=5,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953061
+FETCH #139809185286368:c=4,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953081
+FETCH #139809185286368:c=0,e=7,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953108
+FETCH #139809185286368:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953129
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953198
+FETCH #139809185286368:c=0,e=7,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953221
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953242
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953263
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953284
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953305
+FETCH #139809185286368:c=0,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953327
+FETCH #139809185286368:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953350
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953371
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953392
+FETCH #139809185286368:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953412
+FETCH #139809185286368:c=0,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953434
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953455
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953476
+FETCH #139809185286368:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953496
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953517
+FETCH #139809185286368:c=0,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970869953541
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3765558045,tim=3970869953562
+CLOSE #139809185286368:c=0,e=0,dep=3,type=3,tim=3970869953589
+EXEC #139809183532832:c=0,e=20,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3755742892,tim=3970869953686
+FETCH #139809183532832:c=0,e=61,p=1,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=3755742892,tim=3970869953763
+CLOSE #139809183532832:c=0,e=5,dep=3,type=3,tim=3970869953789
+EXEC #139809183531376:c=0,e=15,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=1072382624,tim=3970869953840
+FETCH #139809183531376:c=0,e=14,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=1072382624,tim=3970869953869
+CLOSE #139809183531376:c=0,e=3,dep=3,type=3,tim=3970869953889
+EXEC #139809185556728:c=0,e=17,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=813480514,tim=3970869953936
+FETCH #139809185556728:c=0,e=15,p=0,cr=4,cu=0,mis=0,r=1,dep=3,og=4,plh=813480514,tim=3970869953965
+CLOSE #139809185556728:c=0,e=4,dep=3,type=3,tim=3970869953985
+EXEC #139809183531376:c=0,e=7,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=1072382624,tim=3970869954013
+FETCH #139809183531376:c=0,e=5,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=1072382624,tim=3970869954032
+CLOSE #139809183531376:c=0,e=2,dep=3,type=3,tim=3970869954048
+EXEC #139809185556728:c=0,e=8,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=813480514,tim=3970869954080
+FETCH #139809185556728:c=0,e=9,p=0,cr=4,cu=0,mis=0,r=1,dep=3,og=4,plh=813480514,tim=3970869954102
+CLOSE #139809185556728:c=0,e=2,dep=3,type=3,tim=3970869954118
+EXEC #139809185118392:c=0,e=28,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869955334
+FETCH #139809185118392:c=0,e=25,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869955400
+CLOSE #139809185118392:c=0,e=8,dep=3,type=3,tim=3970869955430
+EXEC #139809184718304:c=0,e=34,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=3312420081,tim=3970869955510
+FETCH #139809184718304:c=0,e=83,p=1,cr=3,cu=0,mis=0,r=20,dep=3,og=3,plh=3312420081,tim=3970869955609
+STAT #139809184718304 id=1 cnt=20 pid=0 pos=1 obj=0 op='SORT ORDER BY (cr=3 pr=1 pw=0 str=1 time=76 us cost=0 size=0 card=0)'
+STAT #139809184718304 id=2 cnt=20 pid=1 pos=1 obj=66 op='TABLE ACCESS CLUSTER HISTGRM$ (cr=3 pr=1 pw=0 str=1 time=56 us)'
+STAT #139809184718304 id=3 cnt=1 pid=2 pos=1 obj=65 op='INDEX UNIQUE SCAN I_OBJ#_INTCOL# (cr=2 pr=0 pw=0 str=1 time=11 us)'
+CLOSE #139809184718304:c=0,e=139,dep=3,type=3,tim=3970869955767
+EXEC #139809184718304:c=0,e=17,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=3312420081,tim=3970869955813
+FETCH #139809184718304:c=0,e=42,p=0,cr=3,cu=0,mis=0,r=20,dep=3,og=3,plh=3312420081,tim=3970869955870
+CLOSE #139809184718304:c=0,e=4,dep=3,type=3,tim=3970869955891
+EXEC #139809184718304:c=0,e=10,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=3312420081,tim=3970869955923
+FETCH #139809184718304:c=0,e=36,p=0,cr=3,cu=0,mis=0,r=20,dep=3,og=3,plh=3312420081,tim=3970869955973
+CLOSE #139809184718304:c=0,e=3,dep=3,type=3,tim=3970869955992
+EXEC #139809184718304:c=63,e=63,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=3312420081,tim=3970869990825
+FETCH #139809184718304:c=68,e=67,p=0,cr=3,cu=0,mis=0,r=16,dep=3,og=3,plh=3312420081,tim=3970869990961
+CLOSE #139809184718304:c=11,e=11,dep=3,type=3,tim=3970869990998
+EXEC #139809185118392:c=24,e=24,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869991124
+FETCH #139809185118392:c=24,e=24,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869991178
+CLOSE #139809185118392:c=4,e=4,dep=3,type=3,tim=3970869991201
+EXEC #139809185118392:c=0,e=27,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869991996
+FETCH #139809185118392:c=29,e=29,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869992670
+CLOSE #139809185118392:c=9,e=9,dep=3,type=3,tim=3970869992707
+EXEC #139809184718304:c=27,e=26,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=3312420081,tim=3970869992773
+FETCH #139809184718304:c=95,e=95,p=1,cr=3,cu=0,mis=0,r=7,dep=3,og=3,plh=3312420081,tim=3970869992885
+CLOSE #139809184718304:c=6,e=6,dep=3,type=3,tim=3970869992911
+EXEC #139809185118392:c=17,e=17,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869993021
+FETCH #139809185118392:c=12,e=12,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869993052
+CLOSE #139809185118392:c=4,e=4,dep=3,type=3,tim=3970869993073
+EXEC #139809185118392:c=9,e=10,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869993111
+FETCH #139809185118392:c=6,e=7,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869993132
+CLOSE #139809185118392:c=3,e=3,dep=3,type=3,tim=3970869993167
+EXEC #139809185118392:c=9,e=8,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869993199
+FETCH #139809185118392:c=6,e=6,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869993220
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970869993237
+EXEC #139809185118392:c=7,e=7,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970869993267
+FETCH #139809185118392:c=6,e=6,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970869993287
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970869993303
+EXEC #139809183473296:c=9707,e=65734,p=8,cr=87,cu=0,mis=1,r=0,dep=2,og=4,plh=381121033,tim=3970870016938
+FETCH #139809183473296:c=202,e=203,p=4,cr=4,cu=0,mis=0,r=0,dep=2,og=4,plh=381121033,tim=3970870017224
+STAT #139809183473296 id=1 cnt=0 pid=0 pos=1 obj=18 op='TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 str=0 time=0 us cost=3 size=44 card=1)'
+STAT #139809183473296 id=2 cnt=0 pid=1 pos=1 obj=36 op='INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 str=0 time=0 us cost=2 size=0 card=1)'
+STAT #139809183473296 id=3 cnt=0 pid=0 pos=2 obj=0 op='SORT ORDER BY (cr=4 pr=4 pw=0 str=1 time=213 us cost=11 size=265 card=1)'
+STAT #139809183473296 id=4 cnt=0 pid=3 pos=1 obj=0 op='NESTED LOOPS  (cr=4 pr=4 pw=0 str=1 time=198 us cost=7 size=265 card=1)'
+STAT #139809183473296 id=5 cnt=0 pid=4 pos=1 obj=0 op='NESTED LOOPS  (cr=4 pr=4 pw=0 str=1 time=197 us cost=6 size=119 card=1)'
+STAT #139809183473296 id=6 cnt=0 pid=5 pos=1 obj=0 op='NESTED LOOPS  (cr=4 pr=4 pw=0 str=1 time=195 us cost=4 size=72 card=1)'
+STAT #139809183473296 id=7 cnt=1 pid=6 pos=1 obj=40 op='INDEX RANGE SCAN I_OBJ5 (cr=3 pr=3 pw=0 str=1 time=150 us cost=3 size=46 card=1)'
+STAT #139809183473296 id=8 cnt=0 pid=6 pos=2 obj=279 op='TABLE ACCESS BY INDEX ROWID BATCHED TRIGGER$ (cr=1 pr=1 pw=0 str=1 time=42 us cost=1 size=52 card=2)'
+STAT #139809183473296 id=9 cnt=0 pid=8 pos=1 obj=281 op='INDEX RANGE SCAN I_TRIGGER1 (cr=1 pr=1 pw=0 str=1 time=40 us cost=0 size=0 card=2)'
+STAT #139809183473296 id=10 cnt=0 pid=5 pos=2 obj=18 op='TABLE ACCESS BY INDEX ROWID BATCHED OBJ$ (cr=0 pr=0 pw=0 str=0 time=0 us cost=2 size=47 card=1)'
+STAT #139809183473296 id=11 cnt=0 pid=10 pos=1 obj=36 op='INDEX RANGE SCAN I_OBJ1 (cr=0 pr=0 pw=0 str=0 time=0 us cost=1 size=0 card=1)'
+STAT #139809183473296 id=12 cnt=0 pid=4 pos=2 obj=22 op='TABLE ACCESS CLUSTER USER$ (cr=0 pr=0 pw=0 str=0 time=0 us cost=1 size=146 card=1)'
+STAT #139809183473296 id=13 cnt=0 pid=12 pos=1 obj=11 op='INDEX UNIQUE SCAN I_USER# (cr=0 pr=0 pw=0 str=0 time=0 us cost=0 size=0 card=1)'
+CLOSE #139809183473296:c=8,e=8,dep=2,type=0,tim=3970870017874
+=====================
+PARSING IN CURSOR #139809177519992 len=316 dep=2 uid=0 oct=3 lid=0 tim=3970870018027 hv=2851274006 ad='11d497eb8' sqlid='6h3cwmunz5z8q'
+select col#, grantee#, privilege#,max(mod(nvl(option$,0),2)), max(bitand(nvl(option$,0), 8) /8), max(bitand(nvl(option$,0), 16) /16), max(bitand(nvl(option$,0),64) /64), max(bitand(nvl(option$,0), 128) /128) from objauth$ where obj#=:1 and col# is not null group by privilege#, col#, grantee# order by col#, grantee#
+END OF STMT
+EXEC #139809177519992:c=0,e=68,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=2968095032,tim=3970870018026
+FETCH #139809177519992:c=0,e=57,p=1,cr=2,cu=0,mis=0,r=0,dep=2,og=4,plh=2968095032,tim=3970870018146
+STAT #139809177519992 id=1 cnt=0 pid=0 pos=1 obj=0 op='SORT GROUP BY (cr=2 pr=1 pw=0 str=1 time=74 us cost=4 size=16 card=1)'
+STAT #139809177519992 id=2 cnt=0 pid=1 pos=1 obj=61 op='TABLE ACCESS BY INDEX ROWID BATCHED OBJAUTH$ (cr=2 pr=1 pw=0 str=1 time=37 us cost=3 size=16 card=1)'
+STAT #139809177519992 id=3 cnt=0 pid=2 pos=1 obj=62 op='INDEX RANGE SCAN I_OBJAUTH1 (cr=2 pr=1 pw=0 str=1 time=36 us cost=2 size=0 card=1)'
+CLOSE #139809177519992:c=0,e=2,dep=2,type=3,tim=3970870018305
+=====================
+PARSING IN CURSOR #139809175043032 len=298 dep=2 uid=0 oct=3 lid=0 tim=3970870018366 hv=3498487326 ad='11d48f270' sqlid='a4n4ayr88dbhy'
+select grantee#,privilege#,nvl(col#,0),max(mod(nvl(option$,0),2)),max(bitand(nvl(option$,0), 8) /8), max(bitand(nvl(option$,0), 16) /16), max(bitand(nvl(option$,0),64) /64), max(bitand(nvl(option$,0), 128) /128) from objauth$ where obj#=:1 group by grantee#,privilege#,nvl(col#,0) order by grantee#
+END OF STMT
+EXEC #139809175043032:c=0,e=36,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=2968095032,tim=3970870018366
+FETCH #139809175043032:c=0,e=9,p=0,cr=2,cu=0,mis=0,r=0,dep=2,og=4,plh=2968095032,tim=3970870018432
+STAT #139809175043032 id=1 cnt=0 pid=0 pos=1 obj=0 op='SORT GROUP BY (cr=2 pr=0 pw=0 str=1 time=16 us cost=4 size=16 card=1)'
+STAT #139809175043032 id=2 cnt=0 pid=1 pos=1 obj=61 op='TABLE ACCESS BY INDEX ROWID BATCHED OBJAUTH$ (cr=2 pr=0 pw=0 str=1 time=7 us cost=3 size=16 card=1)'
+STAT #139809175043032 id=3 cnt=0 pid=2 pos=1 obj=62 op='INDEX RANGE SCAN I_OBJAUTH1 (cr=2 pr=0 pw=0 str=1 time=6 us cost=2 size=0 card=1)'
+CLOSE #139809175043032:c=0,e=1,dep=2,type=3,tim=3970870018579
+=====================
+PARSING IN CURSOR #139809176404168 len=89 dep=2 uid=0 oct=3 lid=0 tim=3970870019272 hv=3901160166 ad='11a8d8288' sqlid='d7zvk9bn8dyr6'
+select /* QOSD */ /*+ index(do) */ dir_cnt from opt_directive_own$ do where dir_own# = :1
+END OF STMT
+PARSE #139809176404168:c=0,e=511,p=0,cr=0,cu=0,mis=1,r=0,dep=2,og=4,plh=0,tim=3970870019272
+EXEC #139809176404168:c=3077,e=22171,p=0,cr=0,cu=0,mis=1,r=0,dep=2,og=4,plh=3646447030,tim=3970870041540
+FETCH #139809176404168:c=14,e=14,p=0,cr=1,cu=0,mis=0,r=0,dep=2,og=4,plh=3646447030,tim=3970870041653
+STAT #139809176404168 id=1 cnt=0 pid=0 pos=1 obj=702 op='TABLE ACCESS BY INDEX ROWID OPT_DIRECTIVE_OWN$ (cr=1 pr=0 pw=0 str=1 time=18 us cost=1 size=15 card=1)'
+STAT #139809176404168 id=2 cnt=0 pid=1 pos=1 obj=703 op='INDEX UNIQUE SCAN I_OPT_DIRECTIVE_OWN# (cr=1 pr=0 pw=0 str=1 time=16 us cost=0 size=0 card=1)'
+CLOSE #139809176404168:c=1,e=1,dep=2,type=3,tim=3970870041863
+=====================
+PARSING IN CURSOR #139809185393784 len=605 dep=2 uid=113 oct=3 lid=113 tim=3970870042722 hv=3427026158 ad='a521f6a0' sqlid='bgkth8b648j7f'
+SELECT /* OPT_DYN_SAMP */ /*+ ALL_ROWS IGNORE_WHERE_CLAUSE RESULT_CACHE(SNAPSHOT=3600) opt_param('parallel_execution_enabled', 'false') NO_PARALLEL(SAMPLESUB) NO_PARALLEL_INDEX(SAMPLESUB) NO_SQL_TUNE */ NVL(SUM(C1),:"SYS_B_00"), NVL(SUM(C2),:"SYS_B_01"), COUNT(DISTINCT C3) FROM (SELECT /*+ IGNORE_WHERE_CLAUSE NO_PARALLEL("T") FULL("T") NO_PARALLEL_INDEX("T") */ :"SYS_B_02" AS C1, CASE WHEN MOD("T"."ID",:"SYS_B_03")=:"SYS_B_04" THEN :"SYS_B_05" ELSE :"SYS_B_06" END AS C2, MOD("T"."ID",:"SYS_B_07") AS C3 FROM "KIVI"."DEL$TAB1" SAMPLE BLOCK (:"SYS_B_08" , :"SYS_B_09") SEED (:"SYS_B_10") "T") SAMPLESUB
+END OF STMT
+PARSE #139809185393784:c=1,e=456,p=0,cr=0,cu=0,mis=1,r=0,dep=2,og=1,plh=0,tim=3970870042721
+=====================
+PARSING IN CURSOR #139809184883408 len=221 dep=3 uid=0 oct=3 lid=0 tim=3970870043115 hv=2723145788 ad='11bf2fb80' sqlid='50vxqdkj4zu1w'
+select user#,password,datats#,tempts#,type#,defrole,resource$,ptime,decode(defschclass,NULL,'DEFAULT_CONSUMER_GROUP',defschclass),spare1,spare4,ext_username,spare2,nvl(spare3,16382),spare9,spare10 from user$ where name=:1
+END OF STMT
+EXEC #139809184883408:c=0,e=43,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=1457651150,tim=3970870043115
+FETCH #139809184883408:c=0,e=29,p=0,cr=2,cu=0,mis=0,r=1,dep=3,og=4,plh=1457651150,tim=3970870043228
+STAT #139809184883408 id=1 cnt=1 pid=0 pos=1 obj=22 op='TABLE ACCESS BY INDEX ROWID USER$ (cr=2 pr=0 pw=0 str=1 time=24 us cost=1 size=146 card=1)'
+STAT #139809184883408 id=2 cnt=1 pid=1 pos=1 obj=46 op='INDEX UNIQUE SCAN I_USER1 (cr=1 pr=0 pw=0 str=1 time=11 us cost=0 size=0 card=1)'
+CLOSE #139809184883408:c=0,e=3,dep=3,type=3,tim=3970870043416
+EXEC #139809185118392:c=58,e=58,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870060279
+FETCH #139809185118392:c=80,e=80,p=1,cr=2,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870060443
+CLOSE #139809185118392:c=1,e=1,dep=3,type=3,tim=3970870060484
+EXEC #139809185118392:c=19,e=19,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870060601
+FETCH #139809185118392:c=5,e=5,p=0,cr=2,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870060624
+CLOSE #139809185118392:c=1,e=1,dep=3,type=3,tim=3970870060644
+EXEC #139809185393784:c=4044,e=29485,p=1,cr=6,cu=0,mis=1,r=0,dep=2,og=1,plh=237798610,tim=3970870072288
+FETCH #139809185393784:c=18,e=17,p=0,cr=0,cu=0,mis=0,r=1,dep=2,og=1,plh=237798610,tim=3970870072391
+STAT #139809185393784 id=1 cnt=1 pid=0 pos=1 obj=0 op='RESULT CACHE  a6573rasfsqmr8sfs80p45gagu (cr=0 pr=0 pw=0 str=1 time=13 us)'
+STAT #139809185393784 id=2 cnt=0 pid=1 pos=1 obj=0 op='SORT AGGREGATE (cr=0 pr=0 pw=0 str=0 time=0 us)'
+STAT #139809185393784 id=3 cnt=0 pid=2 pos=1 obj=0 op='VIEW  VW_DAG_0 (cr=0 pr=0 pw=0 str=0 time=0 us cost=27 size=259623 card=6657)'
+STAT #139809185393784 id=4 cnt=0 pid=3 pos=1 obj=0 op='HASH GROUP BY (cr=0 pr=0 pw=0 str=0 time=0 us cost=27 size=166425 card=6657)'
+STAT #139809185393784 id=5 cnt=0 pid=4 pos=1 obj=74746 op='TABLE ACCESS SAMPLE DEL$TAB1 (cr=0 pr=0 pw=0 str=0 time=0 us cost=26 size=166425 card=6657)'
+CLOSE #139809185393784:c=9,e=9,dep=2,type=0,tim=3970870072662
+EXEC #139809185118392:c=32,e=31,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=3,plh=2239883476,tim=3970870072801
+FETCH #139809185118392:c=21,e=21,p=0,cr=2,cu=0,mis=0,r=0,dep=2,og=3,plh=2239883476,tim=3970870072841
+CLOSE #139809185118392:c=1,e=1,dep=2,type=3,tim=3970870072866
+EXEC #139809185556728:c=0,e=33,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=813480514,tim=3970870073477
+FETCH #139809185556728:c=0,e=32,p=0,cr=4,cu=0,mis=0,r=1,dep=3,og=4,plh=813480514,tim=3970870073547
+CLOSE #139809185556728:c=0,e=6,dep=3,type=3,tim=3970870073600
+EXEC #139809185281296:c=0,e=28,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=2035254952,tim=3970870073736
+FETCH #139809185281296:c=0,e=44,p=0,cr=5,cu=0,mis=0,r=1,dep=3,og=4,plh=2035254952,tim=3970870073798
+CLOSE #139809185281296:c=0,e=9,dep=3,type=3,tim=3970870073826
+EXEC #139809176080688:c=0,e=86,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=2542797530,tim=3970870074056
+FETCH #139809176080688:c=0,e=257,p=0,cr=7,cu=0,mis=0,r=1,dep=3,og=4,plh=2542797530,tim=3970870074337
+EXEC #139809176142584:c=0,e=20,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=452367486,tim=3970870074400
+FETCH #139809176142584:c=0,e=13,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=452367486,tim=3970870074429
+FETCH #139809176142584:c=0,e=8,p=0,cr=1,cu=0,mis=0,r=0,dep=3,og=4,plh=452367486,tim=3970870074453
+CLOSE #139809176142584:c=0,e=1,dep=3,type=3,tim=3970870074475
+FETCH #139809176080688:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=2542797530,tim=3970870074494
+CLOSE #139809176080688:c=0,e=0,dep=3,type=3,tim=3970870074527
+EXEC #139809185286368:c=0,e=69,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3765558045,tim=3970870074623
+FETCH #139809185286368:c=0,e=41,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074679
+FETCH #139809185286368:c=0,e=6,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074712
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074734
+FETCH #139809185286368:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074754
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074775
+FETCH #139809185286368:c=0,e=7,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074802
+FETCH #139809185286368:c=0,e=5,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074826
+FETCH #139809185286368:c=0,e=4,p=0,cr=0,cu=0,mis=0,r=1,dep=3,og=4,plh=3765558045,tim=3970870074846
+FETCH #139809185286368:c=0,e=3,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3765558045,tim=3970870074865
+CLOSE #139809185286368:c=0,e=0,dep=3,type=3,tim=3970870074887
+EXEC #139809183532832:c=0,e=20,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3755742892,tim=3970870074979
+FETCH #139809183532832:c=0,e=113,p=2,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=3755742892,tim=3970870075108
+CLOSE #139809183532832:c=0,e=4,dep=3,type=3,tim=3970870075132
+EXEC #139809183531376:c=0,e=16,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=1072382624,tim=3970870075209
+FETCH #139809183531376:c=0,e=15,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=1072382624,tim=3970870075241
+CLOSE #139809183531376:c=0,e=3,dep=3,type=3,tim=3970870075260
+EXEC #139809185556728:c=0,e=18,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=813480514,tim=3970870075311
+FETCH #139809185556728:c=0,e=16,p=0,cr=4,cu=0,mis=0,r=1,dep=3,og=4,plh=813480514,tim=3970870075346
+CLOSE #139809185556728:c=0,e=3,dep=3,type=3,tim=3970870075365
+EXEC #139809183532832:c=0,e=10,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=4,plh=3755742892,tim=3970870075400
+FETCH #139809183532832:c=0,e=14,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=4,plh=3755742892,tim=3970870075428
+CLOSE #139809183532832:c=0,e=3,dep=3,type=3,tim=3970870075445
+=====================
+PARSING IN CURSOR #139809185393624 len=124 dep=2 uid=0 oct=3 lid=0 tim=3970870075652 hv=4179850718 ad='f84993e0' sqlid='10gywwmwk6xfy'
+select /* QOSD */ /*+ index(eh)*/ objn, sub_id, fixed_cost, text, col_list, flags, ctime from exp_head$ eh where exp_id = :1
+END OF STMT
+PARSE #139809185393624:c=2,e=2485,p=2,cr=39,cu=0,mis=1,r=0,dep=2,og=4,plh=0,tim=3970870075651
+EXEC #139809185118392:c=56,e=56,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870096397
+FETCH #139809185118392:c=103,e=104,p=1,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870096584
+CLOSE #139809185118392:c=11,e=11,dep=3,type=3,tim=3970870096623
+EXEC #139809185118392:c=18,e=19,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870096742
+FETCH #139809185118392:c=11,e=11,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870096772
+CLOSE #139809185118392:c=4,e=4,dep=3,type=3,tim=3970870096794
+EXEC #139809185118392:c=9,e=9,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870096831
+FETCH #139809185118392:c=7,e=7,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870096875
+CLOSE #139809185118392:c=3,e=3,dep=3,type=3,tim=3970870096894
+EXEC #139809185118392:c=8,e=8,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870096926
+FETCH #139809185118392:c=5,e=5,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870096945
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970870096962
+EXEC #139809185118392:c=7,e=7,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870096995
+FETCH #139809185118392:c=6,e=6,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870097015
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970870097031
+EXEC #139809185118392:c=7,e=7,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870097064
+FETCH #139809185118392:c=6,e=6,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870097083
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970870097099
+EXEC #139809185118392:c=6,e=6,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870097127
+FETCH #139809185118392:c=6,e=6,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870097160
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970870097181
+EXEC #139809185118392:c=8,e=8,p=0,cr=0,cu=0,mis=0,r=0,dep=3,og=3,plh=2239883476,tim=3970870097214
+FETCH #139809185118392:c=5,e=5,p=0,cr=3,cu=0,mis=0,r=1,dep=3,og=3,plh=2239883476,tim=3970870097232
+CLOSE #139809185118392:c=2,e=2,dep=3,type=3,tim=3970870097248
+EXEC #139809185393624:c=4000,e=22102,p=1,cr=24,cu=0,mis=1,r=0,dep=2,og=4,plh=1426583507,tim=3970870097840
+FETCH #139809185393624:c=0,e=76,p=2,cr=2,cu=0,mis=0,r=1,dep=2,og=4,plh=1426583507,tim=3970870097957
+STAT #139809185393624 id=1 cnt=1 pid=0 pos=1 obj=720 op='TABLE ACCESS BY INDEX ROWID EXP_HEAD$ (cr=2 pr=2 pw=0 str=1 time=76 us cost=1 size=64 card=1)'
+STAT #139809185393624 id=2 cnt=1 pid=1 pos=1 obj=721 op='INDEX UNIQUE SCAN I_EXP_HEAD$ (cr=1 pr=1 pw=0 str=1 time=53 us cost=0 size=0 card=1)'
+CLOSE #139809185393624:c=0,e=2,dep=2,type=3,tim=3970870098104
+EXEC #139809185393624:c=0,e=17,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=1426583507,tim=3970870098241
+FETCH #139809185393624:c=0,e=7,p=0,cr=2,cu=0,mis=0,r=1,dep=2,og=4,plh=1426583507,tim=3970870098266
+CLOSE #139809185393624:c=0,e=0,dep=2,type=3,tim=3970870098287
+EXEC #139809185393624:c=0,e=10,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=1426583507,tim=3970870098364
+FETCH #139809185393624:c=0,e=5,p=0,cr=2,cu=0,mis=0,r=1,dep=2,og=4,plh=1426583507,tim=3970870098384
+CLOSE #139809185393624:c=0,e=1,dep=2,type=3,tim=3970870098403
+=====================
+PARSING IN CURSOR #139809178115056 len=65 dep=1 uid=113 oct=6 lid=113 tim=3970870098715 hv=2040115325 ad='af985208' sqlid='8nyw0c1wtmc3x'
+UPDATE DEL$TAB1 T SET T.COL2 = COL2 || '+' WHERE MOD(T.ID, 2) = 0
+END OF STMT
+PARSE #139809178115056:c=26225,e=150130,p=23,cr=193,cu=0,mis=1,r=0,dep=1,og=1,plh=1995552047,tim=3970870098714
+WAIT #139809178115056: nam='db file scattered read' ela= 30 file#=172 block#=109517 blocks=3 obj#=74746 tim=3970870136632
+WAIT #139809178115056: nam='db file scattered read' ela= 15 file#=172 block#=109541 blocks=3 obj#=74746 tim=3970870149008
+WAIT #139809178115056: nam='db file scattered read' ela= 16 file#=172 block#=109557 blocks=3 obj#=74746 tim=3970870169768
+WAIT #139809178115056: nam='db file scattered read' ela= 17 file#=172 block#=109573 blocks=3 obj#=74746 tim=3970870197480
+WAIT #139809178115056: nam='db file scattered read' ela= 27 file#=172 block#=109589 blocks=3 obj#=74746 tim=3970870228958
+WAIT #139809178115056: nam='db file scattered read' ela= 17 file#=172 block#=109613 blocks=3 obj#=74746 tim=3970870231914
+WAIT #139809178115056: nam='db file scattered read' ela= 16 file#=172 block#=109629 blocks=3 obj#=74746 tim=3970870265131
+WAIT #139809178115056: nam='db file scattered read' ela= 19 file#=172 block#=109822 blocks=2 obj#=74746 tim=3970870405800
+WAIT #139809178115056: nam='db file scattered read' ela= 17 file#=172 block#=109950 blocks=2 obj#=74746 tim=3970870532378
+
+*** 2024-01-21T10:51:27.001202+00:00 (DB00(19))
+WAIT #139809178115056: nam='db file scattered read' ela= 23 file#=172 block#=110078 blocks=2 obj#=74746 tim=3970870652263
+WAIT #139809178115056: nam='db file scattered read' ela= 17 file#=172 block#=110206 blocks=2 obj#=74746 tim=3970870751805
+WAIT #139809178115056: nam='db file scattered read' ela= 12 file#=172 block#=111360 blocks=2 obj#=74746 tim=3970870768635
+WAIT #139809178115056: nam='undo segment extension' ela= 2952 segment#=18 p2=0 p3=0 obj#=74746 tim=3970870871918
+EXEC #139809183532832:c=70,e=70,p=0,cr=0,cu=0,mis=0,r=0,dep=2,og=4,plh=3755742892,tim=3970871385160
+FETCH #139809183532832:c=87,e=86,p=1,cr=3,cu=0,mis=0,r=1,dep=2,og=4,plh=3755742892,tim=3970871385330
+CLOSE #139809183532832:c=13,e=14,dep=2,type=3,tim=3970871385379
+
+*** 2024-01-21T10:51:28.367051+00:00 (DB00(19))
+WAIT #139809178115056: nam='db file scattered read' ela= 18 file#=172 block#=110462 blocks=2 obj#=74746 tim=3970872018102
+WAIT #139809178115056: nam='db file scattered read' ela= 15 file#=172 block#=110590 blocks=2 obj#=74746 tim=3970872113240
+WAIT #139809178115056: nam='db file scattered read' ela= 21 file#=172 block#=110718 blocks=2 obj#=74746 tim=3970872216710
+WAIT #139809178115056: nam='db file scattered read' ela= 21 file#=172 block#=110974 blocks=2 obj#=74746 tim=3970872336498
+WAIT #139809178115056: nam='log file switch (private strand flush incomplete)' ela= 18522 p1=0 p2=0 p3=0 obj#=74746 tim=3970872445847
+WAIT #139809178115056: nam='log file switch (private strand flush incomplete)' ela= 8951 p1=0 p2=0 p3=0 obj#=74746 tim=3970872454921
+WAIT #139809178115056: nam='db file scattered read' ela= 14 file#=172 block#=111102 blocks=2 obj#=74746 tim=3970872457306
+WAIT #139809178115056: nam='db file scattered read' ela= 29 file#=172 block#=111230 blocks=2 obj#=74746 tim=3970872548678
+
+*** 2024-01-21T10:51:29.005357+00:00 (DB00(19))
+WAIT #139809178115056: nam='db file scattered read' ela= 28 file#=172 block#=111358 blocks=2 obj#=74746 tim=3970872656418
+
+*** 2024-01-21T10:51:30.479834+00:00 (DB00(19))
+EXEC #139809178115056:c=752701,e=4032104,p=1597,cr=3901,cu=177378,mis=0,r=50000,dep=1,og=1,plh=1995552047,tim=3970874130889
+STAT #139809178115056 id=1 cnt=0 pid=0 pos=1 obj=0 op='UPDATE  DEL$TAB1 (cr=3172 pr=858 pw=0 str=3 time=2787018 us)'
+STAT #139809178115056 id=2 cnt=123441 pid=1 pos=1 obj=74746 op='TABLE ACCESS FULL DEL$TAB1 (cr=3885 pr=1572 pw=0 str=3 time=561739 us cost=615 size=19187525 card=46235)'
+CLOSE #139809178115056:c=1,e=1,dep=1,type=3,tim=3970874131258
+=====================
+PARSING IN CURSOR #139809184859376 len=6 dep=1 uid=113 oct=44 lid=113 tim=3970874131354 hv=255718823 ad='0' sqlid='8ggw94h7mvxd7'
+COMMIT
+END OF STMT
+PARSE #139809184859376:c=9,e=9,p=0,cr=0,cu=0,mis=0,r=0,dep=1,og=0,plh=0,tim=3970874131354
+XCTEND rlbk=0, rd_only=0, tim=3970874131431
+EXEC #139809184859376:c=3433,e=18967,p=0,cr=0,cu=1,mis=0,r=0,dep=1,og=0,plh=0,tim=3970874150383
+CLOSE #139809184859376:c=1,e=1,dep=1,type=3,tim=3970874150522
+EXEC #139809184662960:c=783184,e=4202096,p=1620,cr=4094,cu=177379,mis=0,r=1,dep=0,og=1,plh=0,tim=3970874150612
+WAIT #139809184662960: nam='SQL*Net message to client' ela= 4 driver id=1413697536 #bytes=1 p3=0 obj#=74746 tim=3970874150688
+WAIT #139809184662960: nam='SQL*Net message from client' ela= 127691 driver id=1413697536 #bytes=1 p3=0 obj#=74746 tim=3970874278412
+CLOSE #139809184662960:c=36,e=36,dep=0,type=0,tim=3970874278583
+PARSE #139809175429312:c=54,e=54,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=1,plh=0,tim=3970874278698
+WAIT #139809175429312: nam='SQL*Net message to client' ela= 2 driver id=1413697536 #bytes=1 p3=0 obj#=74746 tim=3970874278845
+EXEC #139809175429312:c=138,e=138,p=0,cr=0,cu=0,mis=0,r=1,dep=0,og=1,plh=0,tim=3970874278869
+WAIT #139809175429312: nam='SQL*Net message from client' ela= 114636 driver id=1413697536 #bytes=1 p3=0 obj#=74746 tim=3970874393541
+CLOSE #139809175429312:c=32,e=31,dep=0,type=3,tim=3970874393691
+=====================
+PARSING IN CURSOR #139809184662960 len=56 dep=0 uid=113 oct=42 lid=113 tim=3970874393752 hv=3193596740 ad='0' sqlid='5x323vaz5nuu4'
+alter session set events '10046 trace name context off'
+
+END OF STMT
+PARSE #139809184662960:c=23,e=24,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=0,tim=3970874393752
+EXEC #139809184662960:c=382,e=382,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=0,plh=0,tim=3970874394219

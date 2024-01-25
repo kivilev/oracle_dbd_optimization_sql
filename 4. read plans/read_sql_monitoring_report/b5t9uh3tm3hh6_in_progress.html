@@ -1,0 +1,3648 @@
+<html>
+  <head>
+    <title> SQL Monitor Report </title>
+    <style type="text/css"> 
+         body, table, input, select, textarea
+         {font:normal normal 8pt Verdana,Arial;text-decoration:none;
+          color:#000000; empty-cells:show;}
+         .s8 {font-size:8pt;color:#006699}
+         .s9 {font-size:10pt;color:#006699}
+         .s10 {font-size:14pt;color:#006699;}
+         .s16 {border-width : 1px; border-color : #CCCC99;
+              border-style: solid; color:#006699;font-size:8pt; 
+              background-color:#CCCC99; empty-cells:show;}
+        .s17 {border-width : 1px; border-color : #CCCC99;
+              border-style: solid; font-size:8pt; 
+              background-color:#E8E8E6; empty-cells: show }
+        .s17a {border-width : 1px; border-color : #BDCCC3;
+              border-style: solid; font-size:8pt; 
+              background-color:#F5F5F5; empty-cells: show}
+        .s17b {border-width : 1px; border-color : #BDCCC3;
+               border-style: solid; font-size:8pt; 
+               background-color:#F1F5DD; empty-cells: show}
+        .s27 {border-width : 1px; border-color : #CCCC99; 
+              border-style: solid;}
+        .graph {
+          border: solid 0px ; empty-cells: show
+        }
+
+        .bar {
+          border-left: solid 0px;
+          padding-right: 0.5em;
+          font-size:1pt;
+        }
+
+        .sql {border-width : 1px; border-color : #CCCC99;
+              border-style: solid; font-size:8pt; 
+              background-color:#E8E8E6;
+              empty-cells: show; text-align: left }
+
+        .nodisp { font-size: 1% ; height: 10px; color:#F2F2F2 }
+        
+        .bar div { 
+          text-align: center;
+          float: left;
+        }
+
+        .executing { 
+          background-color: #7CFF44;
+        }      
+
+        .activity { 
+          border-right: solid 1px #FFFFFF
+        }      
+
+        .noright { 
+          border-right: none;
+          cursor: default;
+        }      
+
+        .noleft { 
+          border-left: none;
+          cursor: default;
+        }      
+
+        .div_Cpu { 
+          border-top: solid 3px #1EC162;
+          background-color: #19A352;
+          color: #19A352;
+          border-bottom: solid 3px #0E5D2F;
+        }      
+
+        .div_cpu_time { 
+          border-top: solid 3px #1EC162;
+          background-color: #19A352;
+          color: #19A352;
+          border-bottom: solid 3px #0E5D2F;
+        }      
+
+        .div_buffer_gets { 
+          border-top: solid 3px #FFAB9A;
+          background-color: #D89182;
+          color: #D89182;
+          border-bottom: solid 3px #BC7E72;
+          cursor: default;
+        }      
+
+        .div_queuing_time {
+          border-top: solid 3px #C5FFB7;
+          background-color: #86FF86;
+          color: #86FF86;
+          border-bottom: solid 3px #74DD74;
+          cursor: default;
+        } 
+
+        .div_Scheduler { 
+          border-top: solid 3px #C5FFB7;
+          background-color: #86FF86;
+          color: #86FF86;
+          border-bottom: solid 3px #74DD74;
+          cursor: default;
+        }      
+
+        .div_application_wait_time { 
+          border-top: solid 3px #C8C6FF;
+          background-color: #B5B3E7;
+          color: #B5B3E7;
+          border-bottom: solid 3px #7C7B9E;
+          cursor: default;
+        }      
+
+        .div_Application { 
+          border-top: solid 3px #C8C6FF;
+          background-color: #B5B3E7;
+          color: #B5B3E7;
+          border-bottom: solid 3px #7C7B9E;
+          cursor: default;
+        }      
+
+        .div_sql_cpu_time { 
+          border-top: solid 3px #1EC162;
+          background-color: #19A352;
+          color: #19A352;
+          border-bottom: solid 3px #0E5D2F;
+          cursor: default;
+        }      
+
+       .div_UserIO { 
+          border-top: solid 3px #49A1FF;
+          background-color: #3C85D2;
+          color: #3C85D2;
+          border-bottom: solid 3px #28588B;
+          cursor: default;
+        }      
+
+       .div_user_io_wait_time { 
+          border-top: solid 3px #FF8C6C;
+          background-color: #E27C60;
+          color: #E27C60;
+          border-bottom: solid 3px #B1614B;
+          cursor: default;
+        }      
+
+       .div_SystemIO { 
+          border-top: solid 3px #49A1FF;
+          background-color: #3C85D2;
+          color: #3C85D2;
+          border-bottom: solid 3px #28588B;
+          cursor: default;
+        }      
+
+        .div_Concurrency { 
+          border-top: solid 3px #E81B1F;
+          background-color: #BE1619;
+          color: #BE1619;
+          border-bottom: solid 3px #760E10;
+          cursor: default;
+        }      
+
+        .div_concurrency_wait_time { 
+          border-top: solid 3px #E81B1F;
+          background-color: #BE1619;
+          color: #BE1619;
+          border-bottom: solid 3px #760E10;
+          cursor: default;
+        }      
+
+        .div_cluster_wait_time { 
+          border-top: solid 3px #D43B61;
+          background-color: #8B2740;
+          color: #8B2740;
+          border-bottom: solid 3px #5A1929;
+          cursor: default;
+        }      
+
+        .div_Cluster { 
+          border-top: solid 3px #D43B61;
+          background-color: #8B2740;
+          color: #8B2740;
+          border-bottom: solid 3px #5A1929;
+          cursor: default;
+        }      
+
+        .div_plsql_exec_time { 
+          border-top: solid 3px #EDD957;
+          background-color: #B1A241;
+          color: #B1A241;
+          border-bottom: solid 3px #8B7F33;
+          cursor: default;
+        }      
+
+        .div_java_exec_time { 
+          border-top: solid 3px #B40FEB;
+          background-color: #8E0CB9;
+          color: #8E0CB9;
+          border-bottom: solid 3px #6A098B;
+          cursor: default;
+        }
+
+        .div_other_wait_time { 
+          border-top: solid 3px #4AFDEB;
+          background-color: #41DECD;
+          color: #41DECD;
+          border-bottom: solid 3px #2B9389;
+          cursor: default;
+        }
+
+        .div_read_reqs { 
+          border-top: solid 3px #FFC846;
+          background-color: #DDAD3D;
+          color: #DDAD3D;
+          border-bottom: solid 3px #B99133;
+          cursor: default;
+        }
+
+        .div_write_reqs { 
+          border-top: solid 3px #F76838;
+          background-color: #BC4F2B;
+          color: #BC4F2B;
+          border-bottom: solid 3px #9C4223;
+          cursor: default;
+        }
+
+        .div_read_bytes { 
+          border-top: solid 3px #FFC846;
+          background-color: #DDAD3D;
+          color: #DDAD3D;
+          border-bottom: solid 3px #B99133;
+          cursor: default;
+        }
+
+        .div_write_bytes { 
+          border-top: solid 3px #F76838;
+          background-color: #BC4F2B;
+          color: #BC4F2B;
+          border-bottom: solid 3px #9C4223;
+          cursor: default;
+        }
+
+        .div_user_fetch_count { 
+          border-top: solid 3px #DFFF6C;
+          background-color: #CAE762;
+          color: #CAE762;
+          border-bottom: solid 3px #9EB44C;
+          cursor: default;
+        }
+
+        .div_Other { 
+          border-top: solid 3px #4AFDEB;
+          background-color: #41DECD;
+          color: #41DECD;
+          border-bottom: solid 3px #2B9389;
+          cursor: default;
+        }      
+
+        .progress_Disp { 
+          border-top: solid 3px #FFE4B5;
+          background-color: #EAD1A6;
+          text-align: center;
+          border-bottom: solid 3px #D8C199;
+          cursor: default;
+          height: 13px;
+          float:left;
+        }      
+
+        .progress_Nodisp { 
+          border-top: solid 3px #FFE4B5;
+          background-color: #EAD1A6;
+          color: #E08877;
+          border-bottom: solid 3px #D8C199;
+          cursor: default;
+          font-size: 1% ; color:#F2F2F2
+          height: 13px; 
+          float:left;
+        }
+
+        .pxtype_QC { 
+          border-top: solid 2px #FAA589;
+          background-color: #E2967C;
+          border-bottom: solid 2px #BC7C67;
+          cursor: default;
+        }      
+
+        .pxtype_S1 { 
+          border-top: solid 2px #88F3B8;
+          background-color: #79D8A4;
+          border-bottom: solid 2px #60AC82;
+          cursor: default;
+        }      
+
+        .pxtype_S2 { 
+          border-top: solid 2px #9DF5FB;
+          background-color: #87D2D7;
+          border-bottom: solid 2px #70AEB2;
+          cursor: default;
+        }      
+
+        .pxtype_Instance { 
+          border: solid 1px #FFFFFF;
+          cursor: default;
+        }      
+
+        .active_period { 
+          border-top: solid 3px #A2C8E4;
+          background-color: #8CADC5;
+          color: #8CADC5;
+          border-bottom: solid 3px #617888;
+          cursor: default;
+        }      
+
+        .active_period_now { 
+          border-top: solid 3px #EF5411;
+          background-color: #DC4D10;
+          color: #DC4D10;
+          border-bottom: solid 3px #C5450E;
+          cursor: default;
+        }      
+
+        .active_period_10s { 
+          border-top: solid 3px #F09855;
+          background-color: #DA8A4D;
+          color: #DA8A4D;
+          border-bottom: solid 3px #BF7943;
+          cursor: default;
+        }      
+
+        .active_period_60s { 
+          border-top: solid 3px #FFDC9A;
+          background-color: #F0CF91;
+          color: #F0CF91;
+          border-bottom: solid 3px #CAAE7A;
+          cursor: default;
+        }      
+
+       </style>
+  </head>
+  <body bgcolor="#FFFFFF">
+    <h1 align="center">SQL Monitoring Report</h1>
+    <br/>
+    <font class="s9">
+      <b> SQL Text</b>
+      <hr size="3" align="left"/>
+    </font>
+    <p>select case
+         when ((c.iac_check_date - c.ida_creation_date) * 24 * 60 &lt; 1) then
+          &apos;чисто&apos;
+         when ((c.iac_check_date - c.ida_creation_date) * 24 * 60 &lt; 6) then
+          &apos;маленькая очередь&apos;
+         else
+          &apos;большая очередь&apos;
+       end as tag_o
+      ,c.ida_id
+      ,c.ida_creation_date
+      ,c.iac_modify_date
+      ,t.ct_description
+      ,c.iac_check_date
+      ,r.crt_description
+      ,i.bnk_name
+      ,p.prd_name
+      ,flwt_description
+      ,dict_agent.cs_description
+      ,d.ida_modify_date change
+  from common_ident.ident_app_check c
+  left join common_ident.check_type t
+    on c.ct_id = t.ct_id
+  left join common_ident.check_result_type r
+    on c.crt_id = r.crt_id
+  left join common_ident.ident_app d
+    on d.ida_id = c.ida_id
+   and d.ida_creation_date = c.ida_creation_date
+  left join common_ident.ident_app_meta_data t_agent
+    on c.ida_id = t_agent.ida_id
+   and t_agent.ida_creation_date = c.ida_creation_date
+   and fld_id = 905
+  left join common_ident.change_source dict_agent
+    on dict_agent.cs_id = t_agent.amd_value
+  left join common_ident.flow_type f
+    on f.flwt_id = d.flwt_id
+  left join common_ident.bank i
+    on i.bnk_id = d.bnk_id
+  left join common_ident.product p
+    on p.prd_id = d.prd_id
+ where c.ida_creation_date &gt;= trunc(sysdate) - 10
+</p>
+    <font class="s9">
+      <b> Global Information: </b>
+    </font>
+    <font class="            s9 executing          ">
+      <b>EXECUTING</b>
+    </font>
+    <hr size="3" align="left"/>
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+      <tr>
+        <th width="10%" align="left">Instance ID</th>
+        <th align="center" width="20">:</th>
+        <td>1</td>
+        <td rowspan="5" align="left" width="75%">
+          <table border="1" ora_borderstyle="headeronly" cellspacing="0" cellpadding="0" align="left" width="100%">
+            <tr class="s16">
+              <th width="19%">Buffer Gets</th>
+              <th width="19%">IO Requests</th>
+              <th width="19%">Database Time</th>
+              <th width="19%">Wait Activity</th>
+            </tr>
+            <tr class="s17">
+              <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <td style="          width:80%        ">
+                      <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                          <tr>
+                            <td class="bar">
+                              <div class="div_buffer_gets" style="                     width:100%                   " title="Buffer Gets: 19M">
+                                <P class="nodisp">.</P>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td align="left">19M</td>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <td style="          width:80%        ">
+                      <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                          <tr>
+                            <td class="bar">
+                              <div class="div_read_reqs" style="                     width:41%                   " title="Read Requests: 35964 = 4.1GB (41%)">
+                                <P class="nodisp">.</P>
+                              </div>
+                              <div class="div_write_reqs" style="                     width:58%                   " title="Write Requests: 49816 = 5.7GB (58%)">
+                                <P class="nodisp">.</P>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td align="left">85780</td>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <td style="          width:80%        ">
+                      <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                          <tr>
+                            <td class="bar">
+                              <div class="div_cpu_time" style="                     width:74%                   " title="Cpu - 83.29s (74%)">
+                                <P class="nodisp">.</P>
+                              </div>
+                              <div class="div_user_io_wait_time" style="                     width:25%                   " title="IO Time - 28.91s (25%)">
+                                <P class="nodisp">.</P>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td align="left">113s</td>
+                  </tbody>
+                </table>
+              </td>
+              <td>
+                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <td align="left"/>
+                  </tbody>
+                </table>
+                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <td style="       width:100%     ">
+                      <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                          <tr>
+                            <td class="bar">
+                              <div class="                     activity div_UserIO" style="                     width:90%                   " title="User I/O:direct path write temp (32-&gt;100.0%)">
+                                <P class="nodisp">.</P>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td align="left">100%
+        </td>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th align="left">Session</th>
+        <th>:</th>
+        <td>D_KIVILEV (503:19651)</td>
+      </tr>
+      <tr>
+        <th align="left">SQL ID </th>
+        <th>:</th>
+        <td>b5t9uh3tm3hh6</td>
+      </tr>
+      <tr>
+        <th align="left">SQL Execution ID</th>
+        <th>:</th>
+        <td>16777216</td>
+      </tr>
+      <tr>
+        <th align="left">Execution Started</th>
+        <th>:</th>
+        <td>07/04/2023 17:49:28</td>
+      </tr>
+      <tr>
+        <th align="left">First Refresh Time</th>
+        <th>:</th>
+        <td>07/04/2023 17:49:34</td>
+      </tr>
+      <tr>
+        <th align="left">Last Refresh Time</th>
+        <th>:</th>
+        <td>07/04/2023 17:51:21</td>
+      </tr>
+      <tr>
+        <th align="left">Duration</th>
+        <th>:</th>
+        <td>275s</td>
+      </tr>
+      <tr>
+        <th align="left">Module/Action</th>
+        <th>:</th>
+        <td>PL/SQL Developer/SQL Window</td>
+      </tr>
+      <tr>
+        <th align="left">Service</th>
+        <th>:</th>
+        <td>commonid_users_ro</td>
+      </tr>
+      <tr>
+        <th align="left">Program</th>
+        <th>:</th>
+        <td>plsqldev.exe</td>
+      </tr>
+      <tr>
+        <th align="left">Fetch Calls</th>
+        <th>:</th>
+        <td>1</td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <font class="s9">
+      <a name="xplan"/>
+      <b> SQL Plan Monitoring Details (Plan Hash Value=1107266991)</b>
+      <hr size="1" align="left"/>
+    </font>
+    <table width="100%" border="1" cellspacing="0" cellpadding="0" ora_borderstyle="headeronly">
+      <tr class="s16">
+        <th colspan="2">Id</th>
+        <th>Operation</th>
+        <th>Name</th>
+        <th>
+                    Estimated
+                    <br/>
+                    Rows
+                </th>
+        <th>Cost</th>
+        <th width="120">
+                    Active Period
+       
+                    <br/>
+                    (275s)
+                </th>
+        <th>Execs</th>
+        <th>Rows</th>
+        <th>
+             Memory
+           </th>
+        <th>
+             Temp
+           </th>
+        <th width="120">IO Requests</th>
+        <th width="120">CPU Activity</th>
+        <th width="120">Wait Activity</th>
+        <th width="100">Progress</th>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <b>-&gt;</b>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">0</td>
+        <td align="left">SELECT STATEMENT </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:51:08 -&gt;  17:51:21 (most recent)">
+                <td class="bar">
+                  <div style="                         width:88%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_now                     12%                 " style="                   width:12%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>100</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <b>-&gt;</b>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">1</td>
+        <td align="left">
+          <font color="#F1F5DD">.</font>
+                    HASH JOIN OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:51:08 -&gt;  17:51:21 (most recent)">
+                <td class="bar">
+                  <div style="                         width:88%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_now                     12%                 " style="                   width:12%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>100</td>
+        <td>553.0KB</td>
+        <td>1.7GB</td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="          width:32%        ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="div_write_reqs" style="                     width:99%                   " title="Write Requests: 13854 = 1.6GB (16%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">13856 (16%)</td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:7%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:60%                   " title="Cpu (1-&gt;1.3%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">1.3%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:100%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_UserIO" style="                     width:90%                   " title="User I/O:direct path write temp (12-&gt;37.5%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">37%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <b>-&gt;</b>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">2</td>
+        <td align="left">
+          <font color="#F5F5F5">..</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:51:08 -&gt;  17:51:21 (most recent)">
+                <td class="bar">
+                  <div style="                         width:88%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_now                     12%                 " style="                   width:12%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <b>-&gt;</b>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">3</td>
+        <td align="left">
+          <font color="#F1F5DD">...</font>
+                    STATISTICS COLLECTOR 
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:51:08 -&gt;  17:51:21 (most recent)">
+                <td class="bar">
+                  <div style="                         width:88%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_now                     12%                 " style="                   width:12%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <b>-&gt;</b>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">4</td>
+        <td align="left">
+          <font color="#F5F5F5">....</font>
+                    HASH JOIN OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:54 -&gt;  17:51:21 (most recent)">
+                <td class="bar">
+                  <div style="                         width:75%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_now                     25%                 " style="                   width:25%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="          width:60%        ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="div_read_reqs" style="                     width:50%                   " title="Read Requests: 13356 = 1.5GB (15%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                        <div class="div_write_reqs" style="                     width:50%                   " title="Write Requests: 13356 = 1.5GB (15%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">26712 (31%)</td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:14%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:80%                   " title="Cpu (2-&gt;2.6%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">2.6%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:84%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_UserIO" style="                     width:90%                   " title="User I/O:direct path write temp (10-&gt;31.3%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">31%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title="100% (done)">
+                <td>
+                  <div class="           progress_Disp         " style="              width:80%;            ">
+          done
+        </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">5</td>
+        <td align="left">
+          <font color="#F1F5DD">.....</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:54 -&gt;  17:51:08 (13s from most recent)">
+                <td class="bar">
+                  <div style="                         width:75%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     13%                 " style="                   width:13%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:11%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">6</td>
+        <td align="left">
+          <font color="#F5F5F5">......</font>
+                    STATISTICS COLLECTOR 
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:54 -&gt;  17:51:08 (13s from most recent)">
+                <td class="bar">
+                  <div style="                         width:75%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     13%                 " style="                   width:13%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:11%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">7</td>
+        <td align="left">
+          <font color="#F1F5DD">.......</font>
+                    HASH JOIN OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:44 -&gt;  17:51:08 (13s from most recent)">
+                <td class="bar">
+                  <div style="                         width:67%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     22%                 " style="                   width:22%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:11%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="          width:43%        ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="div_read_reqs" style="                     width:50%                   " title="Read Requests: 9531 = 1.1GB (11%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                        <div class="div_write_reqs" style="                     width:50%                   " title="Write Requests: 9531 = 1.1GB (11%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">19062 (22%)</td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:27%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (4-&gt;5.1%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">5.1%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:42%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_UserIO" style="                     width:90%                   " title="User I/O:direct path write temp (5-&gt;15.6%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">15%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title="100% (done)">
+                <td>
+                  <div class="           progress_Disp         " style="              width:80%;            ">
+          done
+        </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">8</td>
+        <td align="left">
+          <font color="#F5F5F5">........</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:44 -&gt;  17:50:54 (27s from most recent)">
+                <td class="bar">
+                  <div style="                         width:67%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     10%                 " style="                   width:10%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:23%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">9</td>
+        <td align="left">
+          <font color="#F1F5DD">.........</font>
+                    STATISTICS COLLECTOR 
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:44 -&gt;  17:50:54 (27s from most recent)">
+                <td class="bar">
+                  <div style="                         width:67%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     10%                 " style="                   width:10%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:23%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">10</td>
+        <td align="left">
+          <font color="#F5F5F5">..........</font>
+                    HASH JOIN OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:37 -&gt;  17:50:54 (27s from most recent)">
+                <td class="bar">
+                  <div style="                         width:61%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     16%                 " style="                   width:16%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:23%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="          width:25%        ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="div_read_reqs" style="                     width:50%                   " title="Read Requests: 5557 = 651.2MB (6.5%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                        <div class="div_write_reqs" style="                     width:50%                   " title="Write Requests: 5557 = 651.2MB (6.5%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">11114 (12%)</td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:27%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (4-&gt;5.1%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">5.1%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:34%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_UserIO" style="                     width:90%                   " title="User I/O:direct path write temp (4-&gt;12.5%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">12%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title="100% (done)">
+                <td>
+                  <div class="           progress_Disp         " style="              width:80%;            ">
+          done
+        </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">11</td>
+        <td align="left">
+          <font color="#F1F5DD">...........</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:38 -&gt;  17:50:44 (37s from most recent)">
+                <td class="bar">
+                  <div style="                         width:61%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     6%                 " style="                   width:6%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:32%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">12</td>
+        <td align="left">
+          <font color="#F5F5F5">............</font>
+                    STATISTICS COLLECTOR 
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:38 -&gt;  17:50:44 (37s from most recent)">
+                <td class="bar">
+                  <div style="                         width:61%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     6%                 " style="                   width:6%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:32%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">13</td>
+        <td align="left">
+          <font color="#F1F5DD">.............</font>
+                    HASH JOIN OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:34 -&gt;  17:50:44 (37s from most recent)">
+                <td class="bar">
+                  <div style="                         width:58%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     10%                 " style="                   width:10%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:32%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="          width:19%        ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="div_read_reqs" style="                     width:50%                   " title="Read Requests: 4112 = 481.9MB (4.8%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                        <div class="div_write_reqs" style="                     width:50%                   " title="Write Requests: 4112 = 481.9MB (4.8%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">8224 (9.6%)</td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:7%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:60%                   " title="Cpu (1-&gt;1.3%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">1.3%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:9%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_UserIO" style="                     width:60%                   " title="User I/O:direct path write temp (1-&gt;3.1%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">3.1%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">14</td>
+        <td align="left">
+          <font color="#F5F5F5">..............</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:34 -&gt;  17:50:38 (43s from most recent)">
+                <td class="bar">
+                  <div style="                         width:58%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     4%                 " style="                   width:4%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:38%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">15</td>
+        <td align="left">
+          <font color="#F1F5DD">...............</font>
+                    STATISTICS COLLECTOR 
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:34 -&gt;  17:50:38 (43s from most recent)">
+                <td class="bar">
+                  <div style="                         width:58%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     4%                 " style="                   width:4%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:38%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">16</td>
+        <td align="left">
+          <font color="#F5F5F5">................</font>
+                    HASH JOIN OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:30 -&gt;  17:50:38 (43s from most recent)">
+                <td class="bar">
+                  <div style="                         width:2%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     61%                 " style="                   width:61%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:37%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="          width:16%        ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="div_read_reqs" style="                     width:50%                   " title="Read Requests: 3406 = 399.1MB (3.9%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                        <div class="div_write_reqs" style="                     width:50%                   " title="Write Requests: 3406 = 399.1MB (3.9%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">6812 (7.9%)</td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:60%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (9-&gt;11.5%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">11%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">17</td>
+        <td align="left">
+          <font color="#F1F5DD">.................</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">18</td>
+        <td align="left">
+          <font color="#F5F5F5">..................</font>
+                    STATISTICS COLLECTOR 
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">19</td>
+        <td align="left">
+          <font color="#F1F5DD">...................</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">20</td>
+        <td align="left">
+          <font color="#F5F5F5">....................</font>
+                    NESTED LOOPS OUTER
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">21</td>
+        <td align="left">
+          <font color="#F1F5DD">.....................</font>
+                    PARTITION RANGE ITERATOR
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">22</td>
+        <td align="left">
+          <font color="#F5F5F5">......................</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">IDENT_APP_CHECK</td>
+        <td>6</td>
+        <td>1M</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:29 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:1%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     58%                 " style="                   width:58%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>2</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:20%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:80%                   " title="Cpu (3-&gt;3.8%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">3.8%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title="100% (done)">
+                <td>
+                  <div class="           progress_Disp         " style="              width:80%;            ">
+          done
+        </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">23</td>
+        <td align="left">
+          <font color="#F1F5DD">.....................</font>
+                    PARTITION RANGE AND
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>1</td>
+        <td>3</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:31 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:3%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     56%                 " style="                   width:56%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>5M</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:100%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (15-&gt;19.2%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">19%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">24</td>
+        <td align="left">
+          <font color="#F5F5F5">......................</font>
+                    TABLE ACCESS BY LOCAL INDEX ROWID
+                </td>
+        <td align="left">IDENT_APP_META_DATA</td>
+        <td>1</td>
+        <td>3</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>5M</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:27%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (4-&gt;5.1%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">5.1%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">25</td>
+        <td align="left">
+          <font color="#F1F5DD">.......................</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">IDENT_APP_META_DATA_PK</td>
+        <td>1</td>
+        <td>2</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>5M</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:67%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (10-&gt;12.8%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">12%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">26</td>
+        <td align="left">
+          <font color="#F5F5F5">....................</font>
+                    PARTITION RANGE AND
+                </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>1</td>
+        <td>2</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:32 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:4%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     55%                 " style="                   width:55%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>5M</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:94%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (14-&gt;17.9%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">17%
+        </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">27</td>
+        <td align="left">
+          <font color="#F1F5DD">.....................</font>
+                    TABLE ACCESS BY LOCAL INDEX ROWID
+                </td>
+        <td align="left">IDENT_APP</td>
+        <td>1</td>
+        <td>2</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>5M</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:40%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (6-&gt;7.7%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">7.7%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">28</td>
+        <td align="left">
+          <font color="#F5F5F5">......................</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">IDENT_APP_PK</td>
+        <td>1</td>
+        <td>1</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:49:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:5%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     54%                 " style="                   width:54%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>5M</td>
+        <td>5M</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td style="       width:34%     ">
+                <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td class="bar">
+                        <div class="                     activity div_Cpu" style="                     width:90%                   " title="Cpu (5-&gt;6.4%)">
+                          <P class="nodisp">.</P>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td align="left">6.4%
+          </td>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">29</td>
+        <td align="left">
+          <font color="#F1F5DD">..................</font>
+                    TABLE ACCESS BY INDEX ROWID
+                </td>
+        <td align="left">BANK</td>
+        <td>1</td>
+        <td>4</td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">30</td>
+        <td align="left">
+          <font color="#F5F5F5">...................</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">BANK_PK</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">31</td>
+        <td align="left">
+          <font color="#F1F5DD">.................</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">BANK</td>
+        <td>2</td>
+        <td>4</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:34 -&gt;  17:50:34 (47s from most recent)">
+                <td class="bar">
+                  <div style="                         width:58%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     1%                 " style="                   width:1%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:41%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>2</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">32</td>
+        <td align="left">
+          <font color="#F5F5F5">...............</font>
+                    TABLE ACCESS BY INDEX ROWID
+                </td>
+        <td align="left">CHECK_RESULT_TYPE</td>
+        <td>1</td>
+        <td>3</td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">33</td>
+        <td align="left">
+          <font color="#F1F5DD">................</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">CHECK_RESULT_TYPE_PK</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">34</td>
+        <td align="left">
+          <font color="#F5F5F5">..............</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">CHECK_RESULT_TYPE</td>
+        <td>5</td>
+        <td>3</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:38 -&gt;  17:50:38 (43s from most recent)">
+                <td class="bar">
+                  <div style="                         width:61%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     1%                 " style="                   width:1%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:38%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>5</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">35</td>
+        <td align="left">
+          <font color="#F1F5DD">............</font>
+                    TABLE ACCESS BY INDEX ROWID
+                </td>
+        <td align="left">FLOW_TYPE</td>
+        <td>1</td>
+        <td>4</td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">36</td>
+        <td align="left">
+          <font color="#F5F5F5">.............</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">FLOW_TYPE_PK</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">37</td>
+        <td align="left">
+          <font color="#F1F5DD">...........</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">FLOW_TYPE</td>
+        <td>8</td>
+        <td>4</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:44 -&gt;  17:50:44 (37s from most recent)">
+                <td class="bar">
+                  <div style="                         width:67%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     1%                 " style="                   width:1%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:32%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>10</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">38</td>
+        <td align="left">
+          <font color="#F5F5F5">.........</font>
+                    TABLE ACCESS BY INDEX ROWID
+                </td>
+        <td align="left">CHECK_TYPE</td>
+        <td>1</td>
+        <td>4</td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">39</td>
+        <td align="left">
+          <font color="#F1F5DD">..........</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">CHECK_TYPE_PK</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">40</td>
+        <td align="left">
+          <font color="#F5F5F5">........</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">CHECK_TYPE</td>
+        <td>13</td>
+        <td>4</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:50:54 -&gt;  17:50:54 (27s from most recent)">
+                <td class="bar">
+                  <div style="                         width:75%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     1%                 " style="                   width:1%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:24%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>13</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">41</td>
+        <td align="left">
+          <font color="#F1F5DD">......</font>
+                    TABLE ACCESS BY INDEX ROWID
+                </td>
+        <td align="left">PRODUCT</td>
+        <td>1</td>
+        <td>4</td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">42</td>
+        <td align="left">
+          <font color="#F5F5F5">.......</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">PRODUCT_PK</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright pxtype_QC           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">43</td>
+        <td align="left">
+          <font color="#F1F5DD">.....</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">PRODUCT</td>
+        <td>47</td>
+        <td>4</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:51:08 -&gt;  17:51:08 (13s from most recent)">
+                <td class="bar">
+                  <div style="                         width:88%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_60s                     1%                 " style="                   width:1%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div style="                         width:11%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>58</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">44</td>
+        <td align="left">
+          <font color="#F5F5F5">...</font>
+                    TABLE ACCESS BY INDEX ROWID
+                </td>
+        <td align="left">CHANGE_SOURCE</td>
+        <td>1</td>
+        <td>4</td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17b">
+        <td align="center" class="             noright           ">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="right" class="             noleft           " title="Never executed">45</td>
+        <td align="left">
+          <font color="#F1F5DD">....</font>
+                    INDEX UNIQUE SCAN
+                </td>
+        <td align="left">CHANGE_SOURCE_PK</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+      <tr align="right" class="s17a">
+        <td align="center" class="             noright pxtype_QC           ">
+          <b>-&gt;</b>
+        </td>
+        <td align="right" class="             noleft pxtype_QC           " title="Serial Execution">46</td>
+        <td align="left">
+          <font color="#F5F5F5">..</font>
+                    TABLE ACCESS FULL
+                </td>
+        <td align="left">CHANGE_SOURCE</td>
+        <td>71</td>
+        <td>4</td>
+        <td align="left">
+          <table class="graph" cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <tr title=" 17:51:21 -&gt;  17:51:21 (most recent)">
+                <td class="bar">
+                  <div style="                         width:99%                       ">
+                    <P class="nodisp">.</P>
+                  </div>
+                  <div class="                       active_period_now                     1%                 " style="                   width:1%                 ">
+                    <P class="nodisp">.</P>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>94</td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td>
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <table cellspacing="0" cellpadding="0" width="100%">
+            <tbody>
+              <td align="left"/>
+            </tbody>
+          </table>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+        <td align="left">
+          <P class="nodisp">.</P>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

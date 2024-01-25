@@ -1,4 +1,4 @@
-﻿---- Порядок операций в таблице операций
+---- Порядок операций в таблице операций
 
 ---- Виды операций
 
@@ -43,10 +43,19 @@ select e.*, m.*, d1.department_name
   join hr.departments d1 on d1.department_id = e.department_id
  order by d1.department_name;  
 
--- 5. Исключение из правил
+-- 5. Исключение из правил - подзапрос в select
 select (select d.department_name 
           from departments d 
          where d.department_id = e.department_id) dep_name
-   from employees e
+   from employees e;
+
+-- 6.  Исключение из правил - CTE
+with dep as
+ (select /*+ materialize*/ d.department_id
+    from departments d
+   where d.department_name like 'A%')
+select e.first_name
+  from employees e
+  join dep d on e.department_id = d.department_id;
 
   
