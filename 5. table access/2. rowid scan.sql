@@ -14,7 +14,7 @@ select t.*, rowid
 
 
 ---- Пример 2. индекс (unq) -> rowid
-select t.*
+select /*+ batch_table_access_by_rowid(t)*/t.*
   from hr.employees t where t.employee_id = 1;
 
 
@@ -26,3 +26,4 @@ select t.*
 select /*+ no_batch_table_access_by_rowid(t)*/ t.*
   from hr.employees t where t.department_id = 1;
 
+batch_table_access_by_rowid
