@@ -5,7 +5,7 @@ declare
 begin
   
   for i in 1..v_total/v_step loop
-    insert /*+ append nologging */ 
+    insert /*+ append */ 
       into passport_black_list(passport_series,
                                passport_number,
                                add_dtime)

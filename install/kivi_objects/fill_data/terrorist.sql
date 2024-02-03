@@ -37,7 +37,7 @@ begin
     v_first_name := v_first_names(trunc(dbms_random.value(1, v_first_names.count)));
     v_last_name := dbms_random.string(opt => 'U', len => 10);
     
-    insert /*+ append nologging */
+    insert /*+ append */
     into terrorist
       (first_name
       ,last_name

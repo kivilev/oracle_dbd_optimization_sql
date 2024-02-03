@@ -50,4 +50,4 @@ end;
 /
 
 alter user kivi quota 17g on users;
-alter user hr quota 200m on users;
+alter user hr quota 500m on users;

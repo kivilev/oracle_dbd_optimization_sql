@@ -1,5 +1,5 @@
-﻿prompt PL/SQL Developer Export Tables for user KIVI@ORACLE19EE
-prompt Created by d.kivilev on 7 Июль 2023 г.
+﻿prompt PL/SQL Developer Export Tables for user D_KIVILEV@ORACLE21XE
+prompt Created by d.kivilev on 23 Июнь 2023 г.
 set feedback off
 set define off
 
@@ -13,20 +13,10 @@ prompt Disabling triggers for COUNTRY_CURRENCY...
 alter table COUNTRY_CURRENCY disable all triggers;
 prompt Disabling triggers for COUNTRY_PHONE...
 alter table COUNTRY_PHONE disable all triggers;
-prompt Disabling triggers for IP_LIST...
-alter table IP_LIST disable all triggers;
 prompt Disabling triggers for PAYMENT_DETAIL_FIELD...
 alter table PAYMENT_DETAIL_FIELD disable all triggers;
-prompt Disabling triggers for WORD_BLACK_LIST...
-alter table WORD_BLACK_LIST disable all triggers;
-prompt Deleting WORD_BLACK_LIST...
-delete from WORD_BLACK_LIST;
-commit;
 prompt Deleting PAYMENT_DETAIL_FIELD...
 delete from PAYMENT_DETAIL_FIELD;
-commit;
-prompt Deleting IP_LIST...
-delete from IP_LIST;
 commit;
 prompt Deleting COUNTRY_PHONE...
 delete from COUNTRY_PHONE;
@@ -1468,15 +1458,17 @@ insert into COUNTRY_PHONE (country_id, phone_prefix)
 values (978, '+49');
 commit;
 prompt 32 records loaded
-
-prompt payment_detail_field fill...
-insert into payment_detail_field values (1, 'CLIENT_SOFTWARE', 'Софт, через который совершался платеж');
-insert into payment_detail_field values (2, 'IP', 'IP адрес плательщика');
-insert into payment_detail_field values (3, 'NOTE', 'Примечание к переводу');
-insert into payment_detail_field values (4, 'IS_CHECKED_FRAUD', 'Проверен ли платеж в системе "АнтиФрод"');
+prompt Loading PAYMENT_DETAIL_FIELD...
+insert into PAYMENT_DETAIL_FIELD (field_id, name, description)
+values (1, 'CLIENT_SOFTWARE', 'Софт, через который совершался платеж');
+insert into PAYMENT_DETAIL_FIELD (field_id, name, description)
+values (2, 'IP', 'IP адрес плательщика');
+insert into PAYMENT_DETAIL_FIELD (field_id, name, description)
+values (3, 'NOTE', 'Примечание к переводу');
+insert into PAYMENT_DETAIL_FIELD (field_id, name, description)
+values (4, 'IS_CHECKED_FRAUD', 'Проверен ли платеж в системе "АнтиФрод"');
 commit;
-
-
+prompt 4 records loaded
 prompt Enabling triggers for CLIENT_DATA_FIELD...
 alter table CLIENT_DATA_FIELD enable all triggers;
 prompt Enabling triggers for COUNTRY...
@@ -1487,12 +1479,8 @@ prompt Enabling triggers for COUNTRY_CURRENCY...
 alter table COUNTRY_CURRENCY enable all triggers;
 prompt Enabling triggers for COUNTRY_PHONE...
 alter table COUNTRY_PHONE enable all triggers;
-prompt Enabling triggers for IP_LIST...
-alter table IP_LIST enable all triggers;
 prompt Enabling triggers for PAYMENT_DETAIL_FIELD...
 alter table PAYMENT_DETAIL_FIELD enable all triggers;
-prompt Enabling triggers for WORD_BLACK_LIST...
-alter table WORD_BLACK_LIST enable all triggers;
 
 set feedback on
 set define on

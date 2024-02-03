@@ -41,7 +41,7 @@ begin
   
     select client_seq.nextval bulk collect into v_client_ids from dual connect by level <= c_step_count;
   
-    insert /*+ append nologging */
+    insert /*+ append  */
     into client
       (client_id
       ,is_active
@@ -51,7 +51,7 @@ begin
             ,client_api_pack.c_not_blocked
         from table(v_client_ids) t;
   
-    insert /*+ append nologging */
+    insert /*+ append  */
     into client_data
       select value(c) client_id
             ,value(t).field_id field_id
@@ -61,7 +61,7 @@ begin
   
     select t_number_pair(value(c), wallet_seq.nextval) bulk collect into v_wallets from table(v_client_ids) c;
   
-    insert /*+ append nologging */
+    insert /*+ append  */
     into wallet
       (wallet_id
       ,client_id
@@ -71,7 +71,7 @@ begin
             ,wallet_api_pack.c_wallet_status_active
         from table(v_wallets) c;
   
-    insert /*+ append nologging */
+    insert /*+ append  */
     into account
       (account_id
       ,client_id
