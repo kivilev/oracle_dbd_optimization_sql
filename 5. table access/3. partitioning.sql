@@ -1,4 +1,4 @@
-﻿/*
+/*
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
@@ -22,7 +22,7 @@ interval (interval '1' day)
 insert into demo_payment_range 
  select level, trunc(sysdate) + level from dual connect by level <= 100;
 
-select * from user_tab_partitions t where t.table_name = 'DEMO_PAYMENT_RANGE'
+select * from user_tab_partitions t where t.table_name = 'DEMO_PAYMENT_RANGE';
 
 -- LIST
 create table demo_country_list(
