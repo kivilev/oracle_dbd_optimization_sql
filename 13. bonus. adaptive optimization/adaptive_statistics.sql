@@ -1,15 +1,16 @@
 /*
-  Êóðñ: Îïòèìèçàöèÿ SQL
-  Àâòîð: Êèâèëåâ Ä.Ñ. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+  ÐšÑƒÑ€Ñ: ÐžÐ¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ†Ð¸Ñ SQL
+  ÐÐ²Ñ‚Ð¾Ñ€: ÐšÐ¸Ð²Ð¸Ð»ÐµÐ² Ð”.Ð¡. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Ëåêöèÿ 4. Àäàïòèâíàÿ îïòèìèçàöèÿ çàïðîñîâ (Adaptive Query Optimization)
+  Ð›ÐµÐºÑ†Ð¸Ñ 4. ÐÐ´Ð°Ð¿Ñ‚Ð¸Ð²Ð½Ð°Ñ Ð¾Ð¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð² (Adaptive Query Optimization)
 
-  Îïèñàíèå ñêðèïòà: ïðèìåðû àäàïòèâíîé ñòàòèñòèêè
+  ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ ÑÐºÑ€Ð¸Ð¿Ñ‚Ð°: Ð¿Ñ€Ð¸Ð¼ÐµÑ€Ñ‹ Ð°Ð´Ð°Ð¿Ñ‚Ð¸Ð²Ð½Ð¾Ð¹ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ¸
   
 */
-alter session set optimizer_adaptive_statistics = false;
+call flush_all();
+alter session set optimizer_adaptive_statistics = true;
 
----- 1. Ïðèìåð 
+---- 1. ÐŸÑ€Ð¸Ð¼ÐµÑ€ 
 drop  table del$tab;
 create table del$tab(
  id number(10),
@@ -32,71 +33,53 @@ commit;
 
 select * from user_tab_statistics t where t.table_name = 'DEL$TAB';
 
--- íåêèé çàïðîñ ñî ñëîæíûìè ïðåäèêàòàìè -> òðóäíî òî÷íî ïðåäóàãàäàòü -> E-rows áóäåò îòëè÷àòüñÿ îò A-rows (ïîêàçûâàòü ñ âûâîäîì ïëàíà)
+-- Ð½ÐµÐºÐ¸Ð¹ Ð·Ð°Ð¿Ñ€Ð¾Ñ ÑÐ¾ ÑÐ»Ð¾Ð¶Ð½Ñ‹Ð¼Ð¸ Ð¿Ñ€ÐµÐ´Ð¸ÐºÐ°Ñ‚Ð°Ð¼Ð¸ -> Ñ‚Ñ€ÑƒÐ´Ð½Ð¾ Ñ‚Ð¾Ñ‡Ð½Ð¾ Ð¿Ñ€ÐµÐ´ÑƒÐ°Ð³Ð°Ð´Ð°Ñ‚ÑŒ -> E-rows Ð±ÑƒÐ´ÐµÑ‚ Ð¾Ñ‚Ð»Ð¸Ñ‡Ð°Ñ‚ÑŒÑÑ Ð¾Ñ‚ A-rows (Ð¿Ð¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ñ Ð²Ñ‹Ð²Ð¾Ð´Ð¾Ð¼ Ð¿Ð»Ð°Ð½Ð°)
 select /*+ GATHER_PLAN_STATISTICS */
         *
   from del$tab t
-  join del$tab t2 on t.id = t2.id and t2.v5 like '%99%'                 
- where t.id between 10200 and 1022000 or t.v2 like '%32%'
+  join del$tab t2 on (t.id = t2.id and t2.v5 like '%99%') or t2.v5 like '199%'                  
+ where  t.v2 like '%32%'
     or t.v4 like '%46%';
-
-select * from dbms_xplan.display_cursor(sql_id => 'bnuf32savw8q9', cursor_child_no =>  0, format => 'ALLSTATS ADVANCED LAST');
-
 
 select * from v$sqlarea t where t.sql_fulltext like '%del$tab t%';
 
+select * from dbms_xplan.display_cursor(sql_id => '5myt6hrw5qamj', cursor_child_no =>  0, format => 'ALLSTATS ADVANCED LAST');
 
--- ïîñëå ïåðâîãî âûïîëíåíèÿ áóäåò child-êóðñîð ñ Y â use_feedback_stats
+
+
+
+-- Ð¿Ð¾ÑÐ»Ðµ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð±ÑƒÐ´ÐµÑ‚ child-ÐºÑƒÑ€ÑÐ¾Ñ€ Ñ Y Ð² use_feedback_stats
 select t.use_feedback_stats, t.reason, c.sql_text, c.plan_hash_value
   from v$sql_shared_cursor t
   join v$sql c on c.child_address = t.child_address
- where t.sql_id = '1c9q4nqtnyk61';
+ where t.sql_id = '5myt6hrw5qamj';
 
--- ïîñëå ïîâòîðíîãî âûïîëíåíèÿ áóäåò E-rows = A-rows + â Note: statistics feedback used for this statement
+-- Ð¿Ð¾ÑÐ»Ðµ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾Ð³Ð¾ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð±ÑƒÐ´ÐµÑ‚ E-rows = A-rows + Ð² Note: statistics feedback used for this statement
 
 
----- 2. Ïîèñê çàïðîñîâ ñ óòî÷íåííîé ñòàòèñòèêîé
+---- 2. ÐŸÐ¾Ð¸ÑÐº Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð² Ñ ÑƒÑ‚Ð¾Ñ‡Ð½ÐµÐ½Ð½Ð¾Ð¹ ÑÑ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ¾Ð¹
 
--- ïîèñê çàïðîñîâ ñ ReOptimize
+-- Ð¿Ð¾Ð¸ÑÐº Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð² Ñ ReOptimize
 select t.is_reoptimizable, t.*
   from v$sql t
  where t.is_reoptimizable = 'Y' and t.parsing_schema_name = 'SYS';
 
--- âñå child-êóðñîðû êîêðåòíîãî çàïðîñà
+-- Ð²ÑÐµ child-ÐºÑƒÑ€ÑÐ¾Ñ€Ñ‹ ÐºÐ¾ÐºÑ€ÐµÑ‚Ð½Ð¾Ð³Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
 select t.is_reoptimizable, t.child_number, t.*
   from v$sql t 
- where t.sql_id = '5y8fdnf3nc0bf' order by t.child_number;
+ where t.sql_id = 'f1d6mrj4uhwh5' order by t.child_number;
 
--- ïðè÷èíû èçìåíåíèÿ
+-- Ð¿Ñ€Ð¸Ñ‡Ð¸Ð½Ñ‹ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ
 select * 
   from v$sql_shared_cursor t
- where t.sql_id = '5207cx6b6njnh';
+ where t.sql_id = 'f1d6mrj4uhwh5';
 
 
----- 3. Äèðåêòèâû
+---- 3. Ð”Ð¸Ñ€ÐµÐºÑ‚Ð¸Ð²Ñ‹
 select *
   from dba_sql_plan_directives d
   join dba_sql_plan_dir_objects ob on d.directive_id = ob.directive_id
  where ob.owner = 'HR'
    and d.created >= sysdate - 10
 
-
-5y8fdnf3nc0bf
-a5punpk2jw41c
-4d0zg5nfsch0n
-5207cx6b6njnh
-6ks643fu8hp3j
-73m6jz75p0qba
-86k3wtkjhwqpa
-6tmbv9bntwtwg
-f1d6mrj4uhwh5
-f1d6mrj4uhwh5
-aqpjmw58ssz7u
-2g2rgbn5b910q
-6frdjqsakt6kv
-8k4193btyd7hd
-b13kw31uqpa16
-0v37jgm4mdnjw
-bz4gvqgbzdqzy
-bsubvgrdu5tjb
-0xdytnj8wdvtj
+select * from 

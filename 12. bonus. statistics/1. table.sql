@@ -1,14 +1,14 @@
 /*
-  Курс: Оптимизация SQL
-  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+  РљСѓСЂСЃ: РћРїС‚РёРјРёР·Р°С†РёСЏ SQL
+  РђРІС‚РѕСЂ: РљРёРІРёР»РµРІ Р”.РЎ. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 11. Статистика
+  Р›РµРєС†РёСЏ 11. РЎС‚Р°С‚РёСЃС‚РёРєР°
 
-  Описание скрипта: статистика по таблицам
+  РћРїРёСЃР°РЅРёРµ СЃРєСЂРёРїС‚Р°: СЃС‚Р°С‚РёСЃС‚РёРєР° РїРѕ С‚Р°Р±Р»РёС†Р°Рј
   
 */
 
----- 1) Статистика по таблице
+---- РџСЂРёРјРµСЂ 1. РЎС‚Р°С‚РёСЃС‚РёРєР° РїРѕ С‚Р°Р±Р»РёС†Рµ HR.EMPLOYEES
 select t.num_rows, t.blocks, t.avg_row_len,
        t.stale_stats, t.last_analyzed, 
        t.sample_size, t.*
@@ -16,72 +16,96 @@ select t.num_rows, t.blocks, t.avg_row_len,
  where t.table_name = 'EMPLOYEES'
    and t.owner = 'HR';
 
-
-
--- так же есть информация по статистике
+-- РІ xxx_tables С‚Р°Рє Р¶Рµ РµСЃС‚СЊ РёРЅС„РѕСЂРјР°С†РёСЏ РїРѕ СЃС‚Р°С‚РёСЃС‚РёРєРµ
 select t.num_rows, t.blocks, t.avg_row_len,
        t.last_analyzed, t.*
   from all_tables t
  where t.table_name = 'EMPLOYEES'
    and t.owner = 'HR';
 
----- 2) Эксперименты со статистикой
+
+---- РџСЂРёРјРµСЂ 2. CTAS + СЃР±РѕСЂРєР° СЃС‚Р°С‚С‹
 drop table demo$tab$stat;
 
--- вставка 1М - статистика собирается сразу (Oracle 12c и выше)
+-- РІСЃС‚Р°РІРєР° 1Рњ - СЃС‚Р°С‚РёСЃС‚РёРєР° СЃРѕР±РёСЂР°РµС‚СЃСЏ СЃСЂР°Р·Сѓ (Oracle 12c Рё РІС‹С€Рµ) -> РїРѕСЃРјРѕС‚СЂРµС‚СЊ РїР»Р°РЅ (statistics gathering)
 create table demo$tab$stat as
-select level col1, 'sssss' col2, rpad('я',50,'ъ') col3
+select level col1, 'sssss' col2, rpad('СЏ',50,'СЉ') col3
   from dual
 connect by level <= 1000000;
 
--- статистика по таблице
+-- СЃС‚Р°С‚РёСЃС‚РёРєР° РїРѕ С‚Р°Р±Р»РёС†Рµ
 select sysdate, t.num_rows, t.blocks, t.avg_row_len,
        t.stale_stats, t.last_analyzed, 
        t.sample_size, t.*
   from user_tab_statistics t
  where  t.table_name = 'DEMO$TAB$STAT';
  
--- truncate table DEMO$TAB$STAT;
 
--- вставка 1М -> статистика не собирается.
+
+---- РџСЂРёРјРµСЂ 3. РЈСЃС‚Р°СЂРµРІР°РЅРёРµ СЃС‚Р°С‚РёСЃС‚РёРєРё + СЃР±РѕСЂ РІСЂСѓС‡РЅСѓСЋ
+-- РІСЃС‚Р°РІРєР° 1K РќР• РїСЂРёРІРµРґРµС‚ Рє СѓСЃС‚Р°СЂРµРІР°РЅРёСЋ (STALE = NO)
 insert into demo$tab$stat
-select level col1, 'sssss' col2, rpad('я',50,'1') col3
+select level col1, 'sssss' col2, rpad('СЏ',50,'1') col3
   from dual
-connect by level <= 1000000;
+connect by level <=  1000;
+commit;
 
--- вызов сбора вручную
-call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO$TAB$STAT');
+-- СЃС‚Р°С‚Р°
+select sysdate, t.num_rows, t.stale_stats, t.last_analyzed
+  from user_tab_statistics t
+ where  t.table_name = 'DEMO$TAB$STAT';
 
--- вставка 1K НЕ приведет к устареванию (STALE = NO)
+-- РІСЃС‚Р°РІРєР° 100K РїСЂРёРІРµРґРµС‚ Рє СѓСЃС‚Р°СЂРµРІР°РЅРёСЋ (STALE = YES), РЅРѕ СЃС‚Р°С‚РёСЃС‚РёРєР° Р”Рћ СЃР±РѕСЂР° РЅРµ РёР·РјРµРЅРёС‚СЃСЏ
 insert into demo$tab$stat
-select level col1, 'sssss' col2, rpad('я',50,'1') col3
-  from dual
-connect by level <= 1000;
-
--- вставка 100K приведет к устареванию (STALE = YES)
-insert into demo$tab$stat
-select level col1, 'sssss' col2, rpad('я',50,'1') col3
+select level col1, 'sssss' col2, rpad('СЏ',50,'1') col3
   from dual
 connect by level <= 100000;
+commit;
 
--- пример как неактуальная статистика влияет на план
--- посмотреть план после вставки -> столбец cardinality
+-- СЃС‚Р°С‚Р°
+select sysdate, t.num_rows, t.stale_stats, t.last_analyzed
+  from user_tab_statistics t
+ where  t.table_name = 'DEMO$TAB$STAT';
+
+
+-- РІС‹Р·РѕРІ СЃР±РѕСЂР° РІСЂСѓС‡РЅСѓСЋ -> РїРѕСЃРјРѕС‚СЂРµС‚СЊ СЃС‚Р°С‚
+call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO$TAB$STAT');
+
+
+-- РїСЂРёРјРµСЂ РєР°Рє РЅРµР°РєС‚СѓР°Р»СЊРЅР°СЏ СЃС‚Р°С‚РёСЃС‚РёРєР° РІР»РёСЏРµС‚ РЅР° РїР»Р°РЅ
+-- РїРѕСЃРјРѕС‚СЂРµС‚СЊ РїР»Р°РЅ РїРѕСЃР»Рµ РІСЃС‚Р°РІРєРё -> СЃС‚РѕР»Р±РµС† cardinality
 select count(*) cnt from demo$tab$stat;
 
 
--- Для секционированных таблиц
-select  t.num_rows, t.blocks, t.avg_row_len,
-        t.last_analyzed, 
+---- РџСЂРёРјРµСЂ 4. РЎРµРєС†РёРѕРЅРёСЂРѕРІР°РЅРЅС‹Рµ С‚Р°Р±Р»РёС†С‹
+
+drop table del$sale_hash;
+
+create table del$sale_hash(
+  sale_id      number(30) not null,
+  customer_id  number(30) not null
+) 
+partition by hash(customer_id)
+(partition p1, partition p2);
+
+insert into del$sale_hash select level, level from dual connect by level <= 100; 
+commit;
+
+-- Р”Р»СЏ СЃРµРєС†РёРѕРЅРёСЂРѕРІР°РЅРЅС‹С… С‚Р°Р±Р»РёС†
+select t.table_name, t.partition_name, t.num_rows, t.blocks, t.avg_row_len,
+       t.last_analyzed, 
        t.sample_size, t.*
   from all_tab_partitions t
--- where table_owner = 'my_schema'
---   and table_name = 'my_table'
-;
+ where table_owner = user
+   and table_name = 'DEL$SALE_HASH';
+   
+select t.num_rows, t.* from all_tab_statistics t where t.table_name = 'DEL$SALE_HASH';-- and t.partition_name = 'P1';
 
-select t.* from all_tab_partitions t where t.;
+-- СЃРѕР±РёСЂР°РµРј СЃС‚Р°С‚Сѓ РґР»СЏ 1Р№ СЃРµРєС†РёРё (СЃРјРѕС‚СЂРёРј)
+call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEL$SALE_HASH', partname => 'P1');
 
-select t.* from all_tab_statistics t where t.partition_name = 'SYS_P1262';
+-- РґР»СЏ РґСЂСѓРіРѕР№
+call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEL$SALE_HASH', partname => 'P2');
 
-call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO_CLIENT_HASH', partname => 'SYS_P1262');
 
 

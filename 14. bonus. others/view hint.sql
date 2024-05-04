@@ -1,32 +1,31 @@
 /*
-  Демо проталкивания хинтов во view
+  Р”РµРјРѕ РїСЂРѕС‚Р°Р»РєРёРІР°РЅРёСЏ С…РёРЅС‚РѕРІ РІРѕ view
 */
 
----- Пример 1. Хинты во view через алиасы 
--- подходит, когда нет указания других объектов
+---- РџСЂРёРјРµСЂ 1. РҐРёРЅС‚С‹ РІРѕ view С‡РµСЂРµР· Р°Р»РёР°СЃС‹ 
+-- РїРѕРґС…РѕРґРёС‚, РєРѕРіРґР° РЅРµС‚ СѓРєР°Р·Р°РЅРёСЏ РґСЂСѓРіРёС… РѕР±СЉРµРєС‚РѕРІ
 create or replace view del$view1 as
 select e.last_name, e.department_id, d.location_id
   from hr.employees e
-  join departments d
-    on e.department_id = d.department_id;
+  join departments d on e.department_id = d.department_id;
 
--- без хинтов
+-- Р±РµР· С…РёРЅС‚РѕРІ
 explain plan for
 select t.* 
   from del$view1 t;
 
 select * from dbms_xplan.display(format => 'ADVANCED');
 
--- с хинтами
+-- СЃ С…РёРЅС‚Р°РјРё
 explain plan for
 select /*+ use_hash(t.e t.d) leading(t.d t.e) FULL(t.e) */ t.* 
   from del$view1 t;
 select * from dbms_xplan.display(format => 'ADVANCED');
 
 
----- Пример 2. Хинты во view (через QB_NAME)
+---- РџСЂРёРјРµСЂ 2. РҐРёРЅС‚С‹ РІРѕ view (С‡РµСЂРµР· QB_NAME)
 
--- через алиасы хинтование не работает, т.к. есть другие объекты
+-- С‡РµСЂРµР· Р°Р»РёР°СЃС‹ С…РёРЅС‚РѕРІР°РЅРёРµ РЅРµ СЂР°Р±РѕС‚Р°РµС‚, С‚.Рє. РµСЃС‚СЊ РґСЂСѓРіРёРµ РѕР±СЉРµРєС‚С‹
 explain plan for
 select /*+ use_hash(t.e t.d) leading(t.d t.e) FULL(t.e) */ * 
   from del$view1 t
@@ -34,7 +33,7 @@ select /*+ use_hash(t.e t.d) leading(t.d t.e) FULL(t.e) */ *
 select * from dbms_xplan.display(format => 'ADVANCED');
 
 
--- получаем на предыдущем этапе object_alias (лучше через ide наглядней), хинтуем
+-- РїРѕР»СѓС‡Р°РµРј РЅР° РїСЂРµРґС‹РґСѓС‰РµРј СЌС‚Р°РїРµ object_alias (Р»СѓС‡С€Рµ С‡РµСЂРµР· ide РЅР°РіР»СЏРґРЅРµР№), С…РёРЅС‚СѓРµРј
 explain plan for
 select /*+ USE_HASH(E@SEL$2 D@SEL$2) LEADING(E@SEL$2 D@SEL$2) FULL(E@SEL$2) FULL(D@SEL$2)*/ * 
   from del$view1 t
@@ -42,5 +41,5 @@ select /*+ USE_HASH(E@SEL$2 D@SEL$2) LEADING(E@SEL$2 D@SEL$2) FULL(E@SEL$2) FULL
 select * from dbms_xplan.display(format => 'ADVANCED');
 
 
-
+-- РР›Р РёСЃРїРѕР»СЊР·СѓРµРј qb_name
 

@@ -1,4 +1,4 @@
-﻿
+
 -- drop table del$1;
 create table del$1(
   id number(30),
@@ -7,10 +7,11 @@ create table del$1(
 );
 
 insert /*+ append */ into del$1
-select level, lpad(level, 200, '_') from dual connect by level <= 100000;
+select level, lpad(level, 200, '_') from dual connect by level <= 10000;
 commit;
 
 
+--- смотрим плна запроса -> FTS
 select * from del$1 where col1 = 'some_value';
 
 

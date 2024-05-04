@@ -1,4 +1,4 @@
-﻿-- drop table del$1;
+-- drop table del$1;
 create table del$1(
   id number(30),
   col1 varchar2(300 char),
@@ -8,5 +8,9 @@ create table del$1(
 -- вставка без commit
 insert into del$1 values (100001, 'some_value');
 
+---- выполняем в другой сессии
+alter session set ddl_lock_timeout = 60;
+
+alter table DEL$1 rename column col1 to COL11;
 
 

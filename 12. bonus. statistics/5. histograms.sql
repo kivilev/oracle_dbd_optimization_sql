@@ -1,10 +1,10 @@
 /*
-  Курс: Оптимизация SQL
-  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+  РљСѓСЂСЃ: РћРїС‚РёРјРёР·Р°С†РёСЏ SQL
+  РђРІС‚РѕСЂ: РљРёРІРёР»РµРІ Р”.РЎ. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 11. Статистика
+  Р›РµРєС†РёСЏ 11. РЎС‚Р°С‚РёСЃС‚РёРєР°
 
-  Описание скрипта: гистограммы
+  РћРїРёСЃР°РЅРёРµ СЃРєСЂРёРїС‚Р°: РіРёСЃС‚РѕРіСЂР°РјРјС‹
   
 */
 
@@ -19,22 +19,22 @@ create table sale$del(
 );
 create index sale$del_i on sale$del(order_date);
 
----- Пример 1. Запросы с и без гистограмм
+---- РџСЂРёРјРµСЂ 1. Р—Р°РїСЂРѕСЃС‹ СЃ Рё Р±РµР· РіРёСЃС‚РѕРіСЂР°РјРј
 
--- 1) Забиваем данными
+-- 1) Р—Р°Р±РёРІР°РµРј РґР°РЅРЅС‹РјРё
 insert into sale$del
 select sale$del_pk.nextval, date'2000-01-01' + level, 'some_info'||level 
   from dual connect by level <= 10000; 
 commit;
 
--- 2) посмотрим статистику по колонкам --> пусто, стата еще не собиралась
+-- 2) РїРѕСЃРјРѕС‚СЂРёРј СЃС‚Р°С‚РёСЃС‚РёРєСѓ РїРѕ РєРѕР»РѕРЅРєР°Рј --> РїСѓСЃС‚Рѕ, СЃС‚Р°С‚Р° РµС‰Рµ РЅРµ СЃРѕР±РёСЂР°Р»Р°СЃСЊ
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
--- 3) соберем статистику по таблице -> стата по колонкам появится. histogram -> NONE
+-- 3) СЃРѕР±РµСЂРµРј СЃС‚Р°С‚РёСЃС‚РёРєСѓ РїРѕ С‚Р°Р±Р»РёС†Рµ -> СЃС‚Р°С‚Р° РїРѕ РєРѕР»РѕРЅРєР°Рј РїРѕСЏРІРёС‚СЃСЏ. histogram -> NONE
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE AUTO'); 
 
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
@@ -43,13 +43,13 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
--- 4) добавим 10К строк на одну дату
+-- 4) РґРѕР±Р°РІРёРј 10Рљ СЃС‚СЂРѕРє РЅР° РѕРґРЅСѓ РґР°С‚Сѓ
 insert into sale$del
 select sale$del_pk.nextval, date'1999-12-31', 'some_info'||level 
   from dual connect by level <= 10000; 
 commit;
 
--- 5) собираем стату и смотрим -> histogram -> NONE, т.к. еще ни разу не выполнялся запрос по столбу
+-- 5) СЃРѕР±РёСЂР°РµРј СЃС‚Р°С‚Сѓ Рё СЃРјРѕС‚СЂРёРј -> histogram -> NONE, С‚.Рє. РµС‰Рµ РЅРё СЂР°Р·Сѓ РЅРµ РІС‹РїРѕР»РЅСЏР»СЃСЏ Р·Р°РїСЂРѕСЃ РїРѕ СЃС‚РѕР»Р±Сѓ
 call dbms_stats.gather_table_stats (user, 'sale$del');
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
@@ -57,20 +57,60 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
----- Какой будет план у 2х запросов ДО и ПОСЛЕ построения гистограмм?
+---- РљР°РєРѕР№ Р±СѓРґРµС‚ РїР»Р°РЅ Сѓ 2С… Р·Р°РїСЂРѕСЃРѕРІ Р”Рћ Рё РџРћРЎР›Р• РїРѕСЃС‚СЂРѕРµРЅРёСЏ РіРёСЃС‚РѕРіСЂР°РјРј?
 
--- 1 строка
+-- 1 СЃС‚СЂРѕРєР°
 select *
   from sale$del t
  where t.order_date = date'2000-01-02';
 
--- 10К строк
+-- 10Рљ СЃС‚СЂРѕРє
 select count(*)
   from sale$del t
  where t.order_date = date'1999-12-31';
+
+
+---- РџСЂРёРјРµСЂ 2. РџРѕРІРµРґРµРЅРёРµ СЃ Bind vars (Р°РґР°РїС‚РёРІРЅС‹Рµ РєСѓСЂСЃРѕСЂС‹)
+-- call flush_all();
+
+declare
+ v_date2 date := date'1999-12-31'; 
+ v_date1 date := date'2000-01-02';
+ 
+  v_cnt  number;
+begin
+  select /*+ gather_plan_statistics*/ count(*)
+    into v_cnt
+    from sale$del t
+   where t.order_date = v_date1;
+   
+   select /*+ gather_plan_statistics*/ count(*)
+    into v_cnt
+    from sale$del t
+   where t.order_date = v_date2;   
+end;
+/
+
+select * from v$sqlarea t where t.sql_fulltext like '%SALE$DEL%';
+
+select t.child_number, is_bind_sensitive, is_bind_aware, t.* 
+  from v$sql t where t.sql_id = 'gmghjfw5xfsqq';
+
+select * from v$sql_shared_cursor t where t.sql_id = 'gmghjfw5xfsqq';
+
+
+-- РґРѕРї РёРЅС„Р° РїРѕ РєСѓСЂСЃРѕСЂР°Рј С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅС‹Рј Рє Bind-РїРµСЂРµРјРµРЅРЅС‹Рј
+select * from v$sql_cs_histogram
+where sql_id = 'gmghjfw5xfsqq';
+
+select * from v$sql_cs_selectivity
+where sql_id = 'gmghjfw5xfsqq';
+
+select * from dbms_xplan.display_cursor(sql_id => 'gmghjfw5xfsqq', cursor_child_no => 2, format => 'ADVANCED ALLSTATS' );
+
   
 /*
--- посмотреть обращения можно здесь
+-- РїРѕСЃРјРѕС‚СЂРµС‚СЊ РѕР±СЂР°С‰РµРЅРёСЏ РјРѕР¶РЅРѕ Р·РґРµСЃСЊ
 select x.*, c.column_name
   from dba_objects t
   join sys.col_usage$ x on x.obj# = t.object_id
@@ -78,13 +118,13 @@ select x.*, c.column_name
 where t.owner = 'HR' and t.object_name = 'SALE$DEL';
 */
 
----- Пример 2. Сбор статистики с указанием опций
+---- РџСЂРёРјРµСЂ 2. РЎР±РѕСЂ СЃС‚Р°С‚РёСЃС‚РёРєРё СЃ СѓРєР°Р·Р°РЅРёРµРј РѕРїС†РёР№
 
--- все колонки, с авто выбором количества корзин
+-- РІСЃРµ РєРѕР»РѕРЅРєРё, СЃ Р°РІС‚Рѕ РІС‹Р±РѕСЂРѕРј РєРѕР»РёС‡РµСЃС‚РІР° РєРѕСЂР·РёРЅ
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE AUTO'); 
--- все колонки, с ручным указанием количества корзин
+-- РІСЃРµ РєРѕР»РѕРЅРєРё, СЃ СЂСѓС‡РЅС‹Рј СѓРєР°Р·Р°РЅРёРµРј РєРѕР»РёС‡РµСЃС‚РІР° РєРѕСЂР·РёРЅ
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE 8');
--- конкретная колонка, с авто выбором количества корзин
+-- РєРѕРЅРєСЂРµС‚РЅР°СЏ РєРѕР»РѕРЅРєР°, СЃ Р°РІС‚Рѕ РІС‹Р±РѕСЂРѕРј РєРѕР»РёС‡РµСЃС‚РІР° РєРѕСЂР·РёРЅ
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR COLUMNS SALE_ID SIZE AUTO'); 
 
 select *
@@ -98,10 +138,10 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
    and t.owner = 'HR';
 
    
----- Пример 3. Проверим, что при соблюдении условия NDV < N buckets будет FREQUENCY-гистограмма
--- 1) пересоздадим таблицу
+---- РџСЂРёРјРµСЂ 3. РџСЂРѕРІРµСЂРёРј, С‡С‚Рѕ РїСЂРё СЃРѕР±Р»СЋРґРµРЅРёРё СѓСЃР»РѕРІРёСЏ NDV < N buckets Р±СѓРґРµС‚ FREQUENCY-РіРёСЃС‚РѕРіСЂР°РјРјР°
+-- 1) РїРµСЂРµСЃРѕР·РґР°РґРёРј С‚Р°Р±Р»РёС†Сѓ
 
--- 2) добавим 100 строк
+-- 2) РґРѕР±Р°РІРёРј 100 СЃС‚СЂРѕРє
 insert into sale$del(sale_id,
                      order_date,
                      some_info)
@@ -109,49 +149,49 @@ select sale$del_pk.nextval, date'2000-01-01' + level, 'some_info'||level
   from dual connect by level <= 100; 
 commit;
 
--- 3) выполним запрос к полю
+-- 3) РІС‹РїРѕР»РЅРёРј Р·Р°РїСЂРѕСЃ Рє РїРѕР»СЋ
 select *
   from sale$del t
  where t.sale_id = 1;
 
--- 4) соберем стату с количеством корзин (254) > чем количество уникальных (100)
+-- 4) СЃРѕР±РµСЂРµРј СЃС‚Р°С‚Сѓ СЃ РєРѕР»РёС‡РµСЃС‚РІРѕРј РєРѕСЂР·РёРЅ (254) > С‡РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СѓРЅРёРєР°Р»СЊРЅС‹С… (100)
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR COLUMNS SALE_ID SIZE 254'); 
    
--- 5) посмотрим тип гистограммы на столбце
+-- 5) РїРѕСЃРјРѕС‚СЂРёРј С‚РёРї РіРёСЃС‚РѕРіСЂР°РјРјС‹ РЅР° СЃС‚РѕР»Р±С†Рµ
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
----- Пример 4. Подробности про построенные гистограммы
--- 1) пересоздадим таблицу
+---- РџСЂРёРјРµСЂ 4. РџРѕРґСЂРѕР±РЅРѕСЃС‚Рё РїСЂРѕ РїРѕСЃС‚СЂРѕРµРЅРЅС‹Рµ РіРёСЃС‚РѕРіСЂР°РјРјС‹
+-- 1) РїРµСЂРµСЃРѕР·РґР°РґРёРј С‚Р°Р±Р»РёС†Сѓ
 
--- 2) заполним данными 
+-- 2) Р·Р°РїРѕР»РЅРёРј РґР°РЅРЅС‹РјРё 
 insert into sale$del
 select sale$del_pk.nextval, date'2000-01-01', 'some_info'||level 
   from dual connect by level <= 100; 
 commit;
 
--- 3) выполним запрос к sale_id и соберем стату
+-- 3) РІС‹РїРѕР»РЅРёРј Р·Р°РїСЂРѕСЃ Рє sale_id Рё СЃРѕР±РµСЂРµРј СЃС‚Р°С‚Сѓ
 select *
   from sale$del t
  where t.sale_id = 1;
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR COLUMNS SALE_ID SIZE 5'); 
 
--- 4) посмотрим распределение по гистограмме
+-- 4) РїРѕСЃРјРѕС‚СЂРёРј СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РїРѕ РіРёСЃС‚РѕРіСЂР°РјРјРµ
 select * 
   from all_tab_histograms t
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
--- 5) опять вставим 1000 c одинаковым ключем   
+-- 5) РѕРїСЏС‚СЊ РІСЃС‚Р°РІРёРј 1000 c РѕРґРёРЅР°РєРѕРІС‹Рј РєР»СЋС‡РµРј   
 insert into sale$del
 select 150, date'2000-01-01', 'some_info'||level 
   from dual connect by level <= 1000; 
 commit;   
 
--- 6) соберем и проверим -> гистограмма перестроилась
+-- 6) СЃРѕР±РµСЂРµРј Рё РїСЂРѕРІРµСЂРёРј -> РіРёСЃС‚РѕРіСЂР°РјРјР° РїРµСЂРµСЃС‚СЂРѕРёР»Р°СЃСЊ
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR COLUMNS SALE_ID SIZE 5'); 
 select * 
   from all_tab_histograms t

@@ -6,8 +6,12 @@ create table del$1(
 );
 
 insert /*+ append */ into del$1
-select level, lpad(level, 200, '_') from dual connect by level <= 100000;
+select level, lpad(level, 200, '_') from dual connect by level <= 10000;
 commit;
 
+---- не используется индекс по PK
 select * from del$1 t where t.id = 11;
+
+---- используется индекс по PK
+select * from del$1 t where t.id = '11'
 

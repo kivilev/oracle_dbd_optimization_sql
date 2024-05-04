@@ -3,31 +3,37 @@
 
 */
 
----- Пример 1. Всего ~2K ожиданий
+---- РџСЂРёРјРµСЂ 1. Р’СЃРµРіРѕ ~2K РѕР¶РёРґР°РЅРёР№
 select * from v$event_name order by name;
+select t.wait_class, count(*) from v$event_name t group by t.wait_class order by 2 desc;
 
 
----- Пример 2. Ожидания "PL/SQL lock timer" и "library cache pin"
--- создадим процедуру
+---- РџСЂРёРјРµСЂ 2. РћР¶РёРґР°РЅРёСЏ "PL/SQL lock timer" Рё "library cache pin"
+-- СЃРѕР·РґР°РґРёРј РїСЂРѕС†РµРґСѓСЂСѓ
 create or replace procedure del$demo
 is
 begin
-  dbms_session.sleep(60); -- 1 минуту спит
+  dbms_session.sleep(60); -- 1 РјРёРЅСѓС‚Сѓ СЃРїРёС‚
 end;
 /
 
--- запускаем в sqplus hr/booble@clo-ora19ee-db1
+-- Р·Р°РїСѓСЃРєР°РµРј РІ sqlplus hr/booble12@ora21xe
 call del$demo();
 
--- в текущей сессии пробуем перекомпилировать
-alter procedure del$demo compile;
+-- РІ С‚РµРєСѓС‰РµР№ СЃРµСЃСЃРёРё РїСЂРѕР±СѓРµРј РїРµСЂРµРєРѕРјРїРёР»РёСЂРѕРІР°С‚СЊ
+alter procedure hr.del$demo compile;
 
--- смотрим список сессий и колонки с ожиданием (скрин session_waits.png)
-
-
+-- СЃРјРѕС‚СЂРёРј СЃРїРёСЃРѕРє СЃРµСЃСЃРёР№ Рё РєРѕР»РѕРЅРєРё СЃ РѕР¶РёРґР°РЅРёРµРј (СЃРєСЂРёРЅ session_waits.png)
 
 
----- Пример 3.  Ожидания из трассировки (event_waits_example_ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc.txt)
+---- РџСЂРёРјРµСЂ 3. РўСЂР°СЃСЃРёСЂРѕРІРѕС‡РЅС‹Р№ С„Р°Р№Р» ORCLCDB_ora_2830885_REGISTER_NEW_CLIENT_d4.trc.txt
+
+select *
+  from V$EVENT_NAME t
+ where t.name = 'direct path read';
+
+
+---- РџСЂРёРјРµСЂ 4.  РћР¶РёРґР°РЅРёСЏ РёР· С‚СЂР°СЃСЃРёСЂРѕРІРєРё (event_waits_example_ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc.txt)
 
 Elapsed times include waiting on following events:
   Event waited on                             Times   Max. Wait  Total Waited
@@ -53,12 +59,12 @@ select *
   from V$EVENT_NAME t
  where t.name = 'db file single write';
  
--- Описание ожидания
+-- РћРїРёСЃР°РЅРёРµ РѕР¶РёРґР°РЅРёСЏ
 -- https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/descriptions-of-wait-events.html#GUID-99DA16ED-FB60-4589-BCBB-29E6AD13E084
 
 
 
----- показать на примере
+---- РїРѕРєР°Р·Р°С‚СЊ РЅР° РїСЂРёРјРµСЂРµ
 declare
   v_client_id   client.client_id%type;
   v_client_data t_client_data_array := t_client_data_array(t_client_data(client_api_pack.c_first_name_field_id, 'John'),

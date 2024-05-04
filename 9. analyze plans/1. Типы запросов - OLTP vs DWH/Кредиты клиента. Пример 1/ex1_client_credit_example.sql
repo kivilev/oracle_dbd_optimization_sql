@@ -13,8 +13,6 @@ create table client(
 );
 comment on table client is 'Table for example. You can delete it';
 
-select * from client
-
 insert into client
 select level, dbms_random.string('x', 10),  dbms_random.string('x', 10), add_months(trunc(sysdate), -12*18-mod(level,20)*12)
   from dual connect by level <= 100000;
@@ -44,18 +42,12 @@ select *
   join client_credit cc on c.id = cc.client_id
 where c.id = 1999;
 
----- смотрим execution plan для запроса ДО
-select * 
-  from client c
-  join client_credit cc on c.id = cc.client_id
-where c.id in(1999, 2000, 2001);
-
 
 ---- Фиксим проблему. Создаем индекс
 create index client_credit_client_i on client_credit(client_id);
 
 ---- смотрим execution plan для запроса ПОСЛЕ
-select * 
+select /*+ index(cc client_credit_client_i) */* 
   from client c
   join client_credit cc on c.id = cc.client_id
 where c.id = 1999;

@@ -1,4 +1,4 @@
--- исходные данные
+-- РёСЃС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ
 drop table del$tab1;
 drop table del$tab2;
 
@@ -19,42 +19,42 @@ insert into del$tab1 values(3);
 insert into del$tab2 values(3);
 commit;
 
----- Пример 1. Intersect
--- было
-select * 
+---- РџСЂРёРјРµСЂ 1. Intersect
+-- Р±С‹Р»Рѕ
+select id 
   from del$tab1 t1
 intersect
-select * 
+select id
   from del$tab2 t2; 
 
--- стало
+-- СЃС‚Р°Р»Рѕ
 select * 
   from del$tab1 t1
   join del$tab2 t2 on t1.id = t2.id;
 
 
----- Пример 2. Minus
+---- РџСЂРёРјРµСЂ 2. Minus
 
--- было
+-- Р±С‹Р»Рѕ
 select * 
   from del$tab1 t1
 minus
 select * 
   from del$tab2 t2; 
 
--- стало
-select t1.id 
+-- СЃС‚Р°Р»Рѕ
+select t1.id, t2.id
   from del$tab1 t1
   left join del$tab2 t2 on t1.id = t2.id
  where t2.id is null;
 
 
----- Пример 3. Update
--- используется, когда использование индекса не эффективно, 
--- т.е. обновление затрагивает > 100K строк и > 5% таблицы
--- почему: генерируется undo на изменение строк, вставка не direct write.
+---- РџСЂРёРјРµСЂ 3. Update
+-- РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ, РєРѕРіРґР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РёРЅРґРµРєСЃР° РЅРµ СЌС„С„РµРєС‚РёРІРЅРѕ, 
+-- С‚.Рµ. РѕР±РЅРѕРІР»РµРЅРёРµ Р·Р°С‚СЂР°РіРёРІР°РµС‚ > 100-300K СЃС‚СЂРѕРє Рё > 5-15% С‚Р°Р±Р»РёС†С‹
+-- РїРѕС‡РµРјСѓ: РіРµРЅРµСЂРёСЂСѓРµС‚СЃСЏ undo РЅР° РёР·РјРµРЅРµРЅРёРµ СЃС‚СЂРѕРє, РІСЃС‚Р°РІРєР° РЅРµ direct write.
 
--- было 
+-- Р±С‹Р»Рѕ 
 update del$tab1 t1
    set t1.id = t1.id + 1
  where mod(t1.id, 2) = 0;
@@ -62,7 +62,7 @@ update del$tab1 t1
 select * from del$tab1;
 
 
--- стало 1 (потеряются гранты)
+-- СЃС‚Р°Р»Рѕ 1 (РїРѕС‚РµСЂСЏСЋС‚СЃСЏ РіСЂР°РЅС‚С‹)
 create table del$tab3(id) as
 select (case when mod(t1.id, 2) = 0 then t1.id + 1 else t1.id end) id
   from del$tab1 t1;
@@ -74,7 +74,7 @@ alter table del$tab3 rename to del$tab1;
 select * from del$tab1;
 
 
--- стало 2.
+-- СЃС‚Р°Р»Рѕ 2.
 drop table del$tmp$tab1;
 create global temporary table del$tmp$tab1(id number(38)) on commit preserve rows;
 
@@ -92,23 +92,23 @@ commit;
 select * from del$tab1;
 
 
----- Пример 4. Delete
--- используется, когда использование индекса не эффективно, 
--- т.е. обновление затрагивает > 100K строк или > 5% таблицы
--- почему: генерируется undo на изменение строк, вставка не direct write.
+---- РџСЂРёРјРµСЂ 4. Delete
+-- РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ, РєРѕРіРґР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РёРЅРґРµРєСЃР° РЅРµ СЌС„С„РµРєС‚РёРІРЅРѕ, 
+-- С‚.Рµ. РѕР±РЅРѕРІР»РµРЅРёРµ Р·Р°С‚СЂР°РіРёРІР°РµС‚ > 100-300K СЃС‚СЂРѕРє РёР»Рё > 5-15% С‚Р°Р±Р»РёС†С‹
+-- РїРѕС‡РµРјСѓ: РіРµРЅРµСЂРёСЂСѓРµС‚СЃСЏ undo РЅР° РёР·РјРµРЅРµРЅРёРµ СЃС‚СЂРѕРє, РІСЃС‚Р°РІРєР° РЅРµ direct write.
 
--- было 
+-- Р±С‹Р»Рѕ 
 delete del$tab1 t1
- where mod(t1.id, 2) = 0; -- удаляем четные
+ where mod(t1.id, 2) = 0; -- СѓРґР°Р»СЏРµРј С‡РµС‚РЅС‹Рµ
 
 select * from del$tab1;
 
--- стало 1.
+-- СЃС‚Р°Р»Рѕ 1.
 
 create table del$tab3(id) as
 select *
   from del$tab1 t1
- where mod(t1.id, 2) != 0; -- фильтруем четные
+ where mod(t1.id, 2) != 0; -- С„РёР»СЊС‚СЂСѓРµРј С‡РµС‚РЅС‹Рµ
 
 drop table del$tab1;
 
@@ -116,7 +116,7 @@ alter table del$tab3 rename to del$tab1;
 
 select * from del$tab1;
 
----- Примеры для самостоятельного преобразования
+---- РџСЂРёРјРµСЂС‹ РґР»СЏ СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ
 
 update tab1 t1
    set t1.col2 = col2 + 'x'
