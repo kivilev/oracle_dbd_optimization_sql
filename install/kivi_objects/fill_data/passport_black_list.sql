@@ -1,6 +1,8 @@
-﻿-- black list
+-- truncate table passport_black_list;
+
+-- black list
 declare 
- v_total number := 20000000;
+ v_total number := 4000000;
  v_step number := 10000;
 begin
   
@@ -9,8 +11,8 @@ begin
       into passport_black_list(passport_series,
                                passport_number,
                                add_dtime)
-       select dbms_random.string(opt => 'U', len => 4)
-            ,dbms_random.string(opt => 'X', len => 6)
+       select trunc(dbms_random.value(1000,9999))
+            ,trunc(dbms_random.value(100000,999999))
             ,date '2023-01-21' + mod(level, 100)
         from dual
       connect by level <= v_step;
@@ -18,5 +20,5 @@ begin
   end loop;
 end;
 /  
--- 341 сек
 
+-- select count(*) cnt from passport_black_list;

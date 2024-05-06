@@ -1045,7 +1045,7 @@ prompt Creating procedure CLEAR_PAYMENTS
 prompt =================================
 prompt
 create or replace procedure clear_payments is
-  c_days_left constant number(3) := 90;
+  c_days_left constant number(3) := 45;
   v_current_payment_count number(38);
 begin
   select count(*)
@@ -1074,75 +1074,104 @@ create or replace procedure fill_payments is
   c_one_time_limit    constant number(10) := 5000;
   c_max_payment_count constant number(10) := 100000;
   v_current_payment_count number(38);
+  c_days_left constant number(3) := 45;
 
-  v_client_ids    t_number_array;
   v_payment_ids   t_number_array;
   v_data_value    payment_detail.field_value%type;
   v_field_ids     t_number_array := t_number_array(1, 2, 3, 4);
   v_payment_dtime payment.create_dtime%type;
-begin
-  select count(*)
-    into v_current_payment_count
-    from payment t
-   where t.create_dtime >= trunc(sysdate);
 
-  if v_current_payment_count < c_max_payment_count then
-    select client_id
-      bulk collect
-      into v_client_ids
-      from (select client_id from client t order by dbms_random.value)
-     where rownum <= 1000;
+  v_client_id_min client.client_id%type;
+  v_client_id_max client.client_id%type;
+begin
+
+  <<days_loop>>
+  for dd in (with dth as
+                (select trunc(sysdate - level + 1) dt
+                  from dual
+                connect by level <= c_days_left),
+               cur_dates as
+                (select trunc(create_dtime) dt
+                      ,count(1) payment_count
+                  from payment t
+                 where t.create_dtime >= trunc(sysdate - c_days_left)
+                 group by trunc(create_dtime))
+               select dth.dt payment_day
+                     ,nvl(t.payment_count, 0) payment_count
+                 from dth
+                 left join cur_dates t
+                   on t.dt = dth.dt) loop
   
-    select payment_seq.nextval
-      bulk collect
-      into v_payment_ids
-      from dual
-    connect by level <=
-               least((c_max_payment_count - v_current_payment_count),
-                     c_one_time_limit);
+    v_current_payment_count := dd.payment_count;
   
-    v_payment_dtime := sysdate - dbms_random.value(1, 60) / 24 / 60;
+    if v_current_payment_count < c_max_payment_count then
+      begin
+        select min(client_id)
+              ,max(client_id)
+          into v_client_id_min
+              ,v_client_id_max
+          from (select client_id
+                  from client sample(1)
+                 order by dbms_random.value())
+         where rownum <= 2;
+      
+        select payment_seq.nextval
+          bulk collect
+          into v_payment_ids
+          from dual
+        connect by level <=
+                   least((c_max_payment_count - v_current_payment_count),
+                         c_one_time_limit);
+      
+        v_payment_dtime := dd.payment_day + dbms_random.value(1, 24) / 24;
+      
+        common_pack.enable_manual_changes;
+      
+        -- payment
+        insert /*+ append */
+        into payment
+          (payment_id
+          ,create_dtime
+          ,summa
+          ,currency_id
+          ,from_client_id
+          ,to_client_id
+          ,status_change_reason
+          ,status)
+          select value(t)
+                ,v_payment_dtime create_dtime
+                ,round(dbms_random.value(0, 1000), 2) summa
+                ,840
+                ,trunc(dbms_random.value(v_client_id_min, v_client_id_max)) from_client_id
+                ,trunc(dbms_random.value(v_client_id_min, v_client_id_max)) to_client_id
+                ,decode(mod(rownum, 10), 1, 'reason', 2, 'reason', null) status_change_reason
+                ,decode(mod(rownum, 10), 0, 0, 1, 2, 2, 3, 1) status
+            from table(v_payment_ids) t;
+      
+        -- payment_detail
+        v_data_value := dbms_random.string(opt => 'A', len => 10);
+        insert /*+ append */
+        into payment_detail
+          (payment_id
+          ,payment_create_dtime
+          ,field_id
+          ,field_value)
+          select value(p)
+                ,v_payment_dtime
+                ,value(pd)
+                ,v_data_value
+            from table(v_payment_ids) p
+           cross join table(v_field_ids) pd;
+      
+        commit;
+      
+      exception
+        when others then
+          dbms_output.put_line('Error: ' || sqlerrm);
+      end;
+    end if;
   
-    common_pack.enable_manual_changes;
-    
-    -- payment
-    insert /*+ append */
-    into payment
-      (payment_id
-      ,create_dtime
-      ,summa
-      ,currency_id
-      ,from_client_id
-      ,to_client_id
-      ,status_change_reason
-      ,status)
-      select value(t)
-            ,v_payment_dtime create_dtime
-            ,round(dbms_random.value(0, 10000), 2) summa
-            ,840
-            ,v_client_ids(trunc(dbms_random.value(1, v_client_ids.count))) from_client_id
-            ,v_client_ids(trunc(dbms_random.value(1, v_client_ids.count))) to_client_id
-            ,decode(mod(rownum, 10), 1, 'reason', 2, 'reason', null) status_change_reason
-            ,decode(mod(rownum, 10), 0, 0, 1, 2, 2, 3, 1) status
-        from table(v_payment_ids) t;
-  
-    -- payment_detail
-    v_data_value := dbms_random.string(opt => 'A', len => 10);
-    insert /*+ append */
-    into payment_detail
-      (payment_id
-      ,payment_create_dtime
-      ,field_id
-      ,field_value)
-      select value(p)
-            ,v_payment_dtime
-            ,value(pd)
-            ,v_data_value
-        from table(v_payment_ids) p
-       cross join table(v_field_ids) pd;
-  
-    commit;
-  end if;
+  end loop days_loop;
 
 end;
 /
@@ -1501,7 +1530,7 @@ create or replace package body client_check_pack is
      where fn.client_id = p_client_id
        and fn.field_id = client_api_pack.c_first_name_field_id;
 
-    select /*+ index(t TERRORIST_FLB_I)*/
+    select /*+ index_ffs(t TERRORIST_FLB_I)*/
            count(*)
       into v_cnt
       from terrorist t
@@ -1520,7 +1549,7 @@ create or replace package body client_check_pack is
   begin
     get_passport_series_and_number(p_client_id, v_passport_series, v_passport_number);
 
-    select count(1)
+    select /*+ leading(num ser) use_hash(ser num)*/ count(1)
       into v_cnt
       from client_data ser
       join client_data num
@@ -2059,8 +2088,8 @@ prompt
 create or replace package body payment_check_pack is
 
   c_black_type_id ip_list.type%type := 'B';
-  c_outcome_limit number(38) := 1000; -- 1K USD
-  c_income_limit  number(38) := 2000; -- 2K USD
+  c_outcome_limit number(38) := 10000; -- 1K USD
+  c_income_limit  number(38) := 10000; -- 2K USD
 
   procedure check_payment(p_payment_id payment.payment_id%type) is
     v_payment_details t_payment_detail_array;

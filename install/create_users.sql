@@ -10,6 +10,7 @@ grant resource to student_role;
 grant debug connect session to student_role;
 grant create view to student_role;
 grant create materialized view to student_role;
+GRANT CREATE JOB TO student_role;
 
 */
 
@@ -49,5 +50,5 @@ begin
 end;
 /
 
-alter user kivi quota 17g on users;
-alter user hr quota 200m on users;
+alter user kivi quota 15g on users;
+alter user hr quota 400M on users;
