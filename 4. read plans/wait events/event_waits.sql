@@ -1,11 +1,13 @@
 /*
  Oracle wait events
 
+ Author: Kivilev D.S.
 */
 
 ---- Пример 1. Всего ~2K ожиданий
 select * from v$event_name order by name;
 select t.wait_class, count(*) from v$event_name t group by t.wait_class order by 2 desc;
+
 
 
 ---- Пример 2. Ожидания "PL/SQL lock timer" и "library cache pin"
@@ -17,7 +19,7 @@ begin
 end;
 /
 
--- запускаем в sqlplus hr/booble12@ora21xe
+-- запускаем в sqlplus
 call del$demo();
 
 -- в текущей сессии пробуем перекомпилировать
@@ -26,14 +28,31 @@ alter procedure hr.del$demo compile;
 -- смотрим список сессий и колонки с ожиданием (скрин session_waits.png)
 
 
----- Пример 3. Трассировочный файл ORCLCDB_ora_2830885_REGISTER_NEW_CLIENT_d4.trc.txt
+---- Пример 3. Снятие трассировки, ожидания в отчете
+alter session set timed_statistics = true;
+alter session set tracefile_identifier = 'WAIT_TRC';
+alter session set events '10046 trace name context forever, level 8';
 
-select *
-  from V$EVENT_NAME t
- where t.name = 'direct path read';
+-- полезная нагрузка
+call dbms_session.sleep(5);
+
+select * from dual;
+
+call dbms_session.sleep(5);
+--
+
+alter session set events '10046 trace name context off';
+
+-- tkprof name1.trc name1.trc.txt sort=prsela,fchela,exeela sys=no
 
 
----- Пример 4.  Ожидания из трассировки (event_waits_example_ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc.txt)
+
+
+---- Пример 4. Трассировочные файлы
+
+-- Трассировочный файл ORCLCDB_ora_2830885_REGISTER_NEW_CLIENT_d4.trc.txt
+-- Трассировочный файл event_waits_example_ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc.txt
+
 
 Elapsed times include waiting on following events:
   Event waited on                             Times   Max. Wait  Total Waited
@@ -54,34 +73,10 @@ Elapsed times include waiting on following events:
   SQL*Net message from client                     1        0.20          0.20
 ********************************************************************************
 
-
 select *
   from V$EVENT_NAME t
  where t.name = 'db file single write';
  
 -- Описание ожидания
 -- https://docs.oracle.com/en/database/oracle/oracle-database/19/refrn/descriptions-of-wait-events.html#GUID-99DA16ED-FB60-4589-BCBB-29E6AD13E084
-
-
-
----- показать на примере
-declare
-  v_client_id   client.client_id%type;
-  v_client_data t_client_data_array := t_client_data_array(t_client_data(client_api_pack.c_first_name_field_id, 'John'),
-                                                           t_client_data(client_api_pack.c_last_name_field_id, 'Smith'),
-                                                           t_client_data(client_api_pack.c_birthday_field_id,
-                                                                         '1982-01-21'),
-                                                           t_client_data(client_api_pack.c_passport_series_field_id,
-                                                                          dbms_random.string(opt => 'U', len => 4)),
-                                                           t_client_data(client_api_pack.c_passport_number_field_id,
-                                                                         dbms_random.string(opt => 'X', len => 6)),
-                                                           t_client_data(client_api_pack.c_email_field_id,
-                                                                         'email@email.com'),
-                                                           t_client_data(client_api_pack.c_mobile_phone_field_id,
-                                                                         '+' || trunc(dbms_random.value(19000000000, 19999999999))));
-begin
-  v_client_id := client_manage_pack.register_new_client(v_client_data);
-  dbms_output.put_line(v_client_id);
-end;
-/
 
