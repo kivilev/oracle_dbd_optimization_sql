@@ -1,15 +1,15 @@
 /*
-  Курс: Оптимизация SQL
-  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+  РљСѓСЂСЃ: РћРїС‚РёРјРёР·Р°С†РёСЏ SQL
+  РђРІС‚РѕСЂ: РљРёРІРёР»РµРІ Р”.РЎ. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 5. Доступ к данным таблиц
+  Р›РµРєС†РёСЏ 5. Р”РѕСЃС‚СѓРї Рє РґР°РЅРЅС‹Рј С‚Р°Р±Р»РёС†
 
-  Описание: коллекции
+  РћРїРёСЃР°РЅРёРµ: РєРѕР»Р»РµРєС†РёРё
 */
 -- drop type t_numbers;
 
 
----- Создадим демо коллекцию + функцию
+---- РЎРѕР·РґР°РґРёРј РґРµРјРѕ РєРѕР»Р»РµРєС†РёСЋ + С„СѓРЅРєС†РёСЋ
 create type t_numbers is table of number(38);
 /
 
@@ -21,24 +21,24 @@ end;
 /
 
 
----- Пример 1. COLLECTION ITERATOR CONSTRUCTOR FETCH
+---- РџСЂРёРјРµСЂ 1. COLLECTION ITERATOR CONSTRUCTOR FETCH
 select * 
   from t_numbers(1, 2, 3);
 
 
----- Пример 2. COLLECTION ITERATOR PICKLER FETCH
+---- РџСЂРёРјРµСЂ 2. COLLECTION ITERATOR PICKLER FETCH
 select * 
   from get_numbers();
 
 
 
----- Пример 3. Борьба с неверной кардинальностью
+---- РџСЂРёРјРµСЂ 3. Р‘РѕСЂСЊР±Р° СЃ РЅРµРІРµСЂРЅРѕР№ РєР°СЂРґРёРЅР°Р»СЊРЅРѕСЃС‚СЊСЋ
 
--- 10 - количество строк. важен порядок
+-- 10 - РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє. РІР°Р¶РµРЅ РїРѕСЂСЏРґРѕРє
 select /*+ cardinality(t 10)*/ *
   from t_numbers(1, 2, 3) t;
 
 
--- 5 - уровень сбора от всей выборки
-select /*+ dynamic_sampling(t 5)*/ *
+-- 5 - СѓСЂРѕРІРµРЅСЊ СЃР±РѕСЂР° РѕС‚ РІСЃРµР№ РІС‹Р±РѕСЂРєРё
+select /*+ dynamic_sampling(t 2)*/ *
   from t_numbers(1, 2, 3) t;

@@ -28,7 +28,7 @@ select /*+ no_batch_table_access_by_rowid(t)*/ t.*
 
 ---- Пример 4. 
 
-decalre
+declare
 
 begin
   
