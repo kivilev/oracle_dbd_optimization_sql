@@ -1,0 +1,54 @@
+SQL Monitoring Report
+
+SQL Text
+------------------------------
+SELECT /*+ monitor use_nl(ser num) */ COUNT(*) FROM CLIENT_DATA SER JOIN CLIENT_DATA NUM ON NUM.CLIENT_ID = SER.CLIENT_ID AND NUM.FIELD_VALUE = :B2 AND NUM.FIELD_ID = :B1 WHERE SER.FIELD_VALUE = :B4 AND SER.FIELD_ID = :B3
+
+Global Information
+------------------------------
+ Status              :  DONE (ALL ROWS)                
+ Instance ID         :  1                              
+ Session             :  KIVI (276:15928)               
+ SQL ID              :  3g2fz9g3dvhz3                  
+ SQL Execution ID    :  16777216                       
+ Execution Started   :  01/21/2024 09:06:24            
+ First Refresh Time  :  01/21/2024 09:06:24            
+ Last Refresh Time   :  01/21/2024 09:06:28            
+ Duration            :  4s                             
+ Module/Action       :  PL/SQL Developer/run_query.sql 
+ Service             :  db00                           
+ Program             :  plsqldev.exe                   
+ Fetch Calls         :  1                              
+
+Binds
+========================================================================================================================
+| Name | Position |     Type     |                                        Value                                        |
+========================================================================================================================
+| :B2  |        1 | VARCHAR2(32) | FENXEOVELUCNGESNMJSE                                                                |
+| :B1  |        2 | NUMBER       | 5                                                                                   |
+| :B4  |        3 | VARCHAR2(32) | PPBZ                                                                                |
+| :B3  |        4 | NUMBER       | 4                                                                                   |
+========================================================================================================================
+
+Global Stats
+=========================================================================================
+| Elapsed |   Cpu   |    IO    | Concurrency |  Other   | Fetch | Buffer | Read | Read  |
+| Time(s) | Time(s) | Waits(s) |  Waits(s)   | Waits(s) | Calls |  Gets  | Reqs | Bytes |
+=========================================================================================
+|    4.23 |    0.38 |     0.03 |        0.00 |     3.82 |     1 |  14691 | 4594 |  18MB |
+=========================================================================================
+
+SQL Plan Monitoring Details (Plan Hash Value=4245905949)
+============================================================================================================================================================================
+| Id |                Operation                 |        Name         |  Rows   | Cost |   Time    | Start  | Execs |   Rows   | Read | Read  | Activity | Activity Detail |
+|    |                                          |                     | (Estim) |      | Active(s) | Active |       | (Actual) | Reqs | Bytes |   (%)    |   (# samples)   |
+============================================================================================================================================================================
+|  0 | SELECT STATEMENT                         |                     |         |      |         4 |     +1 |     1 |        1 |      |       |          |                 |
+|  1 |   SORT AGGREGATE                         |                     |       1 |      |         4 |     +1 |     1 |        1 |      |       |          |                 |
+|  2 |    NESTED LOOPS                          |                     |    1429 | 6146 |         1 |     +1 |     1 |    10000 |      |       |          |                 |
+|  3 |     NESTED LOOPS                         |                     |    1429 | 6146 |         1 |     +1 |     1 |    10000 |      |       |          |                 |
+|  4 |      TABLE ACCESS BY INDEX ROWID BATCHED | CLIENT_DATA         |    1429 | 3287 |         4 |     +1 |     1 |    10000 | 1910 |   7MB |          |                 |
+|  5 |       INDEX RANGE SCAN                   | CLIENT_DATA_FIELD_I |    350K | 1019 |         4 |     +1 |     1 |     350K | 2170 |   8MB |          |                 |
+|  6 |      INDEX UNIQUE SCAN                   | CLIENT_DATA_PK      |       1 |    1 |         4 |     +1 | 10000 |    10000 |  386 |   2MB |          |                 |
+|  7 |     TABLE ACCESS BY INDEX ROWID          | CLIENT_DATA         |       1 |    2 |         1 |     +1 | 10000 |    10000 |   96 | 384KB |          |                 |
+============================================================================================================================================================================

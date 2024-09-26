@@ -1,0 +1,142 @@
+
+TKPROF: Release 21.0.0.0.0 - Development on Thu May 23 08:35:07 2024
+
+Copyright (c) 1982, 2021, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: ORCLCDB_ora_97055_TRC2.trc
+Sort options: prsela  fchela  exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+SQL ID: 5cbbczx7unru9 Plan Hash: 0
+
+call dbms_session.sleep(5)
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        2      0.00       0.00          0          0          0           0
+Execute      2      0.00      10.05          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        4      0.00      10.05          0          0          0           0
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 107  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PL/SQL lock timer                               2        5.03         10.05
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.00          0.00
+********************************************************************************
+
+SQL ID: 06nvwn223659v Plan Hash: 0
+
+alter session set events '10046 trace name context off'
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Parsing user id: 107  
+********************************************************************************
+
+SQL ID: a5ks9fhw2v9s1 Plan Hash: 272002086
+
+select * 
+from
+ dual
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        2      0.00       0.00          0          2          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        4      0.00       0.00          0          2          0           1
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 107  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  TABLE ACCESS FULL DUAL (cr=2 pr=0 pw=0 time=53 us starts=1 cost=2 size=2 card=1)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.00          0.00
+
+
+
+********************************************************************************
+
+OVERALL TOTALS FOR ALL NON-RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        4      0.00       0.00          0          0          0           0
+Execute      4      0.00      10.05          0          0          0           0
+Fetch        2      0.00       0.00          0          2          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total       10      0.00      10.05          0          2          0           1
+
+Misses in library cache during parse: 0
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       5        0.00          0.00
+  SQL*Net message from client                     5       11.59         11.60
+  PL/SQL lock timer                               2        5.03         10.05
+
+
+OVERALL TOTALS FOR ALL RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        0      0.00       0.00          0          0          0           0
+Execute      0      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        0      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+
+    3  user  SQL statements in session.
+    0  internal SQL statements in session.
+    3  SQL statements in session.
+********************************************************************************
+Trace file: ORCLCDB_ora_97055_TRC2.trc
+Trace file compatibility: 12.2.0.0
+Sort options: prsela  fchela  exeela  
+       1  session in tracefile.
+       3  user  SQL statements in trace file.
+       0  internal SQL statements in trace file.
+       3  SQL statements in trace file.
+       3  unique SQL statements in trace file.
+      70  lines in trace file.
+      10  elapsed seconds in trace file.
+
+

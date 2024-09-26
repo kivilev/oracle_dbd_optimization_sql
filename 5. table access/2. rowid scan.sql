@@ -1,4 +1,4 @@
-﻿/*
+/*
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
@@ -6,29 +6,49 @@
 
   Описание скрипта: демо rowid scan
  
-  alter system flush buffer_cache; -- сброс кэша данных (не выполнять в ПРОД!)
-  alter system flush shared_pool; -- сброс shared пуля (не выполнять в ПРОД!)
 */
-alter session set statistics_level = ALL;
 
----- 1. Как выглядит Rowid scan в плане
-
--- 1) непосредственное обращение по rowid
-select t.*, rowid from hr.employees t where t.rowid = chartorowid('AAAHgsAAEAAAADLAAD');
-
--- 2) индекс (unq) -> rowid
-select /*rowid_idx*/ t.* from hr.employees t where t.employee_id = 1;
-
--- 3) индекс (не unq) -> rowid batched
-select /*rowid_idx_batched*/ t.* from hr.employees t where t.department_id = 1;
+---- Пример 1. непосредственное обращение по rowid
+select t.*, rowid
+  from hr.employees t where t.rowid = chartorowid('AAAR3NAAMAAAADrAAH');
 
 
--- получаем sql_id запроса
-select * from v$sql t where t.sql_text like '%AAAHgsAAEAAAADLAAD%';
-select * from v$sql t where t.sql_text like '%rowid_idx%';
-select * from v$sql t where t.sql_text like '%rowid_idx_batched%';
+---- Пример 2. индекс (unq) -> rowid
+select /*+ batch_table_access_by_rowid(t)*/t.*
+  from hr.employees t where t.employee_id = 1;
 
-select * from dbms_xplan.display_cursor(sql_id   => '82vxk74c1guas',
-                                        cursor_child_no => 0,
-                                        format   => 'ADVANCED ALLSTATS LAST');
+
+---- Пример 3. Индекс (не unq) -> rowid batched
+select t.* 
+  from hr.employees t where t.department_id = 1;
+
+-- можно отключить
+select /*+ no_batch_table_access_by_rowid(t)*/ t.*
+  from hr.employees t where t.department_id = 1;
+
+---- Пример 4. 
+
+declare
+
+begin
+  
+  for v in (select p.*, rowid from payment p where p.status = 0) loop
+  
+    ....
+    
+    
+     update payment p 
+        set status = 1
+     -- where p.payment_id = v.payment_id;
+      where p.rowid = v.rowid;
+
+  end loop;
+
+
+end;
+/
+
+
+
+
 

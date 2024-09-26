@@ -1,0 +1,178 @@
+
+TKPROF: Release 21.0.0.0.0 - Development on Mon Dec 11 12:56:25 2023
+
+Copyright (c) 1982, 2021, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc
+Sort options: prsela  fchela  exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+insert /*seq query1*/ into del$tab1
+select del$tab1_seq.nextval,
+       lpad('X', 100, 'x')
+  from dual connect by level <= 100000
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      6.65       7.56          0       1642     111981      100000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      6.65       7.56          0       1642     111981      100000
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 111  
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         0          0          0  LOAD TABLE CONVENTIONAL  DEL$TAB1 (cr=101922 pr=0 pw=0 time=11786657 us starts=1)
+    100000     100000     100000   SEQUENCE  DEL$TAB1_SEQ (cr=100020 pr=0 pw=0 time=10638413 us starts=1)
+    100000     100000     100000    CONNECT BY WITHOUT FILTERING (cr=0 pr=0 pw=0 time=162963 us starts=1)
+         1          1          1     FAST DUAL  (cr=0 pr=0 pw=0 time=1 us starts=1 cost=2 size=0 card=1)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                           78        0.00          0.00
+  Disk file operations I/O                        5        0.00          0.00
+  control file sequential read                   21        0.00          0.00
+  datafile move cleanup during resize             1        0.00          0.00
+  Data file init write                           66        0.00          0.05
+  direct path sync                                1        0.26          0.26
+  db file single write                            1        0.00          0.00
+  control file parallel write                     3        0.00          0.00
+  DLM cross inst call completion                  1        0.00          0.00
+  buffer busy waits                               1        0.11          0.11
+  log file switch completion                      2        0.02          0.03
+  log file sync                                   1        0.01          0.01
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.20          0.20
+********************************************************************************
+
+SQL ID: 9pgdf32vu0h3c Plan Hash: 0
+
+commit
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          1           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          1           0
+
+Misses in library cache during parse: 0
+Parsing user id: 111  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.15          0.15
+********************************************************************************
+
+SQL ID: 5x323vaz5nuu4 Plan Hash: 0
+
+alter session set events '10046 trace name context off'
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Parsing user id: 111  
+
+
+
+********************************************************************************
+
+OVERALL TOTALS FOR ALL NON-RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        3      0.00       0.00          0          0          0           0
+Execute      3      6.66       7.56          0       1642     111982      100000
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        6      6.66       7.56          0       1642     111982      100000
+
+Misses in library cache during parse: 0
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       6        0.00          0.00
+  SQL*Net message from client                     6        0.20          0.83
+  Disk file operations I/O                        5        0.00          0.00
+  PGA memory operation                           79        0.00          0.00
+  control file sequential read                   21        0.00          0.00
+  datafile move cleanup during resize             1        0.00          0.00
+  Data file init write                           66        0.00          0.05
+  direct path sync                                1        0.26          0.26
+  db file single write                            1        0.00          0.00
+  control file parallel write                     3        0.00          0.00
+  DLM cross inst call completion                  1        0.00          0.00
+  buffer busy waits                               1        0.11          0.11
+  log file switch completion                      2        0.02          0.03
+  log file sync                                   1        0.01          0.01
+
+
+OVERALL TOTALS FOR ALL RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse       18      0.00       0.00          0          0          0           0
+Execute 100017      4.40       4.21          0     100038     202255      100010
+Fetch        7      0.00       0.00          0        242          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total   100042      4.40       4.22          0     100280     202255      100011
+
+Misses in library cache during parse: 1
+Misses in library cache during execute: 1
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  Disk file operations I/O                        4        0.00          0.00
+  PGA memory operation                            7        0.00          0.00
+  control file sequential read                   18        0.00          0.00
+  datafile move cleanup during resize             1        0.00          0.00
+  Data file init write                           34        0.00          0.03
+  direct path sync                                1        0.05          0.05
+  db file single write                            1        0.00          0.00
+  control file parallel write                     3        0.00          0.00
+  DLM cross inst call completion                  1        0.00          0.00
+
+    3  user  SQL statements in session.
+    5  internal SQL statements in session.
+    8  SQL statements in session.
+********************************************************************************
+Trace file: ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc
+Trace file compatibility: 12.2.0.0
+Sort options: prsela  fchela  exeela  
+       1  session in tracefile.
+       3  user  SQL statements in trace file.
+       5  internal SQL statements in trace file.
+       8  SQL statements in trace file.
+       8  unique SQL statements in trace file.
+  200448  lines in trace file.
+      12  elapsed seconds in trace file.
+
+
