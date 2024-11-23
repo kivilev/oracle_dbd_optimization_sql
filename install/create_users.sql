@@ -1,4 +1,4 @@
-﻿/*
+/*
   Creating role, kivi, hr schemas
   
 -- role
@@ -50,5 +50,5 @@ begin
 end;
 /
 
-alter user kivi quota 15g on users;
+alter user kivi quota 11500M on users;
 alter user hr quota 400M on users;

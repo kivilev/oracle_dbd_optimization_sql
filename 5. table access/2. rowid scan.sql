@@ -10,12 +10,14 @@
 
 ---- Пример 1. непосредственное обращение по rowid
 select t.*, rowid
-  from hr.employees t where t.rowid = chartorowid('AAAR3NAAMAAAADrAAH');
+  from hr.employees t where t.rowid = chartorowid('AAAR7cAAMAAC5xzAAF');
+
 
 
 ---- Пример 2. индекс (unq) -> rowid
 select /*+ batch_table_access_by_rowid(t)*/t.*
   from hr.employees t where t.employee_id = 1;
+
 
 
 ---- Пример 3. Индекс (не unq) -> rowid batched
@@ -26,8 +28,9 @@ select t.*
 select /*+ no_batch_table_access_by_rowid(t)*/ t.*
   from hr.employees t where t.department_id = 1;
 
----- Пример 4. 
 
+
+---- Пример 4. Хитрость как обновлять очень быстро строки
 declare
 
 begin

@@ -46,7 +46,8 @@ partition by hash (id) partitions 4;
 
 --- Случай 1. Попали только в одну секцию
 -- Range single
-select * from demo_payment_range t where t.payment_date = date'2023-01-15';
+select * from demo_payment_range t where t.payment_date = date'2023-01-15';--конкретная секция
+select * from demo_payment_range t where t.payment_date = sysdate + 1;-- bind -> key
 
 -- List single
 select * from demo_country_list t where t.country_id = 'GB';
@@ -76,4 +77,26 @@ select * from demo_country_list t where t.country_id in('GB', 'UZ', 'KZ');-- з�
 
 -- Partition hash ALL
 select * from demo_client_hash t where t.id between 1000 and 1010;
+
+
+---- Индексный доступ
+
+create unique index demo_payment_range_pk on demo_payment_range(id);
+create index demo_payment_range_i on demo_payment_range(payment_date) local;
+
+-- Отсечение секции + проход по индексу
+select * 
+  from demo_payment_range t 
+ where t.payment_date = sysdate + 1;
+
+-- Проход по глобальному индексу
+select * 
+  from demo_payment_range t 
+ where t.payment_date = sysdate + 1;
+
+
+
+
+
+
 

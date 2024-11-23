@@ -58,4 +58,21 @@ select e.first_name
   from employees e
   join dep d on e.department_id = d.department_id;
 
-  
+-- 10. Iterator (starts=3)  
+select * 
+  from hr.employees t
+where t.employee_id in (100, 101, 110);
+
+-- 11. Пример
+select count(*)
+  from (select *
+          from hr.employees e1
+        union all
+        select *
+          from hr.employees e2
+        union all
+        select *
+          from hr.employees e3
+        union all
+        select *
+          from hr.employees e4);
