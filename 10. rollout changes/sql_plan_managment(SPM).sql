@@ -1,5 +1,11 @@
 /*
-  Под пользователем с ролью DBA
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Лекция. Поставка изменений
+
+  Описание скрипта: Закрепление плана SQL-запроса (SQL plan baseline, SPM)
+   - выполнение под SYS   
 */
 
 
