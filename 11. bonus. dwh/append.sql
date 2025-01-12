@@ -1,3 +1,12 @@
+/*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Бонусная лекция. Секреты работы с DWH
+
+  Описание скрипта: INSERT + APPEND
+*/
+
 drop table del$account;
 create table del$account(
   id number(38),
@@ -6,19 +15,19 @@ create table del$account(
 );
 
 
--- ������� �������
+-- обычная вставка
  insert into del$account 
  select level, 10, sysdate
    from dual 
 connect by level <= 1000000;
 
--- ������� � append 
+-- вставка с append 
  insert /*+ append*/ into del$account 
  select level, 10, sysdate
    from dual 
 connect by level <= 1000000;
 
---- �������� ��� ������� � �������������� autotrace
+--- показать обы запроса с использованием autotrace
 set autotrace traceonly statistics;
 -- redo size
 

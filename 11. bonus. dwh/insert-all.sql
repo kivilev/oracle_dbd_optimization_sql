@@ -1,4 +1,13 @@
 /*
+  РљСѓСЂСЃ: РћРїС‚РёРјРёР·Р°С†РёСЏ SQL
+  РђРІС‚РѕСЂ: РљРёРІРёР»РµРІ Р”.РЎ. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Р‘РѕРЅСѓСЃРЅР°СЏ Р»РµРєС†РёСЏ. РЎРµРєСЂРµС‚С‹ СЂР°Р±РѕС‚С‹ СЃ DWH
+
+  РћРїРёСЃР°РЅРёРµ СЃРєСЂРёРїС‚Р°: РІР°СЂРёР°РЅС‚С‹ РІСЃС‚Р°РІРєРё РґР°РЅРЅС‹С… СЃ СЂР°Р·РЅС‹РјРё СЃРїРѕСЃРѕР±Р°РјРё
+*/
+
+/*
  drop table del$source;
  drop table del$target1;
  drop table del$target2;
@@ -21,7 +30,7 @@ select level, lpad('X', 100, 'x')
 commit;
 
 
----- Способ 1. Не оптимальный. Заполняем три разных таблицы = 3 * Full table scan
+---- РЎРїРѕСЃРѕР± 1. РќРµ РѕРїС‚РёРјР°Р»СЊРЅС‹Р№. Р—Р°РїРѕР»РЅСЏРµРј С‚СЂРё СЂР°Р·РЅС‹С… С‚Р°Р±Р»РёС†С‹ = 3 * Full table scan
 insert into del$target1 (id)
 select s.id from del$source s;
 
@@ -33,19 +42,19 @@ select s.id, s.col2, sysdate from del$source s;
 
 commit;
 
----- Способ 2. Оптимальный. 1 * Full table scan
+---- РЎРїРѕСЃРѕР± 2. РћРїС‚РёРјР°Р»СЊРЅС‹Р№. 1 * Full table scan
 insert all
-  into del$target1 (id) values (id) -- все
-  into del$target2 (id, col2) values (id, col2) -- все
-  into del$target3 (id, col2, col3) values (id, col2, sysdate) -- все
+  into del$target1 (id) values (id) -- РІСЃРµ
+  into del$target2 (id, col2) values (id, col2) -- РІСЃРµ
+  into del$target3 (id, col2, col3) values (id, col2, sysdate) -- РІСЃРµ
 select * from del$source s;
 commit;
 
--- с условием when
+-- СЃ СѓСЃР»РѕРІРёРµРј when
 insert all
-  when 1 = 1 then into del$target1 (id) values (id) -- все
-  when mod(id, 2) = 0 then into del$target2 (id, col2) values (id, col2) -- четные
-  when (mod(id, 2) = 0 and col2 is not null) then into del$target3 (id, col2, col3) values (id, col2, sysdate) -- четные + не пустые
+  when 1 = 1 then into del$target1 (id) values (id) -- РІСЃРµ
+  when mod(id, 2) = 0 then into del$target2 (id, col2) values (id, col2) -- С‡РµС‚РЅС‹Рµ
+  when (mod(id, 2) = 0 and col2 is not null) then into del$target3 (id, col2, col3) values (id, col2, sysdate) -- С‡РµС‚РЅС‹Рµ + РЅРµ РїСѓСЃС‚С‹Рµ
 select * from del$source s;
 commit;
 
@@ -55,9 +64,9 @@ truncate table del$target2;
 truncate table del$target3;
 
 insert first
-  when mod(id, 2) = 0 then into del$target1 (id) values (id) -- четные
-  when mod(id, 3) = 0 then into del$target2 (id, col2) values (id, col2) -- делятся на 3
-  else into del$target3 (id, col2, col3) values (id, col2, sysdate) -- остальные
+  when mod(id, 2) = 0 then into del$target1 (id) values (id) -- С‡РµС‚РЅС‹Рµ
+  when mod(id, 3) = 0 then into del$target2 (id, col2) values (id, col2) -- РґРµР»СЏС‚СЃСЏ РЅР° 3
+  else into del$target3 (id, col2, col3) values (id, col2, sysdate) -- РѕСЃС‚Р°Р»СЊРЅС‹Рµ
 select * from del$source s;
 commit;
 

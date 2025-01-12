@@ -1,3 +1,13 @@
+/*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Бонусная лекция. Секреты работы с DWH
+
+  Описание скрипта: Пример замены операций UPDATE, DELETE, MINUS, INTERSECT на комбинацию JOIN
+*/
+
+
 -- исходные данные
 drop table del$tab1;
 drop table del$tab2;
@@ -125,8 +135,5 @@ update tab1 t1
 
 delete tab1 t1  
  where exists (select 1 from tab2 t2 where t1.id = t2.client_id);
-
-
-
 
 

@@ -1,4 +1,13 @@
 /*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Бонусная лекция. Секреты работы с DWH
+
+  Описание скрипта: Пример использования параллельных DML операций
+*/
+
+/*
  drop table del$account_summary;
 */
 
@@ -11,7 +20,7 @@ create table del$account_summary(
 
 -- alter session enable parallel dml;
 
--- 4 ������ �� ��������� ������, 4 �� ������
+-- 4 потока на получение данных, 4 на запись
 insert /*+ append parallel(4) enable_parallel_dml */ into del$account_summary 
 select currency_id, sum(acc.balance) sum, sysdate calc_date 
   from account acc
