@@ -1,3 +1,11 @@
+/*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Лекция. Поставка изменений
+
+  Описание скрипта: online indexes
+*/
 
 -- drop table del$1;
 create table del$1(
@@ -24,4 +32,4 @@ create index del$1_col1_i on del$1(col1);
 
 
 -- c опицей online ошибки не будет, сессия создания подвиснет, но в целом - ок
-
+create index del$1_col1_i on del$1(col1) online;

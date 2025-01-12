@@ -1,14 +1,13 @@
-﻿---- Создание роли и двух схем для демо
+---- Создание роли и двух схем для демо
 
 drop user hr_ebr cascade;
-drop role simple_user_role;
 
 -- HR с EBR
 create user hr_ebr identified by booble12
-default tablespace ts_students temporary tablespace temp profile
-default quota 300M on ts_students;
+default tablespace users temporary tablespace temp profile
+default quota 300M on users;
 
-grant student to hr_ebr;
+grant student_role to hr_ebr;
 
 --вкл поддержки EBR на уровне схемы
 alter user hr_ebr enable editions;

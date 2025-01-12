@@ -1,4 +1,12 @@
-﻿
+/*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Лекция. Поставка изменений
+
+  Описание скрипта: пересоздание индекса
+*/
+
 -- drop table del$1;
 create table del$1(
   id number(30),
