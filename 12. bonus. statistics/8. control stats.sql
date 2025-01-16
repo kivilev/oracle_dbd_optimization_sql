@@ -1,3 +1,13 @@
+/*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Бонусная лекция. Статистика
+
+  Описание скрипта: управление статистикой
+  
+*/
+
 drop table del$demo1;
 
 create table del$demo1(

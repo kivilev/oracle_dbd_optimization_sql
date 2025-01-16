@@ -1,6 +1,15 @@
 
+/*
+  Курс: Оптимизация SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
----- ������ 
+  Бонусная лекция. Статистика
+
+  Описание скрипта: гистограммы и bind peekings
+  
+*/
+
+---- Пример 
 drop table sale$del;
 drop sequence sale$del_pk;
 
@@ -12,15 +21,15 @@ create table sale$del(
 );
 create index sale$del_i on sale$del(order_date);
 
----- ������ 1. ������� � � ��� ����������
+---- Пример 1. Запросы с и без гистограмм
 
--- 1) �������� �������
+-- 1) Забиваем данными
 insert into sale$del
 select sale$del_pk.nextval, date'2000-01-01' + level, 'some_info'||level 
   from dual connect by level <= 10000; 
 commit;
 
--- 4) ������� 10� ����� �� ���� ����
+-- 4) добавим 10К строк на одну дату
 insert into sale$del
 select sale$del_pk.nextval, date'1999-12-31', 'some_info'||level 
   from dual connect by level <= 10000; 

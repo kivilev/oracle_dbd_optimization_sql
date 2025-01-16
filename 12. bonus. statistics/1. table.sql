@@ -2,7 +2,7 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 11. Статистика
+  Бонусная лекция. Статистика
 
   Описание скрипта: статистика по таблицам
   
@@ -25,7 +25,7 @@ select t.num_rows, t.blocks, t.avg_row_len,
 
 
 ---- Пример 2. CTAS + сборка статы
-drop table demo$tab$stat;
+-- drop table demo$tab$stat;
 
 -- вставка 1М - статистика собирается сразу (Oracle 12c и выше) -> посмотреть план (statistics gathering)
 create table demo$tab$stat as
@@ -67,14 +67,12 @@ select sysdate, t.num_rows, t.stale_stats, t.last_analyzed
   from user_tab_statistics t
  where  t.table_name = 'DEMO$TAB$STAT';
 
-
--- вызов сбора вручную -> посмотреть стат
-call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO$TAB$STAT');
-
-
 -- пример как неактуальная статистика влияет на план
 -- посмотреть план после вставки -> столбец cardinality
 select count(*) cnt from demo$tab$stat;
+
+-- вызов сбора вручную -> посмотреть стат
+call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO$TAB$STAT');
 
 
 ---- Пример 4. Секционированные таблицы

@@ -2,54 +2,47 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 11. Статистика
+  Бонусная лекция. Статистика
 
   Описание скрипта: гистограммы
   
 */
 
 drop table sale$del;
-drop sequence sale$del_pk;
 
-create sequence sale$del_pk;
 create table sale$del(
-  sale_id      number(38), -- primary key,
+  sale_id      number(38),
   order_date   date not null,
   some_info    varchar2(200 char)
 );
 create index sale$del_i on sale$del(order_date);
 
----- Пример 1. Запросы с и без гистограмм
 
--- 1) Забиваем данными
+---- Пример 1. Использование гистограм
+
+-- Забиваем данными. Order_date равномерно заполняется.
 insert into sale$del
-select sale$del_pk.nextval, date'2000-01-01' + level, 'some_info'||level 
+select level, date'2000-01-01' + level, 'some_info'||level 
   from dual connect by level <= 10000; 
 commit;
 
--- 2) посмотрим статистику по колонкам --> пусто, стата еще не собиралась
-select t.num_distinct, t.num_buckets, t.histogram, column_name,
-       t.*
-  from all_tab_col_statistics t
- where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
-
--- 3) соберем статистику по таблице -> стата по колонкам появится. histogram -> NONE
+-- соберем статистику по таблице -> стата по колонкам появится. histogram -> NONE
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE AUTO'); 
 
+-- посмотрим статистику по колонкам
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
--- 4) добавим 10К строк на одну дату
+-- добавим 10К строк на '1999-12-31' -> будет перекос данных  (data skew)
 insert into sale$del
-select sale$del_pk.nextval, date'1999-12-31', 'some_info'||level 
+select level+10000, date'1999-12-31', 'some_info'||level 
   from dual connect by level <= 10000; 
 commit;
 
--- 5) собираем стату и смотрим -> histogram -> NONE, т.к. еще ни разу не выполнялся запрос по столбу
+-- собираем стату и смотрим -> histogram -> NONE, т.к. еще ни разу не выполнялся запрос по столбу
 call dbms_stats.gather_table_stats (user, 'sale$del');
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
@@ -57,27 +50,48 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
  where t.table_name = 'SALE$DEL'
    and t.owner = 'HR';
 
----- Какой будет план у 2х запросов ДО и ПОСЛЕ построения гистограмм?
 
--- 1 строка
-select *
+---- Планы запросов без построения гистограмм (не выполнять запросы!)
+-- 1 строка -> Index RS (смотрим план)
+select count(*)
+  from sale$del t
+ where t.order_date = date'2000-01-02';
+ 
+-- 10К строк -> Index RS - ошибка! выбирается же > 15% строк таблицы (смотрим план)
+select count(*)
+  from sale$del t
+ where t.order_date = date'1999-12-31'; 
+
+-- выполним запрос 1й, собирем статистику заново, смотрим
+call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE AUTO'); 
+
+-- посмотрим статистику по колонкам -> histogram HYBRID
+select t.num_distinct, t.num_buckets, t.histogram, column_name,
+       t.*
+  from all_tab_col_statistics t
+ where t.table_name = 'SALE$DEL'
+   and t.owner = 'HR';
+
+
+-- 1 строка -> Index RS (смотрим план) - OK 
+select count(*)
   from sale$del t
  where t.order_date = date'2000-01-02';
 
--- 10К строк
+-- 10К строк -> Index FFS - OK
 select count(*)
   from sale$del t
  where t.order_date = date'1999-12-31';
+ 
 
 
----- Пример 2. Поведение с Bind vars (адаптивные курсоры)
+---- Пример 2. Поведение с Bind-переменными (peeked binds + адаптивные курсоры)
 -- call flush_all();
 
 declare
- v_date2 date := date'1999-12-31'; 
- v_date1 date := date'2000-01-02';
- 
-  v_cnt  number;
+ v_date2 date := date'2000-01-02';
+ v_date1 date := date'1999-12-31'; 
+ v_cnt  number;
 begin
   select /*+ gather_plan_statistics*/ count(*)
     into v_cnt
@@ -107,6 +121,9 @@ select * from v$sql_cs_selectivity
 where sql_id = 'gmghjfw5xfsqq';
 
 select * from dbms_xplan.display_cursor(sql_id => 'gmghjfw5xfsqq', cursor_child_no => 2, format => 'ADVANCED ALLSTATS' );
+
+
+
 
   
 /*

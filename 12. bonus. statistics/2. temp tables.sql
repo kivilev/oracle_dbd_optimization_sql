@@ -1,8 +1,8 @@
-﻿/*
+/*
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 11. Статистика
+  Бонусная лекция. Статистика
 
   Описание скрипта: статистика по таблицам (временные и коллекции)
   
@@ -37,7 +37,7 @@ select t.*
  where t.table_name = 'DEMO1_GTT'
    and t.owner = 'HR';
    
--- сбор статистики -> создаст строку с SCOPE = SESSION
+-- сбор статистики -> создаст строку с SCOPE = SESSION, не закоммитит транщакцию
 call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO1_GTT');
 
 
@@ -63,10 +63,11 @@ select t.scope, t.num_rows, t.blocks, t.avg_row_len,
 
 -- от изменения числа происходит выбор плана (по факту demo1_gtt - пустая)
 explain plan for 
-select /* + cardinality(g 800)*/g.col2, t.col2 
+select /*+ cardinality(g 100)*/g.col2, t.col2 
   from demo1_gtt g
   join demo1 t on t.id = g.id;
 select * from dbms_xplan.display();
+
 
 
 
