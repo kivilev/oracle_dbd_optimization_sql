@@ -6,11 +6,19 @@
 
   Описание скрипта: примеры адаптивной статистики
   
+  alter system set optimizer_adaptive_statistics = true scope=both;  
 */
-call flush_all();
-alter session set optimizer_adaptive_statistics = true;
 
----- 1. Пример 
+call flush_all();
+
+-- адаптивная статистика (12c)
+select * from v$parameter t where t.name = 'optimizer_adaptive_statistics';
+
+-- dynamic sampling (11g)
+select * from v$parameter t where t.name = 'optimizer_dynamic_sampling';
+
+
+---- Пример 1. Динамическая статистика
 drop  table del$tab;
 create table del$tab(
  id number(10),
@@ -32,54 +40,86 @@ connect by level <= 100000;
 commit;
 
 select * from user_tab_statistics t where t.table_name = 'DEL$TAB';
+-- call dbms_stats.gather_table_stats(user, 'DEL$TAB');
 
--- некий запрос со сложными предикатами -> трудно точно предуагадать -> E-rows будет отличаться от A-rows (показывать с выводом плана)
-select /*+ GATHER_PLAN_STATISTICS */
+-- Уровни 5-9 увеличивают объем данных, используемых для Dynamic Sampling
+-- alter session set optimizer_dynamic_sampling = 5; 
+-- или
+-- сбора статы с уровнем 5 с хинтом
+select /*+ gather_plan_statistics dynamic_sampling(5)*/
         *
   from del$tab t
-  join del$tab t2 on (t.id = t2.id and t2.v5 like '%99%') or t2.v5 like '199%'                  
- where  t.v2 like '%32%'
-    or t.v4 like '%46%';
+ where t.v2 like '32%' or t.v4 like '4%';
 
 select * from v$sqlarea t where t.sql_fulltext like '%del$tab t%';
 
-select * from dbms_xplan.display_cursor(sql_id => '5myt6hrw5qamj', cursor_child_no =>  0, format => 'ALLSTATS ADVANCED LAST');
+select * from dbms_xplan.display_cursor(sql_id => '40kqf9rudsf5u', cursor_child_no =>  0, format => 'ALLSTATS ALL LAST');
 
 
 
 
--- после первого выполнения будет child-курсор с Y в use_feedback_stats
-select t.use_feedback_stats, t.reason, c.sql_text, c.plan_hash_value
-  from v$sql_shared_cursor t
-  join v$sql c on c.child_address = t.child_address
- where t.sql_id = '5myt6hrw5qamj';
 
--- после повторного выполнения будет E-rows = A-rows + в Note: statistics feedback used for this statement
+---- Пример 2. Re-optimization
+call flush_all();
+
+create or replace type t_number_array is table of number(38);
+/
+
+create or replace function get_numbers(p_rows in number) return t_number_array
+  pipelined as
+begin
+  for i in 1 .. p_rows loop
+    pipe row(i);
+  end loop;
+  return;
+end;
+/
+
+create or replace function get_numbers2(p_rows in number) return t_number_array
+  pipelined as
+begin
+  for i in 1 .. p_rows loop
+    pipe row(i);
+  end loop;
+  return;
+end;
+/
+
+-- Тестовый запрос. gather_plan_statistics - только для нас, чтобы было наглядней.
+
+select /*+ gather_plan_statistics */ *
+  from table(get_numbers2(1000)) t2
+  join table(get_numbers(20)) t1 on value(t2) = value(t1);
 
 
----- 2. Поиск запросов с уточненной статистикой
-
--- поиск запросов с ReOptimize
-select t.is_reoptimizable, t.*
+select t.is_reoptimizable
+      ,t.sql_text
+      ,t.sql_id
+      ,t.child_number
   from v$sql t
- where t.is_reoptimizable = 'Y' and t.parsing_schema_name = 'SYS';
+ where sql_text like '%get_numbers%' and sql_text not like '%v$sql%';
 
--- все child-курсоры кокретного запроса
-select t.is_reoptimizable, t.child_number, t.*
-  from v$sql t 
- where t.sql_id = 'f1d6mrj4uhwh5' order by t.child_number;
-
--- причины изменения
-select * 
+select t.use_feedback_stats
+      ,t.reason
+      ,c.sql_text
+      ,c.plan_hash_value
+      ,t.*
   from v$sql_shared_cursor t
- where t.sql_id = 'f1d6mrj4uhwh5';
+  join v$sql c
+    on c.child_address = t.child_address
+ where t.sql_id = 'c8s3vw02f0h48';
+
+select * from dbms_xplan.display_cursor(sql_id => 'c8s3vw02f0h48', cursor_child_no => 0, format => 'ALLSTATS ADVANCED'); 
+select * from dbms_xplan.display_cursor(sql_id => 'c8s3vw02f0h48', cursor_child_no => 1, format => 'ALLSTATS ADVANCED'); 
+
+
+
+
 
 
 ---- 3. Директивы
 select *
   from dba_sql_plan_directives d
   join dba_sql_plan_dir_objects ob on d.directive_id = ob.directive_id
- where ob.owner = 'HR'
-   and d.created >= sysdate - 10
-
-select * from 
+ where ob.owner = 'KIVI'
+   and d.created >= sysdate - 1;
