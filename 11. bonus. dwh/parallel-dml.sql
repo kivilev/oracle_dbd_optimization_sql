@@ -21,7 +21,7 @@ create table del$account_summary(
 -- alter session enable parallel dml;
 
 -- 4 потока на получение данных, 4 на запись
-insert /*+ append parallel(4) enable_parallel_dml */ into del$account_summary 
+insert /*+ parallel(4) enable_parallel_dml */ into del$account_summary 
 select currency_id, sum(acc.balance) sum, sysdate calc_date 
   from account acc
   group by acc.currency_id;

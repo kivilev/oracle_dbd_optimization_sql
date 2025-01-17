@@ -23,14 +23,20 @@ as
 select currency_id, sum(acc.balance) sum, sysdate calc_date 
   from account acc
   group by acc.currency_id;
-
+  
 -- смотрим степень параллелизма
 select t.degree, t.* from user_tables t where t.table_name = 'DEL$ACCOUNT_SUMMARY';
 
+-- автоматически подтягивается параллели в запрос
+select * from del$account_summary t;
+
+
 -- убирем параллелизм
 alter table del$account_summary noparallel;
+
 -- проверям
 select t.degree, t.* from user_tables t where t.table_name = 'DEL$ACCOUNT_SUMMARY';
+
 
 
 
@@ -49,6 +55,5 @@ alter index terrorist_birhday_last_name_i noparallel;
 select t.degree, t.* from user_indexes t where t.index_name = 'TERRORIST_BIRHDAY_LAST_NAME_I';
 
 
+---- Пример 3. Параметры отвечающие за настройку параллелизма
 select * from v$parameter t where t.name like '%parallel%' or t.name like '%cpu%';
-
-

@@ -55,8 +55,8 @@ end;
 /
 
 -- проверяем работу
-select sysdate, t.* from user_scheduler_job_log t where t.job_name like 'TASK$%' and t.log_date >= sysdate - 1/24/5;
-select sysdate, t.* from user_scheduler_job_run_details t where t.job_name like 'TASK$%'  and t.log_date >= sysdate - 1/24/5;
+select sysdate, t.* from user_scheduler_job_log t where t.job_name like 'TASK$%' and t.log_date >= sysdate - 1/24/5 order by log_date desc;
+select sysdate, t.* from user_scheduler_job_run_details t where t.job_name like 'TASK$%'  and t.log_date >= sysdate - 1/24/5 order by log_date desc;
 select sysdate, t.* from user_scheduler_jobs t where t.job_name like 'TASK$%'; -- нет записей
 
 select * from employees_test;

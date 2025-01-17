@@ -66,7 +66,7 @@ select t1.id, t2.id
 
 -- было 
 update del$tab1 t1
-   set t1.id = t1.id + 1
+   set t1.id = t1.id + 100
  where mod(t1.id, 2) = 0;
 
 select * from del$tab1;
@@ -74,7 +74,7 @@ select * from del$tab1;
 
 -- стало 1 (потеряются гранты)
 create table del$tab3(id) as
-select (case when mod(t1.id, 2) = 0 then t1.id + 1 else t1.id end) id
+select (case when mod(t1.id, 2) = 0 then t1.id + 100 else t1.id end) id
   from del$tab1 t1;
 
 drop table del$tab1;
@@ -89,7 +89,7 @@ drop table del$tmp$tab1;
 create global temporary table del$tmp$tab1(id number(38)) on commit preserve rows;
 
 insert into del$tmp$tab1 
-select (case when mod(t1.id, 2) = 0 then t1.id + 1 else t1.id end) id
+select (case when mod(t1.id, 2) = 0 then t1.id + 100 else t1.id end) id
   from del$tab1 t1;
 
 truncate table del$tab1;

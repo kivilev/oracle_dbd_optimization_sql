@@ -32,7 +32,7 @@ select * from v$sqlarea t where t.sql_text like '%seq query1%';
 select * from v$active_session_history t where t.sample_time >= systimestamp - 1/24 and t.sql_id = 'f1h95dqcjdbdp' order by t.sample_id;
 
 
----- »спользуем сиквенс с кэшом
+---- Используем сиквенс с кэшом
 create sequence del$tab1_1K_seq cache 1000;
 
 insert /*seq query2*/ into del$tab1
@@ -45,7 +45,7 @@ select * from v$sqlarea t where t.sql_text like '%seq query2%';
 select * from v$active_session_history t where t.sample_time >= systimestamp - 1/24 and t.sql_id = '5jtva96uw1mm1' order by t.sample_id;
 
 
----- —нимем трассировку (показать трассу)
+---- Снимем трассировку (показать трассу)
 
 alter session set timed_statistics = true;
 alter session set events '10046 trace name context forever, level 8'; -- waits
