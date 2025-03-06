@@ -1,0 +1,145 @@
+
+TKPROF: Release 19.0.0.0.0 - Development on Thu Apr 11 14:33:02 2024
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: TESTA1_ora_TRC_9_OPTIM.trc
+Sort options: prsela  fchela  exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+SELECT N, DEP_ID, ID, DVAL, CODE, REFER FROM ( SELECT ROW_NUMBER() OVER(PARTITION BY ID ORDER BY ID, N) RN, T1.* FROM ( SELECT --+ index(op PK_S_ORDPAY)
+ 1 AS N, OP.DEP_ID, OP.ID, OP.DVAL, D.CODE, OP.REFER FROM T_ORD O, G_ACCBLN A, T_BOP_STAT_STD S, T_PROCESS P, T_PROCMEM M, S_ORDDSC_STD D, S_ORDPAY OP WHERE OP.DEP_ID = M.DEP_ID AND OP.ID = M.ORD_ID AND M.MAINFL = '1' AND P.ID = M.ID AND S.ID = P.BOP_ID AND S.NORD = P.NSTAT AND OP.DEP_ID = O.DEP_ID AND OP.ID = O.ID AND D.ID = OP.KSO_ID AND OP.DEP_ID = A.DEP_ID AND OP.ACC_ID = A.ID AND S.CODE = 'CLIENTBANK' AND D.CODE = '221' AND OP.ALTERCODE = 'CBC' AND OP.DVAL >= :B1 - 5 UNION ALL SELECT --+ index(op PK_S_ORDPAY)
+ 11 AS N, OP.DEP_ID, OP.ID, OP.DVAL, D.CODE, OP.REFER FROM T_ORD O, G_ACCBLN A, T_BOP_STAT_STD S, T_PROCESS P, T_PROCMEM M, T_ACC AA, S_ORDDSC_STD D, S_ORDPAY OP WHERE OP.DEP_ID = M.DEP_ID AND OP.ID = M.ORD_ID AND M.MAINFL = '1' AND P.ID = M.ID AND DECODE( G_PKGLOCK.FGETACCLOCKEXIST(A.DEP_ID, A.ID) + T_PKGLIM.FHOLDACC(A.DEP_ID, A.ID, P_OPERDAY, DECODE(AA.VALUTFL,1,AA.VAL_ID,P_NATVAL)), 0, 0, 1 ) = 0 AND A.ID=AA.ID AND A.DEP_ID=AA.DEP_ID AND S.ID = P.BOP_ID AND S.NORD = P.NSTAT AND OP.DEP_ID = O.DEP_ID AND OP.AMOUNT <= 500000 AND OP.VAL_ID = 1 AND OP.ID = O.ID AND D.ID = OP.KSO_ID AND OP.DEP_ID = A.DEP_ID AND OP.ACC_ID = A.ID AND S.CODE = 'CLIENTBANK' AND D.CODE = '311' AND OP.ALTERCODE = 'CBC' AND SUBSTR(OP.CODE_OD,1,1) = '1' AND EXISTS (SELECT 1 FROM DUAL WHERE SUBSTR(C_PKGDEP.FIDDEP2CODEBNK(OP.DEP_ID), 1, 30) = 'QWERTY' AND OP.CODE_BCR <> 'QWERTY') AND OP.DVAL >= :B1 - 5 ) T1 ) T2 WHERE RN = 1 UNION ALL SELECT --+ index(op PK_S_ORDPAY)
+ 2 AS N, OP.DEP_ID, OP.ID, OP.DVAL, D.CODE, OP.REFER FROM T_ORD O, G_ACCBLN A, T_BOP_STAT_STD S, T_PROCESS P, T_PROCMEM M, S_ORDDSC_STD D, S_ORDPAY OP WHERE OP.DEP_ID = M.DEP_ID AND OP.ID = M.ORD_ID AND M.MAINFL = '1' AND P.ID = M.ID AND S.ID = P.BOP_ID AND S.NORD = P.NSTAT AND OP.DEP_ID = O.DEP_ID AND OP.ID = O.ID AND D.ID = OP.KSO_ID AND OP.DEP_ID = A.DEP_ID AND OP.ACC_ID = A.ID AND S.CODE = 'CLIENTBANK' AND D.CODE = '311' AND OP.ALTERCODE = 'CBC' AND SUBSTR(OP.CODE_OD,1,1) = '1' AND SUBSTR(OP.CODE_BE,1,1)='1' AND EXISTS (SELECT 1 FROM DUAL WHERE SUBSTR(C_PKGDEP.FIDDEP2CODEBNK(OP.DEP_ID), 1, 30) = 'QWERTY' AND OP.CODE_BCR = 'QWERTY') AND ((TO_NUMBER(TO_CHAR(SYSDATE, 'hh24')) < 22 AND OP.DVAL >= P_OPERDAY-5) OR (TO_NUMBER(TO_CHAR(SYSDATE, 'hh24')) > 22 AND OP.DVAL = P_OPERDAY)) UNION ALL SELECT --+ index(op PK_S_ORDPAY)
+ 3 AS N, OP.DEP_ID, OP.ID, OP.DVAL, D.CODE, OP.REFER FROM T_ORD O, G_ACCBLN A, T_BOP_STAT_STD S, T_PROCESS P, T_PROCMEM M, S_ORDDSC_STD D, S_ORDPAY OP, C_USR U WHERE OP.DEP_ID = M.DEP_ID AND OP.ID = M.ORD_ID AND M.MAINFL = '1' AND P.ID = M.ID AND S.ID = P.BOP_ID AND S.NORD = P.NSTAT AND OP.DEP_ID = O.DEP_ID AND OP.ID = O.ID AND D.ID = OP.KSO_ID AND OP.DEP_ID = A.DEP_ID AND OP.ACC_ID = A.ID AND U.ID = O.ID_US AND S.CODE = 'CLIENTBANK' AND D.CODE = '221' AND OP.ALTERCODE = 'CBC' AND EXISTS (SELECT 1 FROM DUAL WHERE SUBSTR(C_PKGDEP.FIDDEP2CODEBNK(OP.DEP_ID), 1, 30) = 'QWERTY' AND OP.CODE_BCR = 'QWERTY') AND OP.RNN_CL=OP.RNN_CR AND OP.KNP='342' AND OP.CHA_ID=:B2 AND OP.DVAL >= :B1 - 5 
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.01       0.01          0          0          0           0
+Execute      1      0.65       0.65          0          0          7           0
+Fetch        2      0.66       1.92       3303      18659          0           2
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        4      1.34       2.60       3303      18659          7           2
+
+Misses in library cache during parse: 1
+Optimizer mode: RULE
+Parsing user id: 83     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         2          2          2  UNION-ALL  (cr=21493 pr=3519 pw=0 time=2101634 us starts=1)
+         2          2          2   VIEW  (cr=21493 pr=3519 pw=0 time=2101623 us starts=1 cost=1268330 size=170 card=2)
+         2          2          2    WINDOW SORT PUSHED RANK (cr=21493 pr=3519 pw=0 time=2101613 us starts=1 cost=1268330 size=132 card=2)
+       199        199        199     VIEW  (cr=21493 pr=3519 pw=0 time=47616651 us starts=1 cost=1268329 size=132 card=2)
+       199        199        199      UNION-ALL  (cr=21493 pr=3519 pw=0 time=47616151 us starts=1)
+         1          1          1       NESTED LOOPS  (cr=9605 pr=3217 pw=0 time=1723529 us starts=1 cost=634163 size=118 card=1)
+         1          1          1        NESTED LOOPS  (cr=9602 pr=3217 pw=0 time=1723462 us starts=1 cost=634162 size=108 card=1)
+       971        971        971         NESTED LOOPS  (cr=5860 pr=2067 pw=0 time=1295980 us starts=1 cost=435546 size=23029770 card=397065)
+       972        972        972          HASH JOIN  (cr=1866 pr=634 pw=0 time=274052 us starts=1 cost=7431 size=16262480 card=427960)
+       972        972        972           NESTED LOOPS  (cr=1866 pr=634 pw=0 time=272327 us starts=1 cost=7431 size=16262480 card=427960)
+         1          1          1            STATISTICS COLLECTOR  (cr=5 pr=0 pw=0 time=304 us starts=1)
+         1          1          1             NESTED LOOPS  (cr=5 pr=0 pw=0 time=84 us starts=1 cost=3 size=48 card=2)
+         1          1          1              TABLE ACCESS BY INDEX ROWID S_ORDDSC_STD (cr=2 pr=0 pw=0 time=35 us starts=1 cost=1 size=9 card=1)
+         1          1          1               INDEX UNIQUE SCAN AK_S_ORDDSC_STD_CODE (cr=1 pr=0 pw=0 time=23 us starts=1 cost=1 size=0 card=1)(object id 104953)
+         1          1          1              TABLE ACCESS BY INDEX ROWID BATCHED T_BOP_STAT_STD (cr=3 pr=0 pw=0 time=43 us starts=1 cost=2 size=30 card=2)
+         1          1          1               INDEX RANGE SCAN AK_T_BOP_STAT_STD_CODE (cr=2 pr=0 pw=0 time=30 us starts=1 cost=1 size=0 card=2)(object id 105281)
+       972        972        972            TABLE ACCESS BY INDEX ROWID BATCHED T_PROCESS (cr=1861 pr=634 pw=0 time=271053 us starts=1 cost=3714 size=3220014 card=230001)
+       972        972        972             INDEX RANGE SCAN FK_PROCESS_STATE (cr=969 pr=61 pw=0 time=4545 us starts=1 cost=18 size=0 card=85167)(object id 105706)
+         0          0          0           TABLE ACCESS FULL T_PROCESS (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3714 size=3220014 card=230001)
+       971        971        971          TABLE ACCESS BY INDEX ROWID BATCHED T_PROCMEM (cr=3994 pr=1433 pw=0 time=760623 us starts=972 cost=1 size=20 card=1)
+       971        971        971           INDEX RANGE SCAN PK_T_PROCMEM (cr=3258 pr=868 pw=0 time=472600 us starts=972 cost=1 size=0 card=1)(object id 101221)
+         1          1          1         TABLE ACCESS BY INDEX ROWID S_ORDPAY (cr=3742 pr=1150 pw=0 time=662828 us starts=971 cost=1 size=50 card=1)
+       969        969        969          INDEX UNIQUE SCAN PK_S_ORDPAY (cr=2920 pr=526 pw=0 time=287758 us starts=971 cost=1 size=0 card=1)(object id 104966)
+         1          1          1        INDEX UNIQUE SCAN PK_G_ACCBLN (cr=3 pr=0 pw=0 time=56 us starts=1 cost=1 size=10 card=1)(object id 101187)
+       198        198        198       NESTED LOOPS  (cr=11888 pr=302 pw=0 time=185189 us starts=1 cost=634164 size=156 card=1)
+       198        198        198        NESTED LOOPS  (cr=9052 pr=48 pw=0 time=55666 us starts=1 cost=634164 size=156 card=1)
+       198        198        198         NESTED LOOPS  (cr=8502 pr=0 pw=0 time=50244 us starts=1 cost=634163 size=140 card=1)
+       198        198        198          NESTED LOOPS  (cr=8132 pr=0 pw=0 time=46261 us starts=1 cost=634162 size=130 card=1)
+       971        971        971           NESTED LOOPS  (cr=4425 pr=0 pw=0 time=41068 us starts=1 cost=435546 size=23029770 card=397065)
+       972        972        972            HASH JOIN  (cr=805 pr=0 pw=0 time=9146 us starts=1 cost=7431 size=16262480 card=427960)
+       972        972        972             NESTED LOOPS  (cr=805 pr=0 pw=0 time=8500 us starts=1 cost=7431 size=16262480 card=427960)
+         1          1          1              STATISTICS COLLECTOR  (cr=5 pr=0 pw=0 time=164 us starts=1)
+         1          1          1               NESTED LOOPS  (cr=5 pr=0 pw=0 time=72 us starts=1 cost=3 size=48 card=2)
+         1          1          1                TABLE ACCESS BY INDEX ROWID S_ORDDSC_STD (cr=2 pr=0 pw=0 time=34 us starts=1 cost=1 size=9 card=1)
+         1          1          1                 INDEX UNIQUE SCAN AK_S_ORDDSC_STD_CODE (cr=1 pr=0 pw=0 time=19 us starts=1 cost=1 size=0 card=1)(object id 104953)
+         1          1          1                TABLE ACCESS BY INDEX ROWID BATCHED T_BOP_STAT_STD (cr=3 pr=0 pw=0 time=34 us starts=1 cost=2 size=30 card=2)
+         1          1          1                 INDEX RANGE SCAN AK_T_BOP_STAT_STD_CODE (cr=2 pr=0 pw=0 time=22 us starts=1 cost=1 size=0 card=2)(object id 105281)
+       972        972        972              TABLE ACCESS BY INDEX ROWID BATCHED T_PROCESS (cr=800 pr=0 pw=0 time=7970 us starts=1 cost=3714 size=3220014 card=230001)
+       972        972        972               INDEX RANGE SCAN FK_PROCESS_STATE (cr=62 pr=0 pw=0 time=1042 us starts=1 cost=18 size=0 card=85167)(object id 105706)
+         0          0          0             TABLE ACCESS FULL T_PROCESS (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3714 size=3220014 card=230001)
+       971        971        971            TABLE ACCESS BY INDEX ROWID BATCHED T_PROCMEM (cr=3620 pr=0 pw=0 time=26189 us starts=972 cost=1 size=20 card=1)
+       971        971        971             INDEX RANGE SCAN PK_T_PROCMEM (cr=2898 pr=0 pw=0 time=18542 us starts=972 cost=1 size=0 card=1)(object id 101221)
+       198        198        198           TABLE ACCESS BY INDEX ROWID S_ORDPAY (cr=3707 pr=0 pw=0 time=31225 us starts=971 cost=1 size=72 card=1)
+       969        969        969            INDEX UNIQUE SCAN PK_S_ORDPAY (cr=2919 pr=0 pw=0 time=21471 us starts=971 cost=1 size=0 card=1)(object id 104966)
+        12         12         12             FILTER  (cr=120 pr=0 pw=0 time=10053 us starts=12)
+        12         12         12              FAST DUAL  (cr=0 pr=0 pw=0 time=27 us starts=12 cost=2 size=0 card=1)
+       198        198        198          INDEX UNIQUE SCAN PK_G_ACCBLN (cr=370 pr=0 pw=0 time=2008 us starts=198 cost=1 size=10 card=1)(object id 101187)
+       198        198        198         INDEX UNIQUE SCAN PK_T_ACC (cr=550 pr=48 pw=0 time=30790 us starts=198 cost=1 size=0 card=1)(object id 105140)
+       198        198        198        TABLE ACCESS BY INDEX ROWID T_ACC (cr=2836 pr=254 pw=0 time=274509 us starts=198 cost=1 size=16 card=1)
+         0          0          0   NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1268331 size=184 card=2)
+         0          0          0    VIEW  VW_JF_SET$5BB791F9 (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1268330 size=164 card=2)
+         0          0          0     UNION-ALL  (cr=0 pr=0 pw=0 time=0 us starts=0)
+         0          0          0      NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=634162 size=124 card=1)
+         0          0          0       NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=634162 size=124 card=397065)
+         0          0          0        NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=435546 size=23029770 card=397065)
+         0          0          0         HASH JOIN  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=7431 size=16262480 card=427960)
+         0          0          0          NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=7431 size=16262480 card=427960)
+         0          0          0           STATISTICS COLLECTOR  (cr=0 pr=0 pw=0 time=0 us starts=0)
+         0          0          0            NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=48 card=2)
+         0          0          0             TABLE ACCESS BY INDEX ROWID S_ORDDSC_STD (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=9 card=1)
+         0          0          0              INDEX UNIQUE SCAN AK_S_ORDDSC_STD_CODE (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 104953)
+         0          0          0             TABLE ACCESS BY INDEX ROWID BATCHED T_BOP_STAT_STD (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=30 card=2)
+         0          0          0              INDEX RANGE SCAN AK_T_BOP_STAT_STD_CODE (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=2)(object id 105281)
+         0          0          0           TABLE ACCESS BY INDEX ROWID BATCHED T_PROCESS (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3714 size=3220014 card=230001)
+         0          0          0            INDEX RANGE SCAN FK_PROCESS_STATE (cr=0 pr=0 pw=0 time=0 us starts=0 cost=18 size=0 card=85167)(object id 105706)
+         0          0          0          TABLE ACCESS FULL T_PROCESS (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3714 size=3220014 card=230001)
+         0          0          0         TABLE ACCESS BY INDEX ROWID BATCHED T_PROCMEM (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=20 card=1)
+         0          0          0          INDEX RANGE SCAN PK_T_PROCMEM (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 101221)
+         0          0          0        INDEX UNIQUE SCAN PK_S_ORDPAY (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 104966)
+         0          0          0         FILTER  (cr=0 pr=0 pw=0 time=0 us starts=0)
+         0          0          0          FAST DUAL  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)
+         0          0          0       TABLE ACCESS BY INDEX ROWID S_ORDPAY (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=66 card=1)
+         0          0          0      NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=634164 size=173 card=1)
+         0          0          0       NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=634163 size=168 card=1)
+         0          0          0        NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=634162 size=153 card=1)
+         0          0          0         NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=435546 size=23029770 card=397065)
+         0          0          0          HASH JOIN  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=7431 size=16262480 card=427960)
+         0          0          0           NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=7431 size=16262480 card=427960)
+         0          0          0            STATISTICS COLLECTOR  (cr=0 pr=0 pw=0 time=0 us starts=0)
+         0          0          0             NESTED LOOPS  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3 size=48 card=2)
+         0          0          0              TABLE ACCESS BY INDEX ROWID S_ORDDSC_STD (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=9 card=1)
+         0          0          0               INDEX UNIQUE SCAN AK_S_ORDDSC_STD_CODE (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 104953)
+         0          0          0              TABLE ACCESS BY INDEX ROWID BATCHED T_BOP_STAT_STD (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=30 card=2)
+         0          0          0               INDEX RANGE SCAN AK_T_BOP_STAT_STD_CODE (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=2)(object id 105281)
+         0          0          0            TABLE ACCESS BY INDEX ROWID BATCHED T_PROCESS (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3714 size=3220014 card=230001)
+         0          0          0             INDEX RANGE SCAN FK_PROCESS_STATE (cr=0 pr=0 pw=0 time=0 us starts=0 cost=18 size=0 card=85167)(object id 105706)
+         0          0          0           TABLE ACCESS FULL T_PROCESS (cr=0 pr=0 pw=0 time=0 us starts=0 cost=3714 size=3220014 card=230001)
+         0          0          0          TABLE ACCESS BY INDEX ROWID BATCHED T_PROCMEM (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=20 card=1)
+         0          0          0           INDEX RANGE SCAN PK_T_PROCMEM (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 101221)
+         0          0          0         TABLE ACCESS BY INDEX ROWID S_ORDPAY (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=95 card=1)
+         0          0          0          INDEX UNIQUE SCAN PK_S_ORDPAY (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 104966)
+         0          0          0           FILTER  (cr=0 pr=0 pw=0 time=0 us starts=0)
+         0          0          0            FAST DUAL  (cr=0 pr=0 pw=0 time=0 us starts=0 cost=2 size=0 card=1)
+         0          0          0        TABLE ACCESS BY INDEX ROWID BATCHED T_ORD (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=15 card=1)
+         0          0          0         INDEX RANGE SCAN PK_T_ORD (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=0 card=1)(object id 101220)
+         0          0          0       INDEX UNIQUE SCAN PK_C_USR (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=5 card=1)(object id 102431)
+         0          0          0    INDEX UNIQUE SCAN PK_G_ACCBLN (cr=0 pr=0 pw=0 time=0 us starts=0 cost=1 size=10 card=1)(object id 101187)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                          162        0.00          0.00
+  Disk file operations I/O                      361        0.00          0.01
+  db file sequential read                      3151        0.00          1.34
+  db file parallel read                           2        0.00          0.00
+********************************************************************************

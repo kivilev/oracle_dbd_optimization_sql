@@ -5,15 +5,15 @@ WHERE C.ID = 1999
  
 Plan hash value: 3052884723
  
-----------------------------------------------------------------------------------------------------------------------------------------
-| Id  | Operation                    | Name          | Starts | E-Rows |E-Bytes| Cost (%CPU)| E-Time   | A-Rows |   A-Time   | Buffers |
-----------------------------------------------------------------------------------------------------------------------------------------
-|   0 | SELECT STATEMENT             |               |      1 |        |       |   806 (100)|          |      3 |00:00:00.06 |    2143 |
-|   1 |  NESTED LOOPS                |               |      1 |     23 | 21850 |   806   (1)| 00:00:01 |      3 |00:00:00.06 |    2143 |
-|   2 |   TABLE ACCESS BY INDEX ROWID| CLIENT        |      1 |      1 |   826 |     1   (0)| 00:00:01 |      1 |00:00:00.01 |       3 |
-|*  3 |    INDEX UNIQUE SCAN         | CLIENT_PK     |      1 |      1 |       |     1   (0)| 00:00:01 |      1 |00:00:00.01 |       2 |
-|*  4 |   TABLE ACCESS FULL          | CLIENT_CREDIT |      1 |     23 |  2852 |   805   (1)| 00:00:01 |      3 |00:00:00.06 |    2140 |
-----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                    | Name          | Starts | E-Rows | E-Time   | A-Rows |   A-Time   | Buffers | Reads  |
+----------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT             |               |      1 |        |          |      3 |00:00:01.44 |   21281 |  21264 |
+|   1 |  NESTED LOOPS                |               |      1 |      3 | 00:00:01 |      3 |00:00:01.44 |   21281 |  21264 |
+|   2 |   TABLE ACCESS BY INDEX ROWID| CLIENT        |      1 |      1 | 00:00:01 |      1 |00:00:00.01 |       4 |      0 |
+|*  3 |    INDEX UNIQUE SCAN         | CLIENT_PK     |      1 |      1 | 00:00:01 |      1 |00:00:00.01 |       3 |      0 |
+|*  4 |   TABLE ACCESS FULL          | CLIENT_CREDIT |      1 |      3 | 00:00:01 |      3 |00:00:01.44 |   21277 |  21264 |
+----------------------------------------------------------------------------------------------------------------------------
  
 Query Block Name / Object Alias (identified by operation id):
 -------------------------------------------------------------
@@ -58,17 +58,14 @@ Column Projection Information (identified by operation id):
    3 - "C".ROWID[ROWID,10], "C"."ID"[NUMBER,22]
    4 - "CC"."CLIENT_CREDIT_ID"[VARCHAR2,200], "CC"."CLIENT_ID"[NUMBER,22], "CC"."CREATE_DTIME"[DATE,7]
  
-Note
------
-   - dynamic statistics used: dynamic sampling (level=2)
- 
 Query Block Registry:
 ---------------------
  
-  <q o="2"><n><![CDATA[SEL$1]]></n><f><h><t><![CDATA[C]]></t><s><![CDATA[SEL$1]]></s></h><h><t><![CDATA[CC]]></t><s><![CDATA[SEL$1
-        ]]></s></h></f></q>
-  <q o="18" f="y" h="y"><n><![CDATA[SEL$58A6D7F6]]></n><p><![CDATA[SEL$2]]></p><i><o><t>VW</t><v><![CDATA[SEL$1]]></v></o></i><f><
-        h><t><![CDATA[C]]></t><s><![CDATA[SEL$1]]></s></h><h><t><![CDATA[CC]]></t><s><![CDATA[SEL$1]]></s></h></f></q>
+  <q o="2"><n><![CDATA[SEL$1]]></n><f><h><t><![CDATA[C]]></t><s><![CDATA[SEL$1]]></s></h><h><t><![CDATA[CC]]></t><s><!
+        [CDATA[SEL$1]]></s></h></f></q>
+  <q o="18" f="y" h="y"><n><![CDATA[SEL$58A6D7F6]]></n><p><![CDATA[SEL$2]]></p><i><o><t>VW</t><v><![CDATA[SEL$1]]></v>
+        </o></i><f><h><t><![CDATA[C]]></t><s><![CDATA[SEL$1]]></s></h><h><t><![CDATA[CC]]></t><s><![CDATA[SEL$1]]></s></h></
+        f></q>
   <q o="2"><n><![CDATA[SEL$2]]></n><f><h><t><![CDATA[from$_subquery$_003]]></t><s><![CDATA[SEL$2]]></s></h></f></q>
  
  

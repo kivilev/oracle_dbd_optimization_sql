@@ -1,8 +1,8 @@
-﻿/*
+/*
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция N. Поиск проблем
+  Лекция. Поиск проблем
 
   Описание скрипта: cвязные переменные не используются  
 */
@@ -63,6 +63,7 @@ select *
 select t.plan_hash_value
       ,count(*)
   from v$sql t
- where t.parsing_schema_name = 'XXX' -- название схемы
+ where t.parsing_schema_name = 'KIVI' -- название схемы
  group by t.plan_hash_value;
 
+select * from v$sql t where t.plan_hash_value = 2205388139;
