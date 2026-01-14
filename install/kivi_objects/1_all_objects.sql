@@ -1773,7 +1773,7 @@ create or replace package body client_manage_pack is
       raise exception_pack.e_object_check_failed;
     end if;
 
-    -- Create waller and account
+    -- Create wallet and account
     v_wallet_id  := wallet_api_pack.create_wallet(p_client_id => v_client_id);
     v_account_id := account_api_pack.create_account(p_client_id   => v_client_id,
                                                     p_wallet_id   => v_wallet_id,
