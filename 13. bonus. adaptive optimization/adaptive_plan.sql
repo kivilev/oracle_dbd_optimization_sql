@@ -8,7 +8,7 @@
   
 */
 
----- Пример 1. Адаптивный план в epxlain plan
+---- Пример 1. Адаптивный план в explain plan
 explain plan for 
 select /* ao example */
  e.first_name

@@ -9,7 +9,7 @@
 
 /*
  drop table del$account_summary;
- drop index terrorist_birhday_last_name_i;
+ drop index terrorist_birthday_last_name_i;
 */
 
 
@@ -41,18 +41,18 @@ select t.degree, t.* from user_tables t where t.table_name = 'DEL$ACCOUNT_SUMMAR
 
 
 ---- Пример 2. Создание индекса
--- drop index terrorist_birhday_last_name_i;
+-- drop index terrorist_birthday_last_name_i;
 
 -- создаем индекс в параллелях
-create index terrorist_birhday_last_name_i on terrorist(birthday, last_name) parallel 4; -- 4 потока на чтение и 4 на запись
+create index terrorist_birthday_last_name_i on terrorist(birthday, last_name) parallel 4; -- 4 потока на чтение и 4 на запись
 
 -- смотрим степень параллелизма
-select t.degree, t.* from user_indexes t where t.index_name = 'TERRORIST_BIRHDAY_LAST_NAME_I';
+select t.degree, t.* from user_indexes t where t.index_name = 'TERRORIST_BIRTHDAY_LAST_NAME_I';
 
 -- убираем параллелизм
-alter index terrorist_birhday_last_name_i noparallel;
+alter index terrorist_birthday_last_name_i noparallel;
 -- проверяем
-select t.degree, t.* from user_indexes t where t.index_name = 'TERRORIST_BIRHDAY_LAST_NAME_I';
+select t.degree, t.* from user_indexes t where t.index_name = 'TERRORIST_BIRTHDAY_LAST_NAME_I';
 
 
 ---- Пример 3. Параметры отвечающие за настройку параллелизма

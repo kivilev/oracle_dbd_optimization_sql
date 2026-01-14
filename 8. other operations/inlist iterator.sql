@@ -23,7 +23,7 @@ select * from hr.employees t
  where t.department_id = 10 or t.department_id = 20 or t.department_id = 30;
 
 
----- Пример 2. Iteratir не подключился, т.к. дешевле FTS
+---- Пример 2. Iterator не подключился, т.к. дешевле FTS
 select * 
   from hr.employees t 
  where t.employee_id in (100,101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119,

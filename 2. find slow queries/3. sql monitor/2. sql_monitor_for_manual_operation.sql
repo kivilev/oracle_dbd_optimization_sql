@@ -35,7 +35,7 @@ begin
   -- >>> end
 
   dbms_sql_monitor.end_operation(dbop_name => 'HR_TEST', dbop_eid => v_exec_id);
-  dbms_output.put_line('Exceution_id: '|| v_exec_id); 
+  dbms_output.put_line('Execution_id: '|| v_exec_id); 
 end;
 /
 
@@ -61,7 +61,7 @@ begin
 
 
   dbms_sql_monitor.end_operation(dbop_name => 'CHECK_USER', dbop_eid => v_exec_id);
-  dbms_output.put_line('Exceution_id: '|| v_exec_id); 
+  dbms_output.put_line('Execution_id: '|| v_exec_id); 
 end;
 /
 

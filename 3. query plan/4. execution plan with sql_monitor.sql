@@ -4,7 +4,7 @@
 
   Лекция 4. План запроса
 
-  Описание скрипта: получение реального (execution) plan из Sql monitoing'a
+  Описание скрипта: получение реального (execution) plan из Sql monitoring'a
  
 */
 

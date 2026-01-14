@@ -802,8 +802,8 @@ create or replace package exception_pack is
   c_error_code_unexpected_error          constant number(10) := -20999;
 
   -- Messages
-  c_error_msg_empty_field_id            constant varchar2(100 char) := 'Fild id can not be empty';
-  c_error_msg_empty_field_value         constant varchar2(100 char) := 'Fild value can not be empty';
+  c_error_msg_empty_field_id            constant varchar2(100 char) := 'Field id can not be empty';
+  c_error_msg_empty_field_value         constant varchar2(100 char) := 'Field value can not be empty';
   c_error_msg_empty_collection          constant varchar2(100 char) := 'Collection is empty';
   c_error_msg_empty_object_id           constant varchar2(100 char) := 'Object id can not be empty';
   c_error_msg_empty_reason              constant varchar2(100 char) := 'Reason can not be empty';
