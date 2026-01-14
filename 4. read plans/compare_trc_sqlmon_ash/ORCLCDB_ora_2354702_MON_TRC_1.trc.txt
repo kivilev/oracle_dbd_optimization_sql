@@ -1,0 +1,204 @@
+
+TKPROF: Release 21.0.0.0.0 - Development on Sun Jan 21 12:11:54 2024
+
+Copyright (c) 1982, 2021, Oracle and/or its affiliates.  All rights reserved.
+
+Trace file: ORCLCDB_ora_2354702_MON_TRC_1.trc
+Sort options: prsela  fchela  exeela  
+********************************************************************************
+count    = number of times OCI procedure was executed
+cpu      = cpu time in seconds executing 
+elapsed  = elapsed time in seconds executing
+disk     = number of physical reads of buffers from disk
+query    = number of buffers gotten for consistent read
+current  = number of buffers gotten in current mode (usually for update)
+rows     = number of rows processed by the fetch or execute call
+********************************************************************************
+
+SQL ID: 3g2fz9g3dvhz3 Plan Hash: 4245905949
+
+SELECT /*+ monitor use_nl(ser num) */ COUNT(*) 
+FROM
+ CLIENT_DATA SER JOIN CLIENT_DATA NUM ON NUM.CLIENT_ID = SER.CLIENT_ID AND 
+  NUM.FIELD_VALUE = :B2 AND NUM.FIELD_ID = :B1 WHERE SER.FIELD_VALUE = :B4 
+  AND SER.FIELD_ID = :B3 
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.01          0          0          0           0
+Fetch        1      0.33       4.14       2281      14426          0           1
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        3      0.34       4.16       2281      14426          0           1
+
+Misses in library cache during parse: 1
+Misses in library cache during execute: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 113     (recursive depth: 1)
+Number of plan statistics captured: 1
+
+Rows (1st) Rows (avg) Rows (max)  Row Source Operation
+---------- ---------- ----------  ---------------------------------------------------
+         1          1          1  SORT AGGREGATE (cr=14426 pr=2281 pw=0 time=4143464 us starts=1)
+     10000      10000      10000   NESTED LOOPS  (cr=14426 pr=2281 pw=0 time=4142702 us starts=1 cost=6146 size=62876 card=1429)
+     10000      10000      10000    NESTED LOOPS  (cr=4426 pr=2233 pw=0 time=4108516 us starts=1 cost=6146 size=62876 card=1429)
+     10000      10000      10000     TABLE ACCESS BY INDEX ROWID BATCHED CLIENT_DATA (cr=2044 pr=2040 pw=0 time=4000771 us starts=1 cost=3287 size=31438 card=1429)
+    350004     350004     350004      INDEX RANGE SCAN CLIENT_DATA_FIELD_I (cr=1085 pr=1085 pw=0 time=2286591 us starts=1 cost=1019 size=0 card=350004)(object id 74436)
+     10000      10000      10000     INDEX UNIQUE SCAN CLIENT_DATA_PK (cr=2382 pr=193 pw=0 time=104227 us starts=10000 cost=1 size=0 card=1)(object id 74437)
+     10000      10000      10000    TABLE ACCESS BY INDEX ROWID CLIENT_DATA (cr=10000 pr=48 pw=0 time=30788 us starts=10000 cost=2 size=22 card=1)
+
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  Disk file operations I/O                        1        0.00          0.00
+  PGA memory operation                            1        0.00          0.00
+  db file parallel read                           4        0.01          0.02
+  resmgr:cpu quantum                             10        0.19          1.04
+  resmgr: I/O rate limit                          3        0.53          1.56
+********************************************************************************
+
+declare
+  v_field_value1 varchar2(20) := 'FENXEOVELUCNGESNMJSE';
+  v_field_value2 number := 5;
+  v_field_value3 varchar2(20) := 'PPBZ';
+  v_field_value4 number := 4;
+  v_cnt          number;
+begin
+  select /*+ monitor use_nl(ser num) */ count(*)
+    into v_cnt
+    from client_data ser
+    join client_data num
+      on num.client_id = ser.client_id
+     and num.field_value = v_field_value1
+     and num.field_id = v_field_value2
+   where ser.field_value = v_field_value3
+     and ser.field_id = v_field_value4;
+  dbms_output.put_line(v_cnt);
+end;
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.01       0.01          0         11          0           0
+Execute      1      0.00       0.00          0         19          0           1
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.01       0.01          0         30          0           1
+
+Misses in library cache during parse: 1
+Optimizer mode: ALL_ROWS
+Parsing user id: 113  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                            1        0.00          0.00
+  SQL*Net message to client                       1        0.00          0.00
+  SQL*Net message from client                     1        0.14          0.14
+********************************************************************************
+
+SQL ID: 5x323vaz5nuu4 Plan Hash: 0
+
+alter session set events '10046 trace name context off'
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        1      0.00       0.00          0          0          0           0
+Execute      1      0.00       0.00          0          0          0           0
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        2      0.00       0.00          0          0          0           0
+
+Misses in library cache during parse: 0
+Parsing user id: 113  
+********************************************************************************
+
+SQL ID: 9m7787camwh4m Plan Hash: 0
+
+begin :id := sys.dbms_transaction.local_transaction_id; end;
+
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        2      0.00       0.00          0          0          0           0
+Execute      2      0.00       0.00          0          0          0           2
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        4      0.00       0.00          0          0          0           2
+
+Misses in library cache during parse: 0
+Optimizer mode: ALL_ROWS
+Parsing user id: 113  
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       2        0.00          0.00
+  SQL*Net message from client                     2        0.10          0.21
+
+
+
+********************************************************************************
+
+OVERALL TOTALS FOR ALL NON-RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse        4      0.01       0.01          0         11          0           0
+Execute      4      0.00       0.00          0         19          0           3
+Fetch        0      0.00       0.00          0          0          0           0
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total        8      0.01       0.02          0         30          0           3
+
+Misses in library cache during parse: 1
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  SQL*Net message to client                       4        0.00          0.00
+  SQL*Net message from client                     4        0.14          0.50
+  PGA memory operation                            1        0.00          0.00
+
+
+OVERALL TOTALS FOR ALL RECURSIVE STATEMENTS
+
+call     count       cpu    elapsed       disk      query    current        rows
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+Parse       14      0.01       0.01          0          6          0           0
+Execute     92      0.03       0.07          0          0          0           0
+Fetch      132      0.35       4.17       2304      14755          0         382
+------- ------  -------- ---------- ---------- ---------- ----------  ----------
+total      238      0.39       4.26       2304      14761          0         382
+
+Misses in library cache during parse: 12
+Misses in library cache during execute: 12
+
+Elapsed times include waiting on following events:
+  Event waited on                             Times   Max. Wait  Total Waited
+  ----------------------------------------   Waited  ----------  ------------
+  PGA memory operation                            3        0.00          0.00
+  latch: shared pool                              1        0.00          0.00
+  resmgr:cpu quantum                             11        0.19          1.05
+  Disk file operations I/O                        1        0.00          0.00
+  db file parallel read                           4        0.01          0.02
+  resmgr: I/O rate limit                          3        0.53          1.56
+
+    4  user  SQL statements in session.
+   24  internal SQL statements in session.
+   28  SQL statements in session.
+********************************************************************************
+Trace file: ORCLCDB_ora_2354702_MON_TRC_1.trc
+Trace file compatibility: 12.2.0.0
+Sort options: prsela  fchela  exeela  
+       1  session in tracefile.
+       4  user  SQL statements in trace file.
+      24  internal SQL statements in trace file.
+      28  SQL statements in trace file.
+      26  unique SQL statements in trace file.
+    1765  lines in trace file.
+       4  elapsed seconds in trace file.
+
+

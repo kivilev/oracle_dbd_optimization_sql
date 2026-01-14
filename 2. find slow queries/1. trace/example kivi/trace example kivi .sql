@@ -1,7 +1,12 @@
 /*
-  Пример снятия трассировки (KIVI)
-  Автор: Кивилев Д.С.
-*/ 
+  Курс: Оптимизация Oracle SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://backend-pro.ru, https://www.youtube.com/c/OracleDBD)
+
+  Лекция. Поиск медленных запросов
+
+  Описание: пример снятия трассировки
+ 
+*/
 
 select * from payment;
 

@@ -1,18 +1,18 @@
 /*
-  Êóðñ: Îïòèìèçàöèÿ SQL
-  Àâòîð: Êèâèëåâ Ä.Ñ. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+  ÐšÑƒÑ€Ñ: ÐžÐ¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ†Ð¸Ñ SQL
+  ÐÐ²Ñ‚Ð¾Ñ€: ÐšÐ¸Ð²Ð¸Ð»ÐµÐ² Ð”.Ð¡. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Áîíóñ. Îïòèìèçàòîð
+  Ð‘Ð¾Ð½ÑƒÑ. ÐžÐ¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ‚Ð¾Ñ€
 
-  Îïèñàíèå ñêðèïòà: ñíÿòèå òðàññèðîâêè ñ îïòèìèçàòîðà ïðè ïîñòðîåíèè ïëàíà äëÿ äåìîíñòðàöèè ýòàïîâ ïîñòðîåíèÿ çàïðîñà
-  Çàïðîñû äîëæíû âûïîëíÿòüñÿ âïåðâûå èëè alter system flush shared_pool ïîä SYS äëÿ ñáðîñà ðàçäåëÿåìîãî ïóëà (ÍÅ ÄÅËÀÒÜ Â ÏÐÎÄ ÑÐÅÄÅ!)
+  ÐžÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ ÑÐºÑ€Ð¸Ð¿Ñ‚Ð°: ÑÐ½ÑÑ‚Ð¸Ðµ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ¸ Ñ Ð¾Ð¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ‚Ð¾Ñ€Ð° Ð¿Ñ€Ð¸ Ð¿Ð¾ÑÑ‚Ñ€Ð¾ÐµÐ½Ð¸Ð¸ Ð¿Ð»Ð°Ð½Ð° Ð´Ð»Ñ Ð´ÐµÐ¼Ð¾Ð½ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ ÑÑ‚Ð°Ð¿Ð¾Ð² Ð¿Ð¾ÑÑ‚Ñ€Ð¾ÐµÐ½Ð¸Ñ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
+  Ð—Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð¾Ð»Ð¶Ð½Ñ‹ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÑÑ‚ÑŒÑÑ Ð²Ð¿ÐµÑ€Ð²Ñ‹Ðµ Ð¸Ð»Ð¸ alter system flush shared_pool Ð¿Ð¾Ð´ SYS Ð´Ð»Ñ ÑÐ±Ñ€Ð¾ÑÐ° Ñ€Ð°Ð·Ð´ÐµÐ»ÑÐµÐ¼Ð¾Ð³Ð¾ Ð¿ÑƒÐ»Ð° (ÐÐ• Ð”Ð•Ð›ÐÐ¢Ð¬ Ð’ ÐŸÐ ÐžÐ” Ð¡Ð Ð•Ð”Ð•!)
 */
 
--- ÍÅ ÄÅËÀÒÜ Â ÏÐÎÄ ÑÐÅÄÅ!
--- alter system flush shared_pool;
+-- ÐÐ• Ð”Ð•Ð›ÐÐ¢Ð¬ Ð’ ÐŸÐ ÐžÐ” Ð¡Ð Ð•Ð”Ð•!
+-- call flush_all();
 
----- Ïðèìåð 1. Óñòðàíåíèå îáðàùåíèÿ ê òàáëèöå departments â õîäå òðàíñôîðìàöèé (ïîêàçàòü ïëàí)
--- Ôàéë ñ òðàññèðîâêîé - ORCLCDB_ora_559724_OPT_TRC_1.trc
+---- ÐŸÑ€Ð¸Ð¼ÐµÑ€ 1. Ð£ÑÑ‚Ñ€Ð°Ð½ÐµÐ½Ð¸Ðµ Ð¾Ð±Ñ€Ð°Ñ‰ÐµÐ½Ð¸Ñ Ðº Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ðµ departments Ð² Ñ…Ð¾Ð´Ðµ Ñ‚Ñ€Ð°Ð½ÑÑ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¹ (Ð¿Ð¾ÐºÐ°Ð·Ð°Ñ‚ÑŒ Ð¿Ð»Ð°Ð½)
+-- Ð¤Ð°Ð¹Ð» Ñ Ñ‚Ñ€Ð°ÑÑÐ¸Ñ€Ð¾Ð²ÐºÐ¾Ð¹ - ORCLCDB_ora_559724_OPT_TRC_1.trc
 
 alter session set events '10053 trace name context forever';
 alter session set tracefile_identifier='OPT_TRC_1';
@@ -24,10 +24,10 @@ select t.first_name
 
 alter session set events '10053 trace name context off';
 
--- â òðåéñ ôàéëå: 810 ñòð - ïðèìåíåíèå join elimination, 942 ñòð - çàïðîñ ïîñëå òðàíñôîðìàöèé, 
+-- Ð² Ñ‚Ñ€ÐµÐ¹Ñ Ñ„Ð°Ð¹Ð»Ðµ: 810 ÑÑ‚Ñ€ - Ð¿Ñ€Ð¸Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ join elimination, 942 ÑÑ‚Ñ€ - Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð¿Ð¾ÑÐ»Ðµ Ñ‚Ñ€Ð°Ð½ÑÑ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¹, 
 
 
----- Ïðèìåð 2. Óñòðàíåíèå íåâîçìîæíî, ò.ê. èñïîëüçóåòñÿ ñòîëáåö department_name
+---- ÐŸÑ€Ð¸Ð¼ÐµÑ€ 2. Ð£ÑÑ‚Ñ€Ð°Ð½ÐµÐ½Ð¸Ðµ Ð½ÐµÐ²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾, Ñ‚.Ðº. Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ ÑÑ‚Ð¾Ð»Ð±ÐµÑ† department_name
 alter session set events '10053 trace name context forever';
 alter session set tracefile_identifier='OPT_TRC_2';
 
@@ -38,7 +38,7 @@ select t.first_name, d.department_name
  
 alter session set events '10053 trace name context off';
 
----- Ïðèìåð 3. Ïîëó÷åíèå òðåéñà îïòèìèçàòîðà äëÿ ñóùåñòâóþùåãî çàïðîñà
+---- ÐŸÑ€Ð¸Ð¼ÐµÑ€ 3. ÐŸÐ¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ Ñ‚Ñ€ÐµÐ¹ÑÐ° Ð¾Ð¿Ñ‚Ð¸Ð¼Ð¸Ð·Ð°Ñ‚Ð¾Ñ€Ð° Ð´Ð»Ñ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÑŽÑ‰ÐµÐ³Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
 select * from v$sqlarea t where t.sql_text like '%Alex%' order by t.last_load_time desc;
 begin
   dbms_sqldiag.dump_trace(p_sql_id       => 'c92qr9wm7utjm',

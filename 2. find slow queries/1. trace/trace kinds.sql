@@ -1,9 +1,14 @@
 /*
-  Способы трассировки
-  Автор: Кивилев Д.С.
-*/ 
+  Курс: Оптимизация Oracle SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://backend-pro.ru, https://www.youtube.com/c/OracleDBD)
 
------- Снятие в текущей сессии
+  Лекция. Поиск медленных запросов
+
+  Описание: запуск/остановка снятия трассировки
+ 
+*/
+
+------ Пример 1. Снятие в текущей сессии
 
 ---- Способ 1. Можно задать параметры
 alter session set events '10046 trace name context forever, level 8'; -- waits
@@ -41,13 +46,13 @@ alter session set sql_trace = true;
 alter session set sql_trace = false;
 
 
------- Снятие в другой сессии
+------ Пример 2. Снятие в другой сессии
 
 ---- Способ 1. Пакет dbms_monitor (нужны гранты на пакет)
 -- grant execute on dbms_monitor to kivi, hr;
 call dbms_monitor.session_trace_enable(session_id => 22, serial_num => 212222, waits => true, binds => false);
 
-call dbms_monitor.session_trace_disable();
+call dbms_monitor.session_trace_disable(session_id => 22, serial_num => 212222);
 
 
 ---- Способ 2. Пакет dbms_support
@@ -96,14 +101,5 @@ call dbms_system.set_ev(si=>123, se=>1234, ev=>10046, le=>0, nm=>'');
 
 --! открыть TOAD показать какая ф-я там используется.
 
-select t.sql_trace, t.sql_trace_waits, t.sql_trace_binds, t.* from v$session t where t.sid = 284;
+select t.sql_trace, t.sql_trace_waits, t.sql_trace_binds, t.* from v$session t where t.sid = 130;
 
-
-/*
--- получение трассировочного файла
-select * from v$diag_trace_file t;
-
-select replace(replace(trim(payload),chr(13),''), chr(10),'') lines
-  from v$diag_trace_file_contents t 
-  where t.trace_filename = 'ORCLCDB_ora_49379_CHECK_PAYMENT_2.trc';
-*/

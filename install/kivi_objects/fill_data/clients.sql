@@ -30,7 +30,7 @@ begin
                                          t_client_data(client_api_pack.c_last_name_field_id,
                                                        dbms_random.string(opt => 'A', len => 8)),
                                          t_client_data(client_api_pack.c_birthday_field_id,
-                                                       sysdate - trunc(dbms_random.value(7000, 15000))),
+                                                       to_char(sysdate - trunc(dbms_random.value(7000, 15000)), 'YYYY-MM-DD')),
                                          t_client_data(client_api_pack.c_passport_series_field_id,
                                                        dbms_random.string(opt => 'U', len => 4)),
                                          t_client_data(client_api_pack.c_passport_number_field_id,

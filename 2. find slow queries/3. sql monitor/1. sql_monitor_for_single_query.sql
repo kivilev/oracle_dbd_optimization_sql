@@ -1,55 +1,47 @@
 /*
- Автоматическое снятие мониторинга (HR)
-*/ 
+  Курс: Оптимизация Oracle SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://backend-pro.ru, https://www.youtube.com/c/OracleDBD)
 
----- Пример 1. > 5 секунд
+  Лекция. Поиск медленных запросов
 
--- выполняем запрос
-select /*my query mon 1*/count(*)
-  from hr.employees
-  cross join hr.employees
-  cross join hr.employees
-  cross join hr.employees;
+  Описание: SQL-мониторинг
+ 
+*/
 
--- получаем SID, SERIAL текущей сессии
-select sid, serial#
-  from v$session
- where sid in (select sid from v$mystat where rownum <=1);
-
--- запросы в мониторинге
+---- Пример 1. Запросы в мониторинге - SGA
 select key
        ,status, sql_id, t.sql_text
        ,to_char(elapsed_time/1000000,'000.00') as elapsed_sec -- exeela
        ,t.*
-  from v$sql_monitor t where t.sid = 257 and t.session_serial# = 41719
+  from v$sql_monitor t 
+ where t.sid = 84 and t.session_serial# = 21495
  order by t.report_id desc;
  
-select * from v$sql_plan_monitor t where t.key =  107374183413;
+select * from v$sql_plan_monitor t where t.key =  987842487379;
 
----- существует 4е способа сформировать отчет:
 
--- способ 1. по самому последнему запросу попавшему в мониторинг (не обязательно наш запрос)
-select dbms_sqltune.report_sql_monitor(report_level => 'all', type => 'HTML') from dual;
 
--- способ 2. по самому последнему запросу в конкретной сессии (не обязательно наш запрос)
-select dbms_sqltune.report_sql_monitor(session_id => 50, session_serial => 15381, report_level => 'all', type => 'HTML') from dual;
+---- Пример 2. Исторические запросы в мониторинге - AWR
+select * from dba_hist_sqltext t where t.sql_text like '%kivi.payment_check_pack.check_payment%';
 
--- способ 3. по самому последнему запуску конкретного запроса sql_id (не обязательно наш запуск)
-select t.sql_id, t.sql_text from v$sqlarea t where t.sql_text like '%/*my query mon 1*/%'; -- находим наш запрос
+select t.sql_id, t.sample_time - t.sql_exec_start time_delta, t.*
+  from dba_hist_active_sess_history t
+ where t.top_level_sql_id = 'agz15yj3kb4c9'
+ order by t.sample_id;
 
--- проще анализировать, менее детальней
-select dbms_sqltune.report_sql_monitor(sql_id => '40agb7sdtf014', report_level => 'all', type => 'HTML') from dual;
+select m.session_id
+      ,m.session_serial#
+      ,(m.period_end_time - m.period_start_time)*60*60*24 exec_sec
+      ,m.key1 sql_id
+      ,'---'
+      ,m.*
+  from dba_hist_reports m
+ where m.session_id = 84
+   and m.session_serial# = 21495
+--   m.key1 = '52zxnrrzr892y'
+   and m.component_name = 'sqlmonitor';
 
--- способ 4. конкретный запрос с конкретным началом выполнения (можно добавить в Detail в PL/SQL Developer)
-select sysdate
-       ,t.sql_exec_start
-       ,sql_id, t.sql_text
-       ,to_char(elapsed_time/1000000,'00000.00') as elapsed_sec -- exeela
-       ,dbms_sqltune.report_sql_monitor(sql_id => t.sql_id, sql_exec_start => t.sql_exec_start, report_level => 'all', type => 'TEXT')
-  from v$sql_monitor t
- where t.sid = 284 and t.session_serial# = 11342;
 
- 
 ---- Пример 2. Хинт monitoring
 
 -- выполняем запрос
@@ -61,25 +53,8 @@ select key
        ,status, sql_id, t.sql_text
        ,to_char(elapsed_time/1000000,'000.00') as elapsed_sec -- exeela
        ,t.*
-  from v$sql_monitor t where t.sid = 284 and t.session_serial# = 11342
+  from v$sql_monitor t where t.sid = 51 and t.session_serial# = 50626
  order by t.report_id desc;  
 
 
-
----- Пример 3. Parallel запросы
-
--- на примере системных запросов, выполняющихся параллельно
-select sysdate
-       ,t.sql_exec_start
-       ,sql_id, t.sql_text
-       ,to_char(elapsed_time/1000000,'000.00') as elapsed_sec -- exeela
-       ,dbms_sqltune.report_sql_monitor(sql_id => t.sql_id, sql_exec_start => t.sql_exec_start, report_level => 'all', type => 'HTML')
-  from v$sql_monitor t
- where t.sid = 50 and t.session_serial# = 15381;
-
-
-
----- Пример 4. Более детальный отчет (type = ACTIVE)
-
-select dbms_sqltune.report_sql_monitor(sql_id => '40agb7sdtf014', report_level => 'all', type => 'ACTIVE') from dual;
 
