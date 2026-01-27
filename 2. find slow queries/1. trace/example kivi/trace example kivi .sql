@@ -39,6 +39,6 @@ select payload
 -- Этап 3. Разбор
 
 tkprof ORCLCDB_ora_87107_EXAMPLE_TRC_1.trc ORCLCDB_ora_87107_EXAMPLE_TRC_1.trc.txt sort=prsela,fchela,exeela sys=no
-orasrp --sort prsela,fchela,exeela EXAMPLE_TRC_1.trc EXAMPLE_TRC_1.trc.html sys=no
+orasrp --sort=prsela,fchela,exeela --sys=no EXAMPLE_TRC_1.trc EXAMPLE_TRC_1.trc.html
 
-orasrp --sort prsela,fchela,exeela ORCLCDB_ora_183083_CHECK_PAYMENT111.trc ORCLCDB_ora_183083_CHECK_PAYMENT111.trc.html sys=no
+orasrp --sort=prsela,fchela,exeela --sys=no ORCLCDB_ora_183083_CHECK_PAYMENT111.trc ORCLCDB_ora_183083_CHECK_PAYMENT111.trc.html 
