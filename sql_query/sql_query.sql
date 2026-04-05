@@ -1,8 +1,14 @@
-﻿/* 
-  Теория по SQL запросам 
+﻿/*
+  Course: Oracle SQL Optimization. Basic
+  Author: Denis Kivilev (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
+
+  Description: Optimization demo for introduction lesson
   
-  Схема: HR
-*/  
+  Schema: HR
+
+  Lesson 2. SQL Queries  
+
+*/
 
 ---- Пример 1. Демонстрация информации по запросу
 
