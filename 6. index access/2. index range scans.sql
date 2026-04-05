@@ -7,7 +7,7 @@
   Описание скрипта: демо index range scan
 */
 
----- Пример 1. IRS на не уникальном индексе
+---- Пример 1. IRS на неуникальном индексе
 -- emp_manager_ix -> create index emp_manager_ix on employees (manager_id);
 
 -- равенство
