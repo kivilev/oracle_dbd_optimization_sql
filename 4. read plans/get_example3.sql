@@ -1,5 +1,5 @@
 --- выполняем запрос
-select /*+ leading(e d) monitoring*/ 
+select /*+ monitor leading(e d)*/ 
 	   e.employee_id, d.* 
   from hr.employees e 
   join hr.departments d on e.department_id = d.department_id
@@ -7,7 +7,7 @@ select /*+ leading(e d) monitoring*/
 
 
 --- 
-select t.sql_id, t.sql_text from v$sqlarea t where t.sql_text like '%/*+ leading(e d) monitoring*/%'; -- находим наш запрос
+select t.sql_id, t.sql_text from v$sqlarea t where t.sql_text like '%/*+ monitor leading(e d)*/%'; -- находим наш запрос
 
 -- по самому последнему запуску конкретного запроса sql_id (не обязательно наш запуск)
 

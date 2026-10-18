@@ -1,11 +1,11 @@
-﻿---- Упрощенное демо патча (demodb_dba). Патч номер "1".
+﻿---- Упрощенное демо патча (demodb_dba - пользователь-установщик, в install не создается: подставьте своего или SYS). Патч номер "1".
 
 ---- 1. Создаем эдицию, в которую будем ставить наши объекты
 create edition edition_p1;
 comment on edition edition_p1 is 'Install patch #1';
 grant use on edition edition_p1 to hr_ebr;
 
----- 2. Переключаем сессиию установшика в эту эдицию
+---- 2. Переключаем сессию установщика в эту эдицию
 alter session set edition = edition_p1;
 
 ---- 3. Катим изменения 

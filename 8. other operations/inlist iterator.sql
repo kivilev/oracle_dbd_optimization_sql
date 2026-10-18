@@ -36,7 +36,7 @@ select * from hr.employees t
  where t.department_id in (10, 20, 30, 40, 50, 60);
 
 
----- Пример 3. Итератор в сеционированных таблицах
+---- Пример 3. Итератор в секционированных таблицах
 
 -- drop table del$requests;
 

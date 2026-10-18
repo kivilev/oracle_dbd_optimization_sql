@@ -1,3 +1,4 @@
+-- ! Только для персонального стенда: kivi/hr получат право сбрасывать shared pool / buffer cache и убивать любую сессию
 create or replace noneditionable procedure sys.flush_all
 is
 begin
@@ -6,7 +7,7 @@ begin
 end;
 /
 
-create or replace noneditionable procedure kill_session(sid number, serial number)
+create or replace noneditionable procedure sys.kill_session(sid number, serial number)
 is
   v_sql varchar2(1000);
 begin

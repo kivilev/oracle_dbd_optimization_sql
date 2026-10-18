@@ -37,8 +37,8 @@ intersect
 select id
   from del$tab2 t2; 
 
--- стало
-select * 
+-- стало (distinct: intersect убирает дубли; NULL в id intersect считает равными, а join - нет)
+select distinct t1.id
   from del$tab1 t1
   join del$tab2 t2 on t1.id = t2.id;
 
@@ -52,8 +52,8 @@ minus
 select * 
   from del$tab2 t2; 
 
--- стало
-select t1.id, t2.id
+-- стало (distinct: minus тоже убирает дубли)
+select distinct t1.id
   from del$tab1 t1
   left join del$tab2 t2 on t1.id = t2.id
  where t2.id is null;
@@ -61,7 +61,7 @@ select t1.id, t2.id
 
 ---- Пример 3. Update
 -- используется, когда использование индекса не эффективно, 
--- т.е. обновление затрагивает > 100-300K строк и > 5-15% таблицы
+-- т.е. обновление затрагивает > 100-300K строк или > 5-15% таблицы (для больших таблиц, от 10М строк)
 -- почему: генерируется undo на изменение строк, вставка не direct write.
 
 -- было 
@@ -72,7 +72,7 @@ update del$tab1 t1
 select * from del$tab1;
 
 
--- стало 1 (потеряются гранты)
+-- стало 1 (потеряются гранты, индексы, констрейнты, триггеры, статистика; зависимые объекты станут invalid)
 create table del$tab3(id) as
 select (case when mod(t1.id, 2) = 0 then t1.id + 100 else t1.id end) id
   from del$tab1 t1;
@@ -84,7 +84,7 @@ alter table del$tab3 rename to del$tab1;
 select * from del$tab1;
 
 
--- стало 2.
+-- стало 2. (! если сессия оборвется между truncate и insert, данные пропадут - они только в GTT сессии; truncate не пройдет при FK)
 drop table del$tmp$tab1;
 create global temporary table del$tmp$tab1(id number(38)) on commit preserve rows;
 
@@ -104,7 +104,7 @@ select * from del$tab1;
 
 ---- Пример 4. Delete
 -- используется, когда использование индекса не эффективно, 
--- т.е. обновление затрагивает > 100-300K строк или > 5-15% таблицы
+-- т.е. удаление затрагивает > 100-300K строк или > 5-15% таблицы (для больших таблиц, от 10М строк)
 -- почему: генерируется undo на изменение строк, вставка не direct write.
 
 -- было 
@@ -129,7 +129,7 @@ select * from del$tab1;
 ---- Примеры для самостоятельного преобразования
 
 update tab1 t1
-   set t1.col2 = col2 + 'x'
+   set t1.col2 = col2 || 'x'
  where exists (select 1 from tab2 t2 where t1.id = t2.client_id);
 
 

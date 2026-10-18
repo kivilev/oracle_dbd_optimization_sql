@@ -15,6 +15,7 @@ select t.*, rowid
 
 
 ---- Пример 2. индекс (unq) -> rowid
+-- хинт тут не сработает: batched-доступ не применяется к INDEX UNIQUE SCAN (одна строка)
 select /*+ batch_table_access_by_rowid(t)*/t.*
   from hr.employees t where t.employee_id = 1;
 
@@ -31,13 +32,11 @@ select /*+ no_batch_table_access_by_rowid(t)*/ t.*
 
 
 ---- Пример 4. Хитрость как обновлять очень быстро строки
-declare
-
 begin
   
   for v in (select p.*, rowid from payment p where p.status = 0) loop
   
-    ....
+    null; -- обработка
     
     
      update payment p 

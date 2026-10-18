@@ -14,7 +14,7 @@ create materialized view mv_employees_agg
 build immediate
 enable query rewrite --!
 as
-select t.department_id, count(*)
+select t.department_id, count(*) cnt -- у выражения в MV должен быть алиас, иначе ORA-00998
   from hr.employees t 
  group by t.department_id;
 
@@ -29,7 +29,8 @@ select t.department_id, count(*)
  group by t.department_id
  having count(*) > 2;
  
--- нет подмены
+-- нет подмены: rewrite выбирается по стоимости, а здесь дешевле INDEX RANGE SCAN по EMP_DEPARTMENT_IX
+-- (для сравнения: с where t.salary > 1000 подмены тоже не будет - salary нет в MV)
 select t.department_id, count(*)
   from hr.employees t 
  where t.department_id = 40

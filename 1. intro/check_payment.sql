@@ -10,8 +10,8 @@
 
 -- call flush_all();
 
----- 0. Get one of payments 6013328
-select * from payment;
+---- 0. Get one of payments (e.g. 6254217)
+select * from payment where rownum <= 10;
 
 ---- 1. Check payment
 begin

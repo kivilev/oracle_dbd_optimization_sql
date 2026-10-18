@@ -20,7 +20,7 @@ interval (interval '1' day)
 (partition part_min values less than (to_date('01.01.2023','dd.mm.yyyy')));
 
 insert into demo_payment_range 
- select level, trunc(sysdate) + level from dual connect by level <= 100;
+ select level, date'2023-01-01' + level from dual connect by level <= 100;
 
 select * from user_tab_partitions t where t.table_name = 'DEMO_PAYMENT_RANGE';
 
@@ -64,7 +64,7 @@ select * from demo_payment_range t where t.payment_date between date'2023-01-15'
 select * from demo_country_list t where t.country_id in('GB', 'UZ');
 
 -- Partition hash inlist
-select * from demo_client_hash t where t.id = 1000 or t.id = 2000
+select * from demo_client_hash t where t.id = 1000 or t.id = 2000;
 
 
 --- Случай 3. выбрали все секции
@@ -92,7 +92,7 @@ select *
 -- Проход по глобальному индексу
 select * 
   from demo_payment_range t 
- where t.payment_date = sysdate + 1;
+ where t.id = 50;
 
 
 

@@ -1,3 +1,10 @@
+-- drop table my_gtt;
+create global temporary table my_gtt(
+  id   number(30),
+  col1 varchar2(200 char),
+  col2 varchar2(200 char)
+) on commit preserve rows;
+
 insert into MY_GTT
 select level, rpad('_',199,'_'), rpad('_',199,'_') from dual connect by level <= 100000; 
 
@@ -20,4 +27,4 @@ select * from ora$ptt_my_tab_sess;
 
 select * from dbms_xplan.display(format => 'ALL');
 
-select * from user_tab_statistics t where t.table_name = 'MY_GTT'
+select * from user_tab_statistics t where t.table_name = 'MY_GTT';

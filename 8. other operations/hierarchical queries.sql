@@ -16,7 +16,7 @@ connect by level <= 10;
 
 select * 
    from hr.employees e 
-connect by e.employee_id = e.manager_id
+connect by prior e.employee_id = e.manager_id -- prior обязателен: связь "родитель -> потомок"
  start with e.employee_id = 100;
 
 

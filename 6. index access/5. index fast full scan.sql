@@ -12,10 +12,10 @@
 select /*+ index_ffs(t emp_name_ix)*/
  t.first_name
 ,t.last_name
-  from employees t;
+  from hr.employees t;
 
 
 ---- Пример 2. Используем индекс для count(*)
 -- важно! столбец в индексе должен быть not null
 select  /*+ index_ffs(t emp_name_ix)*/ count(*)
-  from employees t;
+  from hr.employees t;

@@ -82,6 +82,7 @@ select /*+ FULL(d) */
                     where e.department_id = d.department_id);
     
 -- Not IN
+-- 0 строк: в подзапросе есть NULL (сотрудник без отдела) -> null-aware anti join (ANTI NA)
 select /*+ FULL(d) */
        d.department_name
   from hr.departments d

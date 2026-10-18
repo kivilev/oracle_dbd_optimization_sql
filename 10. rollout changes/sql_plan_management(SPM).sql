@@ -4,7 +4,7 @@
 
   Лекция. Поставка изменений
 
-  Описание скрипта: Закрепление пouлана SQL-запроса (SQL plan baseline, SPM)
+  Описание скрипта: Закрепление плана SQL-запроса (SQL plan baseline, SPM)
    - выполнение под SYS   
 */
 
@@ -47,7 +47,7 @@ begin
 end;
 /
 
--- получаем информацию по нему -> SQL_89e066867bcec871
+-- получаем информацию по нему -> sql_handle (у нас был SQL_e755192e9f4e0454, подставьте свой ниже)
 select sql_handle, to_char(sql_text), plan_name, t.* from dba_sql_plan_baselines t;
 
 -- отключаем план по sql_handle

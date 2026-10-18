@@ -2,7 +2,7 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция N. Поиск проблем
+  Лекция. Поиск и анализ проблем
 
   Описание скрипта: статистика
 */
@@ -49,7 +49,7 @@ commit;
 ---- смотрим повторно статистику -> ничего не изменилось
 select t.num_rows, t.blocks, t.* from user_tab_statistics t where t.table_name in ('DEL$1', 'DEL$2') order by table_name;
 
--- соовтетственно, план аналогично остался тем же, изменилась A-стата (E = 10, A = 100K)
+-- соответственно, план аналогично остался тем же, изменилась A-стата (E = 10, A = 100K)
 select s.id, b.col1 from del$2 s join del$1 b on s.id = b.id;
 
 -- собираем и смотрим план

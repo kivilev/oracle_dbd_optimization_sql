@@ -30,7 +30,7 @@ call dbms_session.session_trace_disable(); -- завершение снятия 
 -- Этап 2. Получение содержимого
 
 
-select * from v$diag_trace_file t where t.trace_filename like '%EXAMPLE_TRC%'
+select * from v$diag_trace_file t where t.trace_filename like '%EXAMPLE_TRC%';
  
 select payload
   from v$diag_trace_file_contents t
@@ -41,8 +41,8 @@ select payload
 
 -- Этап 3. Разбор
 -- cd /opt/oracle/diag/rdbms/orclcdb/ORCLCDB/trace
-tkprof EXAMPLE_TRC_1.trc EXAMPLE_TRC_1.trc.txt sort=prsela,fchela,exeela sys=no
-orasrp --sort prsela,fchela,exeela EXAMPLE_TRC_1.trc EXAMPLE_TRC_1.trc.html sys=no
+-- tkprof <SID>_ora_<pid>_EXAMPLE_TRC_1.trc <SID>_ora_<pid>_EXAMPLE_TRC_1.trc.txt sort=prsela,fchela,exeela sys=no
+-- orasrp --sort=prsela,fchela,exeela --sys=no <SID>_ora_<pid>_EXAMPLE_TRC_1.trc <SID>_ora_<pid>_EXAMPLE_TRC_1.trc.html
 
 --! открыть в SQL Developer и TOAD
 

@@ -1,4 +1,5 @@
 -- Создание list секционированной таблицы
+DROP TABLE payments PURGE; -- таблицу payments создает и one-level.sql
 CREATE TABLE payments (
     payment_id NUMBER,
     payment_date DATE,

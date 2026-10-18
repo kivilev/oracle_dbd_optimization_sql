@@ -2,7 +2,7 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 4. Адаптивная оптимизация запросов (Adaptive Query Optimization)
+  Бонусная лекция. Адаптивная оптимизация запросов (Adaptive Query Optimization)
 
   Описание скрипта: параметры
   

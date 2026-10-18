@@ -7,7 +7,7 @@
   Описание скрипта: демо table access full 
  
   alter system flush buffer_cache; -- сброс кэша данных (не выполнять в ПРОД!)
-  alter system flush shared_pool; -- сброс shared пуля (не выполнять в ПРОД!)
+  alter system flush shared_pool; -- сброс shared pool (не выполнять в ПРОД!)
 */
 
 ---- 1. Параметр "количество блоков за 1 операцию ввода/вывода" (настраивают DBA)
@@ -25,8 +25,8 @@ select * from hr.employees t where t.manager_id = 1; -- индекс
 select * from hr.employees t where t.manager_id > 1; -- FTS
 
 select count(distinct t.manager_id) from hr.employees t;
-107/18 = 0.06 = 6 строк
+-- селективность 1/18 ≈ 0.056; кардинальность 107/18 ≈ 6 строк
 
--- в) указан хинт FULL, не смотря на подходящий индекс будет использован FTS
+-- в) указан хинт FULL, несмотря на подходящий индекс будет использован FTS
 select /*+ FULL(t)*/ * from hr.employees t where t.manager_id = 1;
 

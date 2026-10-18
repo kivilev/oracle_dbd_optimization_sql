@@ -48,4 +48,4 @@ begin
 end;
 /
 
-select * from dbms_xplan.display_cursor(sql_id => 'c92qr9wm7utjm', format => 'ALLSTATS ADVANCED LAST');
+select * from dbms_xplan.display_cursor(sql_id => 'c92qr9wm7utjm', format => 'ADVANCED'); -- без statistics_level = all A-статистики не будет

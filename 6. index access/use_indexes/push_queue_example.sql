@@ -20,8 +20,10 @@ insert /*+ append*/ into push_queue
     select level
            ,decode(mod(level, 100), 0, 'NEW', 1, 'DELAYED', 'PROCESSED') status
            ,rpad(level, 200,'_'), rpad(level, 200,'_')
-      from dual connect by level <= 100000;
+      from dual connect by level <= 100000; -- в демо 100K строк (на слайде ~10M), для показа выбора индекса достаточно
 commit;
+
+call dbms_stats.gather_table_stats(user, 'PUSH_QUEUE');
 
 select status, count(*) cnt from push_queue group by status;
 -- NEW	1000
@@ -50,6 +52,7 @@ select id
 
 ---- Экономный вариант (надо менять запрос)
 
+drop index push_queue_status_i;
 create index push_queue_status_i on push_queue(decode(status, 'PROCESSED', null, status));
 
 select id
@@ -61,6 +64,7 @@ select id
 
 
 ---- Эффективный вариант (надо менять запрос)
+drop index push_queue_status_i;
 create index push_queue_status_i on push_queue(decode(status, 'PROCESSED', null, status), status);
 
 -- что изменилось в плане?

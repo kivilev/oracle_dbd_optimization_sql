@@ -29,8 +29,8 @@ select sql_id
 declare
   v_quarantine_name varchar2(1000 char);
 begin
-  v_quarantine_name := dbms_sqlq.create_quarantine_by_sql_id(sql_id          => 'a297dxxrp024j',
-                                                             plan_hash_value => '1537892406'); -- можно не передавать, будут внесены все планы
+  v_quarantine_name := dbms_sqlq.create_quarantine_by_sql_id(sql_id          => 'c8mhw7tq0q9t4', -- подставьте свой sql_id из шага 1
+                                                             plan_hash_value => 1537892406); -- можно не передавать, будут внесены все планы
   dbms_output.put_line(v_quarantine_name);
 end;
 /
@@ -43,7 +43,7 @@ select t.*
 
 -- 4. Удаление SQL-карантина (при необходимости)
 begin
-  dbms_sqlq.drop_quarantine(quarantine_name => 'SQL_QUARANTINE_5nrgmk5vbh9gg5baa6036');
+  dbms_sqlq.drop_quarantine(quarantine_name => 'SQL_QUARANTINE_5nrgmk5vbh9gg5baa6036'); -- подставьте имя из шага 3
 end;
 /
 

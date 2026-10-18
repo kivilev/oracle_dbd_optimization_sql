@@ -7,7 +7,7 @@ select *
   from hr.departments d
  order by d.department_name;
 
--- с более чем 1 потомком (например, union all)
+-- с более чем 1 потомком (например, операция UNION-ALL; для UNION сверху добавится SORT UNIQUE)
 select * from hr.departments d1
 union 
 select * from hr.departments d2
@@ -34,7 +34,7 @@ select *
 -- 3
 select e.first_name, m.first_name
   from hr.employees e
-  join hr.employees m on e.manager_id = m.employee_id
+  join hr.employees m on e.manager_id = m.employee_id;
 
 -- 4
 select e.*, m.*, d1.department_name
@@ -45,25 +45,25 @@ select e.*, m.*, d1.department_name
 
 -- 5. Исключение из правил - подзапрос в select
 select (select d.department_name 
-          from departments d 
+          from hr.departments d 
          where d.department_id = e.department_id) dep_name
-   from employees e;
+   from hr.employees e;
 
 -- 6.  Исключение из правил - CTE
 with dep as
  (select /*+ materialize*/ d.department_id
-    from departments d
+    from hr.departments d
    where d.department_name like 'A%')
 select e.first_name
-  from employees e
+  from hr.employees e
   join dep d on e.department_id = d.department_id;
 
--- 10. Iterator (starts=3)  
+-- 7. Iterator (starts=3)  
 select * 
   from hr.employees t
 where t.employee_id in (100, 101, 110);
 
--- 11. Пример
+-- 8. Пример
 select count(*)
   from (select *
           from hr.employees e1

@@ -55,12 +55,15 @@ select sysdate, t.num_rows, t.stale_stats, t.last_analyzed
   from user_tab_statistics t
  where  t.table_name = 'DEMO$TAB$STAT';
 
--- вставка 100K приведет к устареванию (STALE = YES), но статистика ДО сбора не изменится
+-- вставка 200K приведет к устареванию (STALE = YES, порог > 10%), но статистика ДО сбора не изменится
 insert into demo$tab$stat
 select level col1, 'sssss' col2, rpad('я',50,'1') col3
   from dual
-connect by level <= 100000;
+connect by level <= 200000;
 commit;
+
+-- мониторинг изменений (dba_tab_modifications) сбрасывается в словарь не сразу
+call dbms_stats.flush_database_monitoring_info();
 
 -- стата
 select sysdate, t.num_rows, t.stale_stats, t.last_analyzed

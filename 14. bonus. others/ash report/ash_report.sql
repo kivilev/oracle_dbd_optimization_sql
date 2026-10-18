@@ -15,12 +15,14 @@
 select dbid from v$database;
 select instance_number from v$instance;
 
+-- получение отчета за период
 select *
   from dbms_workload_repository.ash_report_html(l_dbid     => 2939488823,
                                                 l_inst_num => 1,
                                                 l_btime    => sysdate - 1 / 24,
                                                 l_etime    => sysdate);
 
+-- фильтр по названию PL/SQL-объекта входной точки за период
 select *
   from dbms_workload_repository.ash_report_html(l_dbid     => 2939488823,
                                                 l_inst_num => 1,
@@ -28,10 +30,10 @@ select *
                                                 l_etime    => sysdate,
                                                 l_plsql_entry => '%CLIENT_WALLET_ANALYSIS_PROC%');
 
--- 248,34130
+-- 248,34130 - фильтр по сессии (sid, serial#)
 select *
   from dbms_workload_repository.ash_report_html(l_dbid     => 2939488823,
                                                 l_inst_num => 1,
                                                 l_btime    => sysdate - 1 / 24,
                                                 l_etime    => sysdate,
-                                                l_plsql_entry => '%CLIENT_WALLET_ANALYSIS_PROC%');
+                                                l_sid      => 248);

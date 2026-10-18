@@ -2,12 +2,13 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 3. План запроса
+  Лекция 4. План запроса
 
-  Описание скрипта: получение гипотетического(explain) plan
+  Описание скрипта: получение гипотетического (explain) plan
   
-  В системе дб установлена таблица PLAN_TABLE:
-  @$ORACLE_HOME/rdbms/admin/utlxplan.sql
+  PLAN_TABLE - публичный синоним на глобальную временную таблицу SYS.PLAN_TABLE$
+  (создается при установке БД скриптом catplan.sql).
+  @$ORACLE_HOME/rdbms/admin/utlxplan.sql - создает локальную копию в схеме, нужен только для старых версий
   
 */
 
@@ -52,4 +53,4 @@ select * from dbms_xplan.display(statement_id => 'my_query', format => 'ALL');
 
 
 ---- 4. IDE в своем интерфейсе используют те же запросы
-В toad или в pl/sql developer (C:\Program Files\Dell\Toad for Oracle 12.6\SQLTracker)
+-- В toad или в pl/sql developer (C:\Program Files\Dell\Toad for Oracle 12.6\SQLTracker)

@@ -49,6 +49,9 @@ begin
 end;
 /
 
+-- после "прогревочного" запроса собираем статистику: появится гистограмма, и курсор станет bind sensitive
+call dbms_stats.gather_table_stats(user, 'SALE$DEL', method_opt => 'FOR COLUMNS ORDER_DATE SIZE AUTO');
+
 declare
   v date := date'2020-01-03';
   v_res number;
@@ -65,7 +68,7 @@ end;
 
 select a.is_bind_sensitive, a.is_bind_aware, a.* from v$sqlarea a where a.sql_text like '%CNT_SALE%';
 
-74k88msa38dz0
+-- 74k88msa38dz0 - sql_id из запроса выше (подставьте свой)
 
 select * from dbms_xplan.display_cursor(sql_id => '74k88msa38dz0',cursor_child_no => 0, format => 'ADVANCED' );
 

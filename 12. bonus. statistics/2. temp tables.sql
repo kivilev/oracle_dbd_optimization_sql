@@ -29,15 +29,15 @@ select t.scope, t.num_rows, t.blocks, t.avg_row_len,
        t.sample_size, t.*
   from all_tab_statistics t
  where t.table_name = 'DEMO1_GTT'
-   and t.owner = 'HR';
+   and t.owner = user;
 
 -- после вставки не будет никакой статистики (индекс)
 select t.*
   from all_ind_statistics t
  where t.table_name = 'DEMO1_GTT'
-   and t.owner = 'HR';
+   and t.owner = user;
    
--- сбор статистики -> создаст строку с SCOPE = SESSION, не закоммитит транщакцию
+-- сбор статистики -> создаст строку с SCOPE = SESSION, не закоммитит транзакцию
 call dbms_stats.gather_table_stats(ownname => user, tabname => 'DEMO1_GTT');
 
 
@@ -59,7 +59,7 @@ select t.scope, t.num_rows, t.blocks, t.avg_row_len,
        t.sample_size, t.*
   from all_tab_statistics t
  where t.table_name = 'DEMO1'
-   and t.owner = 'HR';
+   and t.owner = user;
 
 -- от изменения числа происходит выбор плана (по факту demo1_gtt - пустая)
 explain plan for 
@@ -71,7 +71,7 @@ select * from dbms_xplan.display();
 
 
 
----- Пример 3. Коллекции
+---- Пример 3. Коллекции (подробнее см. 3. collections.sql)
 create or replace type t_ids is table of number(38);
 /
 

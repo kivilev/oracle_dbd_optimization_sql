@@ -1,4 +1,4 @@
--- “Œ“ ∆≈ «¿œ–Œ— “ŒÀ‹ Œ — BIND VARS
+-- –¢–û–¢ –ñ–ï –ó–ê–ü–†–û–° –¢–û–õ–¨–ö–û –° BIND VARS
 
 SQL_ID  201b04a26f2kn, child number 0
 -------------------------------------
@@ -14,8 +14,8 @@ DT2 ON DT2.CLNT_ID = DT1.CLNT_ID AND DT2.FLD_ID = 8 JOIN
 COMMON_IDENT.CLIENT_IDENT_LEVEL CIL ON CIL.CLNT_ID = CL.CLNT_ID AND
 CIL.PRD_IL_ID <> 0 WHERE DT4.FLD_ID = 5 AND UPPER(DT4.CLD_VALUE) = 'BY'
 AND REGEXP_REPLACE(UPPER(DT2.CLD_VALUE || DT1.CLD_VALUE) COLLATE
-BINARY_CI, '[^A-Z¿-ﬂ®0-9π]+', '') = REGEXP_REPLACE(UPPER('MC3081625')
-COLLATE BINARY_CI, '[^A-Z¿-ﬂ®0-9π]+', '')
+BINARY_CI, '[^A-Z–ê-–Ø–Å0-9‚Ññ]+', '') = REGEXP_REPLACE(UPPER('MC3081625')
+COLLATE BINARY_CI, '[^A-Z–ê-–Ø–Å0-9‚Ññ]+', '')
 
 Plan hash value: 1565037707
 
@@ -107,7 +107,7 @@ Outline Data
 Predicate Information (identified by operation id):
 ---------------------------------------------------
 
-   4 - filter(NLSSORT( REGEXP_REPLACE (UPPER("DT2"."CLD_VALUE"||"DT1"."CLD_VALUE") COLLATE "BINARY_CI",'[^A-Z¿-ﬂ®0-9π]+','',<not feasible>)
+   4 - filter(NLSSORT( REGEXP_REPLACE (UPPER("DT2"."CLD_VALUE"||"DT1"."CLD_VALUE") COLLATE "BINARY_CI",'[^A-Z–ê-–Ø–Å0-9‚Ññ]+','',<not feasible>)
    8 - access("DT4"."FLD_ID"=5 AND "DT4"."SYS_NC00006$"='BY')
    9 - filter(UPPER("CLD_VALUE")='FOREIGN_COUNTRY_IDENTIFYING_DOCUMENT')
   10 - access("DT3"."CLNT_ID"="DT4"."CLNT_ID" AND "DT3"."FLD_ID"=7)

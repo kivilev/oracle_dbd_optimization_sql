@@ -4,17 +4,17 @@
 
   Лекция 5. Доступ к данным таблиц
 
-  Описание скрипта: получение реального (execution) plan
+  Описание скрипта: демо sample table scan
  
   alter system flush buffer_cache; -- сброс кэша данных (не выполнять в ПРОД!)
-  alter system flush shared_pool; -- сброс shared пуля (не выполнять в ПРОД!)
+  alter system flush shared_pool; -- сброс shared pool (не выполнять в ПРОД!)
 */
 alter session set statistics_level = ALL;
 
 ---- 1. Как выглядит sample scan
 select t.*, rowid from hr.employees sample (10) t;
 
----- 2. Cоздадим большую таблицу
+---- 2. Создадим большую таблицу
 drop table hr.employees$del;
 create table hr.employees$del as
 select t.* from hr.employees t, (select 1 from dual connect by level <= 100000);
@@ -24,7 +24,8 @@ select /* sample_big */ count(*) from hr.employees$del sample (10) t;
 -- получаем sql_id запроса
 select * from v$sql t where t.sql_text like '%sample_big%';
 
--- информация по непосредственному выполнению запроса (квант 1с - нет)
+-- информация по непосредственному выполнению запроса (ASH сэмплирует раз в 1 с: короткий запрос может не попасть)
+-- sql_id подставьте свой (из запроса выше)
 select t.sql_exec_id, t.event, t.sql_plan_operation, t.sql_plan_options, t.* 
   from v$active_session_history t
  where t.sql_id = '61qjvdmnb7n57'

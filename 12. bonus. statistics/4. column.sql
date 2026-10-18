@@ -16,7 +16,7 @@ select t.num_distinct, t.num_nulls, t.last_analyzed,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'EMPLOYEES'
-   and t.owner = 'HR';
+   and t.owner = user;
 
 select count(distinct t.COMMISSION_PCT) from hr.employees t ;
 select count(1) from hr.employees t where t.COMMISSION_PCT is not null;
@@ -42,7 +42,7 @@ select t.num_distinct, t.num_nulls, t.sample_size, t.last_analyzed,
 
 
 
----- Пример 3. Секционированных таблицы
+---- Пример 3. Секционированные таблицы
 select * from all_part_col_statistics t where t.table_name = 'DEL$SALE_HASH';
 
 

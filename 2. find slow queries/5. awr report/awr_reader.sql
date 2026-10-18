@@ -5,8 +5,8 @@
    Description: getting content of AWR-report
    
    using: 
-   sqlplus connection_string @treader.sql dbid start_snp_id end_snp_id
-   example: sqlplsu hr@oracle19ee @awr_reader.sql 2913690710 229 230
+   sqlplus connection_string @awr_reader.sql dbid start_snp_id end_snp_id
+   example: sqlplus hr@oracle19ee @awr_reader.sql 2913690710 229 230
    
 */
 set head off verify off echo off timi off termout off feedback off trimspool on

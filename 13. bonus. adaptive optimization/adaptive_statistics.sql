@@ -2,11 +2,11 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 4. Адаптивная оптимизация запросов (Adaptive Query Optimization)
+  Бонусная лекция. Адаптивная оптимизация запросов (Adaptive Query Optimization)
 
   Описание скрипта: примеры адаптивной статистики
   
-  alter system set optimizer_adaptive_statistics = true scope=both;  
+  alter session set optimizer_adaptive_statistics = true; -- не alter system: на общем стенде это повлияет на всех
 */
 
 call flush_all();

@@ -24,3 +24,6 @@ select /*+ use_nl(e d) */d.department_name, e.last_name, d.department_id, e.depa
 select * from dbms_xplan.display(statement_id => 'my_query', format => 'ALL');
 
 rollback;
+
+-- возвращаем настройку оптимизатора
+alter session set optimizer_features_enable = '19.1.0';

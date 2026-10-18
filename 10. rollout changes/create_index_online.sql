@@ -19,7 +19,7 @@ select level, lpad(level, 200, '_') from dual connect by level <= 10000;
 commit;
 
 
---- смотрим плна запроса -> FTS
+--- смотрим план запроса -> FTS
 select * from del$1 where col1 = 'some_value';
 
 
@@ -31,5 +31,5 @@ insert into del$1 values (100001, 'some_value');
 create index del$1_col1_i on del$1(col1);
 
 
--- c опицей online ошибки не будет, сессия создания подвиснет, но в целом - ок
+-- с опцией online ошибки не будет, сессия создания подвиснет, но в целом - ок
 create index del$1_col1_i on del$1(col1) online;

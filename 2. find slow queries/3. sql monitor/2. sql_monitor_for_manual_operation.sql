@@ -54,7 +54,7 @@ declare
 begin
   v_exec_id := dbms_sql_monitor.begin_operation(dbop_name => 'CHECK_USER', forced_tracking => 'Y' );
 
-  -- Checking client
+  -- Checking payment
   begin
     kivi.payment_check_pack.check_payment(p_payment_id => 2688632);
   end;

@@ -20,7 +20,7 @@ select t.blevel, t.leaf_blocks, t.distinct_keys
 
 -- почему num_rows разный? 107 и 106?
 select count(*) cnt from hr.employees;
-select count(*) cnt from hr.employees t where t.manager_id ... ;
+select count(*) cnt from hr.employees t where t.manager_id is not null;
 
 
 ---- Пример 2. Большая таблица
@@ -48,7 +48,7 @@ create index sale_demo_status_i on sale_demo(status);
 
 select * from sale_demo;
 
--- статистика по индекам таблицы 
+-- статистика по индексам таблицы 
 select t.blevel, t.leaf_blocks, t.distinct_keys
       ,t.avg_leaf_blocks_per_key leafblk_per_key
       ,t.avg_data_blocks_per_key datablk_per_key
@@ -61,7 +61,7 @@ select t.blevel, t.leaf_blocks, t.distinct_keys
 /*
 Выводы:
 1) SALE_DEMO_UQ: 
-  - высота индекса - 2 (ок)
+  - blevel - 2, т.е. высота индекса 3 (ок)
   - листьев - 2088 (ок)
   - всего значений (num_rows) - 1М
   - уникальных значений - 1М (distinct_keys = num_rows - очень хорошо)
@@ -70,7 +70,7 @@ select t.blevel, t.leaf_blocks, t.distinct_keys
   - null значений нет
 
 2) SALE_DEMO_ORDER_DATE_I
-  - высота индекса - 2
+  - blevel - 2 (высота индекса 3)
   - листьев - 2653
   - всего значений (num_rows) - 1М
   - уникальных значений - 10 (1 distinct_keys = 10% от 1M = 100К строк на ключ, плохой индекс*)
@@ -79,7 +79,7 @@ select t.blevel, t.leaf_blocks, t.distinct_keys
   - null значений нет
   
 3) SALE_DEMO_STATUS_I
-  - высота индекса - 2
+  - blevel - 2 (высота индекса 3)
   - листьев - 1883
   - всего значений (num_rows) - 1М
   - уникальных значений - 2 (1 distinct_keys = 50% от 1M = 500К строк на ключ, отвратительный индекс*)
@@ -91,9 +91,24 @@ select t.blevel, t.leaf_blocks, t.distinct_keys
 */
 
 ---- Пример 3. Важность уникальности(разнообразности) значений лидирующего столбца
--- доработать пример!
 create index sale_demo_sale_id_status_i on sale_demo(sale_id, status);
 create index sale_demo_status_sale_id_i on sale_demo(status, sale_id);
+
+alter session set statistics_level = all;
+
+-- предикат только по sale_id: лидирующий столбец уникальный -> INDEX RANGE SCAN, мало buffers
+select /*+ index(t sale_demo_sale_id_status_i) */ count(*)
+  from sale_demo t
+ where t.sale_id between 1000 and 1100;
+select * from dbms_xplan.display_cursor(format => 'ALLSTATS LAST');
+
+-- тот же предикат: лидирующий столбец status не задан -> только INDEX SKIP SCAN, buffers больше.
+-- skip scan вообще возможен лишь потому, что у status всего 2 значения (2 поддерева);
+-- вывод: ведущим ставим столбец, который всегда есть в предикатах и хорошо отбирает строки
+select /*+ index_ss(t sale_demo_status_sale_id_i) */ count(*)
+  from sale_demo t
+ where t.sale_id between 1000 and 1100;
+select * from dbms_xplan.display_cursor(format => 'ALLSTATS LAST');
 
 
 ---- Пример 4. Фактор кластеризации
@@ -124,7 +139,7 @@ select * from sale_demo;
 
 call dbms_stats.gather_table_stats(ownname => user, tabname => 'sale_demo');
 
--- статистика по индекам таблицы 
+-- статистика по индексам таблицы 
 select t.blevel, t.leaf_blocks, t.distinct_keys
       ,t.avg_leaf_blocks_per_key leafblk_per_key
       ,t.avg_data_blocks_per_key datablk_per_key
@@ -155,7 +170,7 @@ commit;
 
 call dbms_stats.gather_table_stats(ownname => user, tabname => 'sale_demo');
 
--- статистика по индекам таблицы 
+-- статистика по индексам таблицы 
 select t.blevel, t.leaf_blocks
        ,t.clustering_factor, t.num_rows
       ,t.distinct_keys
@@ -196,7 +211,7 @@ call dbms_stats.gather_table_stats(ownname => user, tabname => 'sale_demo');
 -- create index sale_demo_uq on sale_demo(sale_id);
 create index sale_demo_reverse_i on sale_demo(sale_id) reverse;
 
--- статистика по индекам таблицы 
+-- статистика по индексам таблицы 
 select t.blevel, t.leaf_blocks
        ,t.clustering_factor, t.num_rows
       ,t.distinct_keys

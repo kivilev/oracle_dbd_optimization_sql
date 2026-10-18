@@ -12,6 +12,6 @@
 ---- Пример 1. Не указаны предикаты соединения
 select e.employee_id
       ,d.department_name
-  from hr.employees e, hr.departments  d
+  from hr.employees e, hr.departments  d;
 
 

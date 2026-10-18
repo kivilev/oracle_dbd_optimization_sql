@@ -15,7 +15,7 @@ select e.*, d.department_name
  where e.department_id = d.department_id
    and d.department_name in ('Marketing', 'Sales');
 
--- показывает финальный план
+-- показывает план по умолчанию (default plan); с format => '+ADAPTIVE' видны неактивные шаги (отмечены '-')
 select * from dbms_xplan.display(format => 'ALL');
 
 -- показывает отброшенные шаги

@@ -1,3 +1,4 @@
+-- Схема: HR (не kivi! скрипт пересоздает таблицу CLIENT, в kivi есть своя CLIENT)
 drop table client;
 drop table client_credit;
 

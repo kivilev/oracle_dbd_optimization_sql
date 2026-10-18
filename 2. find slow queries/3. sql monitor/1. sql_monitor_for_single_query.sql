@@ -42,10 +42,11 @@ select m.session_id
    and m.component_name = 'sqlmonitor';
 
 
----- Пример 2. Хинт monitoring
+---- Пример 3. Хинт monitor
 
 -- выполняем запрос
-select /*my query mon 2*/ /*+ monitor */count(*)
+-- хинт должен быть в первом комментарии сразу после select, иначе он игнорируется
+select /*+ monitor */ /*my query mon 2*/ count(*)
   from hr.employees;
 
 -- запросы в мониторинге (может появиться не сразу)

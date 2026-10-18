@@ -4,7 +4,7 @@
 
   Бонусная лекция. Статистика
 
-  Описание скрипта: статистика коллекциям
+  Описание скрипта: статистика по коллекциям
   
 */
 
@@ -49,7 +49,7 @@ select * from dbms_xplan.display();
 explain plan for 
 select /*+ cardinality(t 10)*/
        d.*
-  from t_ids(1, 2, 3, 4) t
+  from t_ids(1, 2222, 30000, 99999) t
   join credit d on value(t) = d.id;
 
 select * from dbms_xplan.display();

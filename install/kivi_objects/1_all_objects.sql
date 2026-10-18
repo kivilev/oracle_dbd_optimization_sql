@@ -1046,23 +1046,31 @@ prompt =================================
 prompt
 create or replace procedure clear_payments is
   c_days_left constant number(3) := 45;
-  v_current_payment_count number(38);
+  v_high_value_date date;
 begin
-  select count(*)
-    into v_current_payment_count
-    from payment t
-   where t.create_dtime < trunc(sysdate - c_days_left)
-     and rownum < 2;
 
-  if v_current_payment_count >= 1 then
-    for p in (select to_char(trunc(create_dtime), 'yyyymmdd') pdate
-                from payment t
-               where t.create_dtime < trunc(sysdate - c_days_left)
-               group by trunc(create_dtime)) loop
-      execute immediate 'alter table payment drop partition for(to_date(' ||
-                        p.pdate || ',''yyyymmdd'')) update global indexes';
-    end loop;
-  end if;
+  for p in (select partition_name
+                  ,high_value
+                  ,table_name
+              from user_tab_partitions
+             where upper(table_name) in ('PAYMENT', 'PAYMENT_DETAIL')
+               and upper(partition_name) <> 'PMIN') loop
+  
+    execute immediate 'select ' || p.high_value || ' from dual'
+      into v_high_value_date;
+  
+    if v_high_value_date is not null
+       and v_high_value_date < trunc(sysdate - c_days_left) then
+    
+      dbms_output.put_line(lower(p.table_name) || '.' || p.partition_name ||
+                           ' will be deleted');
+    
+      execute immediate ' ALTER TABLE ' || lower(p.table_name) ||
+                        ' DROP PARTITION ' || p.partition_name ||
+                        ' UPDATE GLOBAL INDEXES';
+    end if;
+  end loop;
+
 end;
 /
 

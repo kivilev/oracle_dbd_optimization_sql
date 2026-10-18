@@ -36,8 +36,8 @@ select /*+ use_hash(t d) leading(t d)*/
 -- почитаем шаги и посмотрим методы соединения
 select department_name
       ,first_name
-  from departments d
+  from hr.departments d
  cross join lateral (select e.first_name
-                       from employees e
+                       from hr.employees e
                       where e.department_id = d.department_id)
  order by 1, 2;

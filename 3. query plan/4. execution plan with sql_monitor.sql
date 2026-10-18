@@ -4,12 +4,13 @@
 
   Лекция 4. План запроса
 
-  Описание скрипта: получение реального (execution) plan из Sql monitoring'a
+  Описание скрипта: получение реального (execution) plan из SQL Monitoring
  
 */
 
 -- будем получать информацию для этого запроса - хинт monitor.
-select /*my_query_mon1*/ /*+ monitor */count(*)
+-- хинт должен быть в первом комментарии сразу после select, иначе он игнорируется
+select /*+ monitor */ /*my_query_mon1*/ count(*)
   from hr.employees
   cross join hr.employees
   cross join hr.employees

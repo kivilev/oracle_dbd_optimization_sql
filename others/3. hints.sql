@@ -2,7 +2,7 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция 4. План запроса
+  Лекция. Создание плана запроса
 
   Описание скрипта: демонстрация механики хинтов
  
@@ -33,9 +33,9 @@ where t.department_id = 1;
 ---- 2. Случаи невозможности применения хинтов
 
 -- такого индекса нет
-select /*+ index(no_exists_index)*/* from hr.employees t;
+select /*+ index(t no_exists_index)*/* from hr.employees t;
 
--- неправильны хинт
+-- неправильный хинт
 select /*+ index2(no_exists_index)*/* from hr.employees t;
 
 -- нет в запросе таблицы t2

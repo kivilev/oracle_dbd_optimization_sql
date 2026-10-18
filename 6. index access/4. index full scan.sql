@@ -9,11 +9,11 @@
 
 ---- Пример 1. Устраняется дополнительный шаг с сортировкой
 select t.employee_id 
-  from employees t 
+  from hr.employees t 
  order by t.employee_id; -- order by
 
 select t.employee_id, count(1) 
-  from employees t 
+  from hr.employees t 
  group by t.employee_id; -- group by
 
 
@@ -21,12 +21,12 @@ select t.employee_id, count(1)
 
 -- использует IFS, даже если в индексе нет столбца для результатов
 select t.employee_id, t.salary 
-  from employees t 
+  from hr.employees t 
  order by t.employee_id; -- order by
 
--- не использует индекс, т.к. 
+-- не использует индекс, т.к. manager_id нет в индексе EMP_EMP_ID_PK: нужен доступ к таблице, и FTS + SORT дешевле
 select t.employee_id
-  from employees t 
+  from hr.employees t 
  where t.manager_id > 170
  order by t.employee_id; -- order by
 

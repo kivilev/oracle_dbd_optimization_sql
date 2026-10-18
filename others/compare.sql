@@ -4,7 +4,7 @@
 -- 1
 select e.first_name "Employee"
   from hr.Employees e
-  join hr.Employees m on m.employee_id = e.manager_id and e.salary > m.salary
+  join hr.Employees m on m.employee_id = e.manager_id and e.salary > m.salary;
 
 -- 2
 select e.first_name "Employee"
@@ -27,17 +27,3 @@ select d.department_name, e.first_name, e.salary
         group by t.department_id) dm
   join hr.employees e on dm.department_id = e.department_id and dm.max_salary = e.salary
   join hr.departments d on d.department_id = e.department_id;
-
-
------ 3
-
-select c.name customers
-  from customers c
-where not exists (select 1 from Orders o where o.customerId = c.id)
-
-
--- 
-select email
-  from person
- group by email
- having count(1) > 1

@@ -23,12 +23,6 @@ begin
     <<bulk_loop>>
     for dd in (select level lvl from dual connect by level <= v_diff_date_per_day) loop
     
-      select payment_seq.nextval
-        bulk collect
-        into v_payment_ids
-        from dual
-      connect by level <= v_bulk_size;
-    
       v_payment_dtime := i.dt + dbms_random.value(1, 24) / 24;
     
       select payment_seq.nextval

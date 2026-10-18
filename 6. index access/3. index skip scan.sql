@@ -18,10 +18,10 @@ select count(distinct t.last_name)
 
 
 
----- Пример 2. Лидирующий столбец задан, но он низко кардинальный
+---- Пример 2. Лидирующий столбец не задан, но он низкокардинальный (2 значения -> 2 поддерева)
 -- создадим табличку аналог employees + пол
 
-create table hr.employees_gender as
+create table employees_gender as
 select rownum employee_id,
        t.first_name,
        t.last_name,
@@ -42,6 +42,6 @@ call dbms_stats.gather_table_stats(ownname => user, tabname => 'employees_gender
 
 select /*+ index_ss(t employees_gender_i)*/ t.*
   from employees_gender t 
- where t.gender = 'M' and t.employee_id = 23;
+ where t.employee_id = 23; -- gender (лидирующий столбец) в предикате нет
 
   

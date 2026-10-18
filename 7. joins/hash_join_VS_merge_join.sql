@@ -122,7 +122,7 @@ begin
       v_merge_seconds(i) := (dbms_utility.get_time - v_begin_time) / 100;
     end loop;
   
-    --Get average times.  Throw out first and last result.
+    --Get average times.  Throw out max and min result.
     select (sum(column_value) - max(column_value) - min(column_value)) / (count(*) - 2)
       into v_average_hash_seconds
       from table(v_hash_seconds);

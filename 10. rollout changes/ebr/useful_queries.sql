@@ -14,7 +14,7 @@ select t.edition_name, t.parent_edition_name
       ,level      
   from dba_editions t
   join dba_objects tt on t.edition_name = tt.object_name
- start with t.edition_name = 'ora$base'
+ start with t.edition_name = 'ORA$BASE'
 connect by prior t.edition_name = t.parent_edition_name
  order by level desc;
 
@@ -22,14 +22,15 @@ connect by prior t.edition_name = t.parent_edition_name
 select do.object_name, vs.sid, vs.serial#, vs.machine, vs.*
   from v$session vs
   join dba_objects do
-    on vs.session_edition_id = do.object_id
+    on vs.session_edition_id = do.object_id;
 
--- переключить сессиию в другую эдицию
+-- переключить сессию в другую эдицию
 alter session set edition = edition_p2;
 
 -- сделать эдицию по умолчанию на уровне БД
 alter database default edition = edition_p1;
 
+-- demodb_dba - пользователь-установщик патчей (в install не создается), подставьте своего
 -- разрешение на использование 
 grant use on edition ora$base to demodb_dba;
 

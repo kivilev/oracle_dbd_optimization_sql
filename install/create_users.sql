@@ -1,8 +1,9 @@
 /*
   Creating role, kivi, hr schemas
-  
+*/
+
 -- role
-drop role student_role;
+-- drop role student_role;
 
 create role student_role;
 grant connect to student_role;
@@ -12,7 +13,6 @@ grant create view to student_role;
 grant create materialized view to student_role;
 GRANT CREATE JOB TO student_role;
 
-*/
 
 declare
   type t_users is table of all_users.username%type;

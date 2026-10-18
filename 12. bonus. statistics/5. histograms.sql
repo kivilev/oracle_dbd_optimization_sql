@@ -18,7 +18,7 @@ create table sale$del(
 create index sale$del_i on sale$del(order_date);
 
 
----- Пример 1. Использование гистограм
+---- Пример 1. Использование гистограмм
 
 -- Забиваем данными. Order_date равномерно заполняется.
 insert into sale$del
@@ -34,7 +34,7 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;
 
 -- добавим 10К строк на '1999-12-31' -> будет перекос данных  (data skew)
 insert into sale$del
@@ -42,27 +42,28 @@ select level+10000, date'1999-12-31', 'some_info'||level
   from dual connect by level <= 10000; 
 commit;
 
--- собираем стату и смотрим -> histogram -> NONE, т.к. еще ни разу не выполнялся запрос по столбу
+-- собираем стату и смотрим -> histogram -> NONE, т.к. еще ни разу не выполнялся запрос по столбцу
 call dbms_stats.gather_table_stats (user, 'sale$del');
 select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;
 
 
 ---- Планы запросов без построения гистограмм (не выполнять запросы!)
 -- 1 строка -> Index RS (смотрим план)
-select count(*)
+-- count(some_info), а не count(*): нужен доступ к таблице, иначе запрос покрывается индексом
+select count(t.some_info)
   from sale$del t
  where t.order_date = date'2000-01-02';
  
--- 10К строк -> Index RS - ошибка! выбирается же > 15% строк таблицы (смотрим план)
-select count(*)
+-- 10К строк -> Index RS + table access - ошибка! выбирается же ≈50% строк таблицы (смотрим план)
+select count(t.some_info)
   from sale$del t
  where t.order_date = date'1999-12-31'; 
 
--- выполним запрос 1й, собирем статистику заново, смотрим
+-- выполним запрос 1й, соберем статистику заново, смотрим
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE AUTO'); 
 
 -- посмотрим статистику по колонкам -> histogram HYBRID
@@ -70,16 +71,16 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;
 
 
 -- 1 строка -> Index RS (смотрим план) - OK 
-select count(*)
+select count(t.some_info)
   from sale$del t
  where t.order_date = date'2000-01-02';
 
--- 10К строк -> Index FFS - OK
-select count(*)
+-- 10К строк -> FTS - OK
+select count(t.some_info)
   from sale$del t
  where t.order_date = date'1999-12-31';
  
@@ -132,10 +133,10 @@ select x.*, c.column_name
   from dba_objects t
   join sys.col_usage$ x on x.obj# = t.object_id
   join dba_tab_cols c on c.owner = t.owner and c.table_name = t.object_name and c.column_id = x.intcol#
-where t.owner = 'HR' and t.object_name = 'SALE$DEL';
+where t.owner = user and t.object_name = 'SALE$DEL';
 */
 
----- Пример 2. Сбор статистики с указанием опций
+---- Пример 3. Сбор статистики с указанием опций
 
 -- все колонки, с авто выбором количества корзин
 call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR ALL COLUMNS SIZE AUTO'); 
@@ -152,11 +153,20 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;
 
    
----- Пример 3. Проверим, что при соблюдении условия NDV < N buckets будет FREQUENCY-гистограмма
+---- Пример 4. Проверим, что при соблюдении условия NDV < N buckets будет FREQUENCY-гистограмма
 -- 1) пересоздадим таблицу
+drop table sale$del;
+create table sale$del(
+  sale_id      number(38),
+  order_date   date not null,
+  some_info    varchar2(200 char)
+);
+create index sale$del_i on sale$del(order_date);
+-- drop sequence sale$del_pk;
+create sequence sale$del_pk;
 
 -- 2) добавим 100 строк
 insert into sale$del(sale_id,
@@ -179,10 +189,17 @@ select t.num_distinct, t.num_buckets, t.histogram, column_name,
        t.*
   from all_tab_col_statistics t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;
 
----- Пример 4. Подробности про построенные гистограммы
+---- Пример 5. Подробности про построенные гистограммы
 -- 1) пересоздадим таблицу
+drop table sale$del;
+create table sale$del(
+  sale_id      number(38),
+  order_date   date not null,
+  some_info    varchar2(200 char)
+);
+create index sale$del_i on sale$del(order_date);
 
 -- 2) заполним данными 
 insert into sale$del
@@ -200,9 +217,9 @@ call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR COLUMNS
 select * 
   from all_tab_histograms t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;
 
--- 5) опять вставим 1000 c одинаковым ключем   
+-- 5) опять вставим 1000 с одинаковым ключом   
 insert into sale$del
 select 150, date'2000-01-01', 'some_info'||level 
   from dual connect by level <= 1000; 
@@ -213,4 +230,4 @@ call dbms_stats.gather_table_stats (user, 'sale$del', method_opt => 'FOR COLUMNS
 select * 
   from all_tab_histograms t
  where t.table_name = 'SALE$DEL'
-   and t.owner = 'HR';
+   and t.owner = user;

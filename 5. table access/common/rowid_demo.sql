@@ -28,7 +28,8 @@ begin
   dbms_output.put_line('v_object_number: ' || v_object_number);
   dbms_output.put_line('v_relative_fno: ' || v_relative_fno);
   dbms_output.put_line('v_block_number: ' || v_block_number);
-  dbms_output.put_line('v_row_number: ' || v_object_number);
+  dbms_output.put_line('v_row_number: ' || v_row_number);
+  dbms_output.put_line('v_rowid_type: ' || v_rowid_type);
 end;
 /
 

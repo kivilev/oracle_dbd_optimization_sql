@@ -23,6 +23,7 @@ select /*+ monitor use_nl(ser num) leading(ser num)*/ count(*)
 alter session set events '10046 trace name context off';
 
 -- отчет SQL-монитора
+-- sql_id подставьте свой: отчеты в папке сняты с похожего запроса из PL/SQL-блока (с bind-переменными, без leading), его sql_id другой
 select dbms_sqltune.report_sql_monitor(sql_id => '3g2fz9g3dvhz3', report_level => 'all', type => 'HTML') from dual;
 select dbms_sql_monitor.report_sql_monitor(sql_id => '3g2fz9g3dvhz3', report_level => 'all', type => 'ACTIVE') from dual;
 select dbms_sql_monitor.report_sql_monitor(sql_id => '3g2fz9g3dvhz3', report_level => 'all', type => 'TEXT') from dual;

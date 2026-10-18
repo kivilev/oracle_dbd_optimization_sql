@@ -10,6 +10,8 @@
 */
 
 -- функция с 1сек засыпанием - для имитации тормозов
+-- deterministic специально не ставим: иначе Oracle закэширует вызов функции внутри запроса
+-- (scalar caching), и задержка пропадет уже без result cache - демо станет неочевидным
 create or replace function sleep1sec return number
 is
 begin

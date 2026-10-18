@@ -39,6 +39,6 @@ select /*+ cardinality(t 10)*/ *
   from t_numbers(1, 2, 3) t;
 
 
--- 5 - уровень сбора от всей выборки
+-- 2 - уровень динамического сэмплирования (0..11)
 select /*+ dynamic_sampling(t 2)*/ *
   from t_numbers(1, 2, 3) t;

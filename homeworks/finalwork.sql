@@ -2,7 +2,7 @@
   Course: Oracle SQL Optimization. Basic
   Author: Denis Kivilev (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Description: First homework. Payment processing
+  Description: Final work. Payment processing
   
   Schema: kivi  
 

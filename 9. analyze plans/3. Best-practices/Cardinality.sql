@@ -2,7 +2,7 @@
   Курс: Оптимизация SQL
   Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://oracle-dbd.ru, https://www.youtube.com/c/OracleDBD)
 
-  Лекция N. Поиск проблем
+  Лекция. Поиск и анализ проблем
 
   Описание скрипта: не указывать размер коллекций/временных таблиц
 */
@@ -30,7 +30,7 @@ select /*+ cardinality(t 3) */ *
   from t_numbers(1,2,3) t
   join hr.employees e on e.employee_id = value(t);
 
----- Решение 2. Dynamic_sampling. Указываем уровень сбора % от выборки (см. доку)
+---- Решение 2. Dynamic_sampling. Указываем уровень динамической выборки 0..11 (см. доку)
 select /*+ dynamic_sampling(t 5)*/ *
   from t_numbers(1,2,3) t;
   

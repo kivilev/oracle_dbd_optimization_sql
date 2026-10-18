@@ -8,4 +8,4 @@
 */
 
 
-select t.employee_id, t.first_name from employees t;
+select t.employee_id, t.first_name from hr.employees t;

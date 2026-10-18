@@ -24,14 +24,16 @@ select t.num_rows, t.* from user_tables t where t.table_name = 'DEL$DEMO1';
 -- explain plan -> cardinality
 select count(*) cnt from del$demo1;
 
------ Экспорт\ипорт статистики
--- создаем таблицу для экпорта статы
+----- Экспорт\импорт статистики
+-- создаем таблицу для экспорта статы
 call dbms_stats.create_stat_table(ownname => user, stattab => 'MY_STAT_TAB');
 -- экспортируем
 call dbms_stats.export_table_stats(ownname => user, tabname => 'del$demo1', stattab => 'MY_STAT_TAB', statid => 'st1');
 
--- поменяем количество в табличке
+-- поменяем количество в табличке (для type = 'T' столбец N1 - это num_rows)
 select t.*, rowid from my_stat_tab t;
+update my_stat_tab set n1 = 500 where type = 'T' and c1 = 'DEL$DEMO1';
+commit;
 
 -- импортируем
 call dbms_stats.import_table_stats(ownname => user, tabname => 'DEL$DEMO1', stattab => 'MY_STAT_TAB', statid => 'st1');

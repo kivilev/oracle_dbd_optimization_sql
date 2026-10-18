@@ -10,10 +10,10 @@
 
 -- grant execute on dbms_workload_repository to hr, kivi;
 
--- получаем список отчетов
+-- получаем список снапшотов
 select sysdate, t.* from dba_hist_snapshot t order by snap_id desc;
 
--- строим по отрезку отчет, лучще воспользоваться скриптом awr_reader.sql
+-- строим по отрезку отчет, лучше воспользоваться скриптом awr_reader.sql
 select *
   from dbms_workload_repository.awr_report_html(l_dbid     => 2939488823,
                                                 l_inst_num => 1,                                                

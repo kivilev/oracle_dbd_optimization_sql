@@ -28,12 +28,12 @@ select rownum employee_id,
 
 call dbms_stats.gather_table_stats(ownname => user, tabname => 'employees_extended');
 
-select * from employees_extended
+select * from hr.employees_extended;
 
 ---- Пример 1. Поиск по низкокардинальному значению
-create index employees_extended_gen_i on employees_extended(gender);
+create index employees_extended_gen_i on hr.employees_extended(gender);
 
-select * from employees_extended t where t.gender = 'M'; -- плохо, будет FTS
+select * from hr.employees_extended t where t.gender = 'M'; -- плохо, будет FTS
 
 -- что делать? 
 -- а) строить bitmap-индекс, если низкая конкуренция за DML 
@@ -44,7 +44,7 @@ select * from employees_extended t where t.gender = 'M'; -- плохо, буде
 ---- Пример 2. Использование index fast full scan при подсчете count вместо full table scan
 -- предикаты не заданы, но получаем эффект от использования индекса
 
-alter table employees_extended add constraint employees_extended_pk primary key (employee_id);
+alter table hr.employees_extended add constraint employees_extended_pk primary key (employee_id);
 
 select count(*) from hr.employees_extended;
 select /*+ full(t)*/ count(*) from hr.employees_extended t;
@@ -66,13 +66,13 @@ select /*+ use_merge(g1 e) full(e)*/ *
 
 
 ---- Пример 4.1 Неявное преобразование данных
-create index employees_extended_tab_num_i on employees_extended(tabel_number); 
+create index employees_extended_tab_num_i on hr.employees_extended(tabel_number); 
 
 -- упс индекс не подтягивается -> неявное преобразование
-select * from employees_extended t where t.tabel_number = 23;
+select * from hr.employees_extended t where t.tabel_number = 23;
 
 -- все ок, индекс ок
-select * from employees_extended t where t.tabel_number = '23';
+select * from hr.employees_extended t where t.tabel_number = '23';
 
 
 ---- Пример 4.2 Неявное преобразование данных
@@ -110,18 +110,18 @@ select * from del$tab1 t
 
 ---- Пример 5. Функциональный индекс
 drop index employees_extended_tab_num_i;
-create index employees_extended_tab_num_i on employees_extended(upper(tabel_number)); 
+create index employees_extended_tab_num_i on hr.employees_extended(upper(tabel_number)); 
 
 -- упс, индекс не используется
-select * from employees_extended t where tabel_number = :v;
+select * from hr.employees_extended t where tabel_number = :v;
 
 -- индекс используется
-select * from employees_extended t where upper(tabel_number) = :v;
+select * from hr.employees_extended t where upper(tabel_number) = :v;
 
 
 
 ---- Пример 6 Предикат null
-select * from employees_extended t where t.employee_id is null;
+select * from hr.employees_extended t where t.employee_id is null;
 
 
 ---- Пример 7. Устраняем операцию по чтению лишних столбцов
@@ -130,4 +130,4 @@ select * from employees_extended t where t.employee_id is null;
 select t.first_name, t.last_name, t.hire_date from employees t;
 
 -- есть
-select  /*  + index_ffs(t)*/ t.first_name, t.last_name from employees t;
+select /*+ index_ffs(t emp_name_ix)*/ t.first_name, t.last_name from employees t;

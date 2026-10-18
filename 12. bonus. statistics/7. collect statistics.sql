@@ -9,9 +9,9 @@
 */
 
 
----- Пример 1. Eжедневная таска по сбору статисики AUTO_TASK (DBA)
+---- Пример 1. Ежедневная таска по сбору статистики AUTO_TASK (DBA)
 -- пакет по управлению настройками
-dbms_auto_task_admin
+-- dbms_auto_task_admin
 
 -- вкл/выкл сбор ежедневной статистики
 select client_name
@@ -19,12 +19,13 @@ select client_name
   from dba_autotask_client t
  where client_name = 'auto optimizer stats collection';
 
--- AUTO_TASK - ежедневная, HIGH_FREQ_AUTO_TASK - инкрементальная раз в N минут.
+-- AUTO_TASK - ежедневная, HIGH_FREQ_AUTO_TASK - частотная раз в N минут (только Exadata/Cloud/ADB).
 select * from dba_auto_stat_executions;
 
 
 
----- Пример 2. Частотная таска по сбору статисики HIGH_FREQ_AUTO_TASK (DBA)
+---- Пример 2. Частотная таска по сбору статистики HIGH_FREQ_AUTO_TASK (DBA)
+-- ! high-frequency statistics collection в 19c доступна только на Exadata/Engineered Systems/Cloud, на стенде курса не включится
 select * from dba_auto_stat_executions;
 
 -- текущие настройки
@@ -33,9 +34,9 @@ select dbms_stats.get_prefs('AUTO_TASK_STATUS')
   from dual;
 
 -- Управление настройками частотной сборки статистики
-call dbms_stats.set_global_prefs('AUTO_TASK_STATUS','ON'); -- включение автоматической сборки раз в N минут.
-call dbms_stats.set_global_prefs('AUTO_TASK_MAX_RUN_TIME','180'); -- максимальное время работы
-call dbms_stats.set_global_prefs('AUTO_TASK_INTERVAL','240');-- интервал HIGH_FREQ_AUTO_TASK
+call dbms_stats.set_global_prefs('AUTO_TASK_STATUS','ON'); -- включение частотной сборки раз в N минут.
+call dbms_stats.set_global_prefs('AUTO_TASK_MAX_RUN_TIME','180'); -- максимальное время работы, сек
+call dbms_stats.set_global_prefs('AUTO_TASK_INTERVAL','240');-- интервал HIGH_FREQ_AUTO_TASK, сек
 
 
 ---- Пример 3. Автоматическая сборка при выполнении SQL
@@ -60,13 +61,13 @@ select  /*+ no_gather_optimizer_statistics*/
   from dual
 connect by level <= 1000000;
 
--- 3) insert + append, но только для пустой таблы
+-- 3) insert + append, но только для пустой таблицы
 
 drop table demo$tab$stat;
 create table demo$tab$stat
 (
   col1 number,
-  col2 varchar2(100 char)
+  col2 varchar2(100 char),
   col3 varchar2(100 char)
 );
 

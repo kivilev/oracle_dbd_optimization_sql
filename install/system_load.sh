@@ -41,7 +41,7 @@ disk_load() {
 
 # Запуск CPU нагрузки
 cpu_cores=$(nproc)
-cpu_processes=$(( (cpu_cores * CPU_LOAD_PERCENT) / 100 ))
+cpu_processes=$(( (cpu_cores * CPU_LOAD_PERCENT + 99) / 100 )) # округление вверх: минимум 1 процесс
 echo "Запуск $cpu_processes процессов CPU нагрузки (${CPU_LOAD_PERCENT}% от $cpu_cores ядер)"
 
 for i in $(seq 1 $cpu_processes); do

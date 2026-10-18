@@ -20,4 +20,4 @@ select *
           from hr.employees t
          where t.employee_id >= 160
          order by t.employee_id desc)
- where rownum <= 10
+ where rownum <= 10;

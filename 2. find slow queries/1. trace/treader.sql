@@ -9,7 +9,8 @@
 */
 set head off verify off echo off timi off termout off feedback off trimspool on
 spool &1
-COLUMN trace_line FORMAT OFF WRAPPED
+set linesize 4000
+COLUMN trace_line FORMAT a4000 WRAPPED -- payload в v$diag_trace_file_contents - varchar2(4000)
 select replace(replace(trim(payload),chr(13),''), chr(10),'') trace_line
 from v$diag_trace_file_contents t
 where t.trace_filename = '&1'

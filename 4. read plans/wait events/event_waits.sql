@@ -22,8 +22,8 @@ end;
 -- запускаем в sqlplus
 call del$demo();
 
--- в текущей сессии пробуем перекомпилировать
-alter procedure hr.del$demo compile;
+-- во второй сессии (IDE), пока процедура выполняется в sqlplus, пробуем перекомпилировать
+alter procedure del$demo compile;
 
 -- смотрим список сессий и колонки с ожиданием (скрин session_waits.png)
 
@@ -54,6 +54,7 @@ alter session set events '10046 trace name context off';
 -- Трассировочный файл event_waits_example_ORCLCDB_ora_249489_EXAMPLE_SEQ_2.trc.txt
 
 
+/*
 Elapsed times include waiting on following events:
   Event waited on                             Times   Max. Wait  Total Waited
   ----------------------------------------   Waited  ----------  ------------
@@ -72,6 +73,7 @@ Elapsed times include waiting on following events:
   SQL*Net message to client                       1        0.00          0.00
   SQL*Net message from client                     1        0.20          0.20
 ********************************************************************************
+*/
 
 select *
   from V$EVENT_NAME t

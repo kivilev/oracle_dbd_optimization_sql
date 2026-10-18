@@ -1,18 +1,18 @@
 /*
- Пример запроса со всеми столбцами
+ РџСЂРёРјРµСЂ Р·Р°РїСЂРѕСЃР° СЃРѕ РІСЃРµРјРё СЃС‚РѕР»Р±С†Р°РјРё
 */ 
 
----- Пример 1. Простой 
--- в скрипт для IDE
+---- РџСЂРёРјРµСЂ 1. РџСЂРѕСЃС‚РѕР№ 
+-- РІ СЃРєСЂРёРїС‚ РґР»СЏ IDE
 
-select /* + use_hash(e d) no_index(e) */
+select /*+ use_hash(e d) no_index(e) */
      e.employee_id
     ,d.department_name
   from hr.employees e
   join hr.departments d on d.department_id = e.department_id;
     
    
----- Пример 2. Сложный запрос с использованием всех столбцов
+---- РџСЂРёРјРµСЂ 2. РЎР»РѕР¶РЅС‹Р№ Р·Р°РїСЂРѕСЃ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РІСЃРµС… СЃС‚РѕР»Р±С†РѕРІ
 
 with guid_cby as (
   select id, level rn, list_col,instr ('|' || d.list_col, '|', 1, level) pos
@@ -22,8 +22,9 @@ with guid_cby as (
 )
 select id  id, 
        substr (list_col, pos, lead (pos, 1, 4000) over (partition by id order by pos) - pos - 1) token
-  from guid_cby
+  from guid_cby;
 
+/*
 Plan hash value: 240527573
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,4 +41,5 @@ Predicate Information (identified by operation id):
 ---------------------------------------------------
 
    3 - access("ID"=PRIOR NULL)
+*/
    

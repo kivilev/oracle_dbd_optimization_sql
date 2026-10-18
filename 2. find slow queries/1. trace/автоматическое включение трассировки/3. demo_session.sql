@@ -1,4 +1,4 @@
--- Файл 2: test_query.sql - Установка client_id и выполнение тестового запроса на схеме HR
+-- Файл 3: demo_session.sql - Установка client_id и выполнение тестового запроса на схеме HR
 -- Подключиться как HR или пользователь с доступом к схеме HR
 
 -- Установка client_identifier для активации трассировки
@@ -9,7 +9,7 @@ call dbms_session.set_identifier('HR_TEST');
 
 
 -- тестовый запрос: сотрудники из отделов it и sales с зарплатой > 5000
-select /*+ MYQ2 */ e.employee_id, e.first_name, e.last_name, e.department_id, d.department_name, e.salary
+select /* MYQ2 */ e.employee_id, e.first_name, e.last_name, e.department_id, d.department_name, e.salary
 from hr.employees e
 join hr.departments d on e.department_id = d.department_id
 where d.department_name in ('IT', 'Sales')

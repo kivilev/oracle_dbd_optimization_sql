@@ -4,17 +4,19 @@
 
   Лекция. Поиск проблем
 
-  Описание скрипта: cвязные переменные не используются  
+  Описание скрипта: связные переменные не используются  
 */
 
 
 ---- Плохой случай. Забивка библиотечного кэша
+declare
+  v_cnt number;
 begin  
   for v_client_id in 1..100 loop
     execute immediate '
     select count(*)
       from client_data cd
-     where cd.client_id = '||v_client_id;
+     where cd.client_id = '||v_client_id into v_cnt;
   end loop;
 end;
 /

@@ -1,11 +1,11 @@
----- Создание роли и двух схем для демо
+---- Создание схемы HR_EBR для демо (роль student_role создается в install/create_users.sql)
 
 drop user hr_ebr cascade;
 
 -- HR с EBR
 create user hr_ebr identified by booble12
-default tablespace users temporary tablespace temp profile
-default quota 300M on users;
+default tablespace users temporary tablespace temp
+profile default quota 300M on users;
 
 grant student_role to hr_ebr;
 

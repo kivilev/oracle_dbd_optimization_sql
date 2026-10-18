@@ -76,7 +76,7 @@ call dbms_monitor.client_id_trace_disable(client_id=>'some_spec_client');
 call dbms_monitor.serv_mod_act_trace_enable(service_name => 'db1', module_name => 'my_module', 
                                             action_name => 'my_action', waits => true, binds => false);
 
-call dbms_monitor.serv_mod_act_trace_disable(...);
+call dbms_monitor.serv_mod_act_trace_disable(service_name => 'db1', module_name => 'my_module', action_name => 'my_action');
 
 /* в клиенте дб установка 
 dbms_application_info.set_module

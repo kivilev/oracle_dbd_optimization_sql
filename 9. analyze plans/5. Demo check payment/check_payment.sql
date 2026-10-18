@@ -14,5 +14,5 @@ end;
 call dbms_session.session_trace_disable();
 rollback;
 
--- tkprof ORCLCDB_ora_859890_CHECK_PAYMENT_2.trc ORCLCDB_ora_859890_CHECK_PAYMENT_2.trc.txt sort=prsela,fchela,exeela sys=no
+-- tkprof ORCLCDB_ora_<pid>_CHECK_PAYMENT_1.trc ORCLCDB_ora_<pid>_CHECK_PAYMENT_1.trc.txt sort=prsela,fchela,exeela sys=no
 -- call clear_payments();

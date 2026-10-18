@@ -13,7 +13,7 @@
 select *
   from (select department_id
               ,count(*) as emp_count
-          from employees
+          from hr.employees
          group by department_id) dept_summary
  where emp_count > 10;
 
@@ -44,3 +44,7 @@ select e.department_id
 having sum(salary) > 100;
 
 select * from dbms_xplan.display();
+rollback;
+
+-- возвращаем настройку оптимизатора
+alter session set optimizer_features_enable  = '19.1.0';

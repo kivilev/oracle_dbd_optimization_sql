@@ -1,4 +1,5 @@
 -- Создание интервально секционированной таблицы
+DROP TABLE payments PURGE; -- таблицу payments создает и list.sql
 CREATE TABLE payments (
     payment_id NUMBER,
     payment_date DATE,
@@ -34,11 +35,12 @@ SELECT * FROM payments
 WHERE amount > 200;
 
 -- Запрос с использованием ключа секционирования через Bind переменную
-VARIABLE v_date DATE;
-EXEC :v_date := TO_DATE('2024-06-01', 'YYYY-MM-DD');
+-- (тип DATE в SQL*Plus VARIABLE не поддерживается, поэтому строка + to_date)
+VARIABLE v_date VARCHAR2(10);
+EXEC :v_date := '2024-06-01';
 
 SELECT * FROM payments
-WHERE payment_date = :v_date;
+WHERE payment_date = TO_DATE(:v_date, 'YYYY-MM-DD');
 
 -- Запрос с использованием ключа секционирования через литерал и равенство
 SELECT * FROM payments

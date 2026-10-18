@@ -17,5 +17,6 @@ select *
 
 ---- 2) Получим его план запроса
 select * 
-  from dbms_xplan.display_workload_repository(sql_id => '3d236h8knyw1w'
-                                             ,format => 'ADVANCED ALLSTATS LAST');
+  from dbms_xplan.display_workload_repository(sql_id => '3d236h8knyw1w' -- подставьте свой sql_id из шага 1
+                                           --,plan_hash_value => <plan_hash_value> -- если у запроса несколько планов
+                                             ,format => 'ADVANCED'); -- в AWR нет runtime-статистики по шагам (A-Rows, A-Time), поэтому ALLSTATS LAST не нужен

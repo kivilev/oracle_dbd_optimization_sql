@@ -22,4 +22,8 @@ BEGIN
   
   DBMS_OUTPUT.PUT_LINE('Job CLIENT_WALLET_ANALYSIS_JOB created successfully');
 END;
-/ 
+/
+
+-- отключить джоб ("шумный сосед"):
+-- call dbms_scheduler.disable('CLIENT_WALLET_ANALYSIS_JOB');
+ 

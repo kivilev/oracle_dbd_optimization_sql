@@ -35,7 +35,7 @@ begin
 
 
   for i in 1..v_total/v_step loop
-    v_first_name := v_first_names(trunc(dbms_random.value(1, v_first_names.count)));
+    v_first_name := v_first_names(trunc(dbms_random.value(1, v_first_names.count + 1)));
     v_last_name := dbms_random.string(opt => 'U', len => 10);
     
     insert /*+ append */
@@ -46,7 +46,7 @@ begin
       ,reason
       ,created_dtime
       )
-      select /*+ cardinality(t 100000)*/v_first_name
+      select /*+ cardinality(t 10000)*/v_first_name
             ,v_last_name
             ,date '1984-01-21' + mod(rownum, 10000)
             ,'some reason '||mod(rownum, 40)

@@ -20,7 +20,7 @@ select min(t.department_id)
  where t.department_id = 10;
  
 
----- Пример 3. Уникальный индекс без предиката -> Index full scan (min/max)
+---- Пример 3. Обычный (неуникальный) индекс без предиката -> Index full scan (min/max)
 select min(t.department_id)
   from hr.employees t;
 
@@ -34,4 +34,4 @@ select min(t.department_id)
   from hr.employees t
 union all  
 select max(t.department_id)
-  from hr.employees t    
+  from hr.employees t;

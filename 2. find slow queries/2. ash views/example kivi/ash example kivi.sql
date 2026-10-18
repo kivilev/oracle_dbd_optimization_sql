@@ -16,21 +16,21 @@ end;
 /
 */
 
-select * from payment;
-call flush_all();
+select * from payment where rownum <= 10;
+-- call flush_all(); -- не выполнять: flush shared pool удалит курсор PL/SQL-блока, и его не найти в v$sqlarea
 
 --! Не будем выполнять код. Используем предыдущий запуск, когда снимали трассировку
 
--- найдем по параметру из кода p_payment_id => 2688631 PL/SQL-код в кэше запросов SQL_ID нашего Pl/SQL_блока.
+-- найдем по параметру из кода p_payment_id => 5254221 PL/SQL-код в кэше запросов SQL_ID нашего PL/SQL-блока.
 select * from v$sqlarea t where t.sql_text like '%5254221%';
 
--- его используем как входную точку top_level_sql_id = '9ccsww2absp5k'
+-- его используем как входную точку top_level_sql_id = '0s361p0sckss1' (подставьте свой sql_id из запроса выше)
 select sysdate
       ,t.*
       ,obj.owner
       ,obj.object_name
   from v$active_session_history t
-  join dba_objects obj on t.current_obj# = obj.object_id
+  left join dba_objects obj on t.current_obj# = obj.object_id -- left: сэмплы без объекта (CPU, current_obj# = -1) тоже нужны
  where t.top_level_sql_id = '0s361p0sckss1'
  order by t.sample_id;
 

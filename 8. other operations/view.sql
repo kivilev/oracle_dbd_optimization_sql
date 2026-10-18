@@ -15,10 +15,13 @@ select t.department_id, t.manager_id
  group by t.department_id, t.manager_id;
 
   
+-- VIEW в плане остается, т.к. во view есть GROUP BY (простое слияние view невозможно),
+-- а без условия соединения сложное слияние (complex view merging) тоже не выгодно.
+-- Условия соединения нет намеренно; для явного запрета слияния есть хинт /*+ no_merge(e) */
 select d.*
       ,e.manager_id
   from v_employees    e
-      ,hr.departments d
+      ,hr.departments d;
 
 ---- Пример 2. Обертка запроса в with (запрос не переписывается)
 with emp as (

@@ -43,6 +43,7 @@ select t.is_resolved_adaptive_plan, t.*
  where t.is_resolved_adaptive_plan = 'Y'
    and t.parsing_schema_name = 'HR';-- какая-нибудь бизнесова схема
    
+-- sql_id подставьте свой из запроса выше (сохраненные в папке планы - от cy47zfs7ubh0s)
 select * 
   from table(dbms_xplan.display_cursor(sql_id => 'awvww67f1qkdz', cursor_child_no => 0, format => 'ADAPTIVE LAST'));
 

@@ -14,20 +14,22 @@ create table del$account(
   calc_date date
 );
 
+--- показать оба запроса с использованием autotrace (sqlplus): смотрим redo size
+set autotrace traceonly statistics;
 
 -- обычная вставка
  insert into del$account 
  select level, 10, sysdate
    from dual 
 connect by level <= 1000000;
+commit;
 
 -- вставка с append 
  insert /*+ append*/ into del$account 
  select level, 10, sysdate
    from dual 
 connect by level <= 1000000;
+commit; -- после append до commit любое чтение таблицы в этой сессии дает ORA-12838
 
---- показать обы запроса с использованием autotrace
-set autotrace traceonly statistics;
--- redo size
+-- в ARCHIVELOG для LOGGING-таблицы redo при append почти не уменьшается (уменьшается undo)
 

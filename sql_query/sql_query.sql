@@ -25,6 +25,7 @@ select t.*
  where t.sql_text like '%/* exmpl1 */%';
 
 -- 3) child-курсор (он один)
+-- sql_id в шагах ниже подставьте свой (из шага 2): он совпадет, только если текст запроса байт-в-байт такой же
 select t.child_number, t.plan_hash_value, t.*
   from v$sql t 
  where t.sql_id = 'gqfb6pj53vusn';
@@ -38,14 +39,14 @@ select *
 -- или
 select * 
   from v$sql_plan t
- where t.sql_id = 'gqfb6pj53vusn' and t.plan_hash_value = 1245571860
+ where t.sql_id = 'gqfb6pj53vusn' and t.plan_hash_value = 1245571860 -- подставьте свой plan_hash_value из шага 3
  order by t.id;
  
 -- 5) Накопленная статистика по выполнению этого плана
 select *
   from v$sqlarea_plan_hash t
  where t.sql_id = 'gqfb6pj53vusn'
-   and t.plan_hash_value = 1977235694;
+   and t.plan_hash_value = 1245571860; -- подставьте свой plan_hash_value из шага 3
 
 
 ---- Пример 2. Порождение второго child-курсора

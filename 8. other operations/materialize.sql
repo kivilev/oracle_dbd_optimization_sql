@@ -11,7 +11,7 @@
 ---- Пример 1. Материализация результата
 with t as (
 select /*+ materialize */ * 
-  from employees
+  from hr.employees
 )
 select * from t;
 
@@ -19,7 +19,7 @@ select * from t;
 ---- Пример 2. Более одной материализации
 with emps as (
 select /*+ materialize */ *
-  from employees
+  from hr.employees
 ),
 emps2 as (
 select /*+ materialize */ *
