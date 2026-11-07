@@ -1,3 +1,13 @@
+/*
+  Курс: Оптимизация Oracle SQL
+  Автор: Кивилев Д.С. (https://t.me/oracle_dbd, https://backend-pro.ru, https://www.youtube.com/c/OracleDBD)
+
+  Лекция. Поиск медленных запросов
+
+  Описание: SQL-мониторинг группы операций (dbms_sql_monitor.begin_operation / end_operation)
+
+*/
+
 ---- Пример 1. Группа SQL-операций (схема HR)
 -- forced_tracking = 'Y' - снимается принудительно.
 
@@ -52,7 +62,7 @@ select dbms_sql_monitor.report_sql_monitor(dbop_name => 'HR_TEST', type => 'HTML
 declare
   v_exec_id number;
 begin
-  v_exec_id := dbms_sql_monitor.begin_operation(dbop_name => 'CHECK_USER', forced_tracking => 'Y' );
+  v_exec_id := dbms_sql_monitor.begin_operation(dbop_name => 'CHECK_PAYMENT', forced_tracking => 'Y' );
 
   -- Checking payment
   begin
@@ -60,7 +70,7 @@ begin
   end;
 
 
-  dbms_sql_monitor.end_operation(dbop_name => 'CHECK_USER', dbop_eid => v_exec_id);
+  dbms_sql_monitor.end_operation(dbop_name => 'CHECK_PAYMENT', dbop_eid => v_exec_id);
   dbms_output.put_line('Execution_id: '|| v_exec_id); 
 end;
 /
@@ -69,7 +79,7 @@ end;
 select status, sql_id, dbop_name, dbop_exec_id,
        to_char(elapsed_time/1000000,'000.00') as elapsed_sec 
 from   v$sql_monitor
-where  dbop_name = 'CHECK_USER';
+where  dbop_name = 'CHECK_PAYMENT';
 
 select t.key
       ,dbop_name
@@ -86,11 +96,11 @@ select t.*
  where t.key = 270582942888;
 
 -- построение отчета в двух вариантах (по умолчанию последний запуск)
-select dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_USER', type => 'HTML', report_level => 'ALL') as html_rpt
-      ,dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_USER', type => 'text', report_level => 'ALL') as text_rpt
+select dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_PAYMENT', type => 'HTML', report_level => 'ALL') as html_rpt
+      ,dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_PAYMENT', type => 'text', report_level => 'ALL') as text_rpt
   from dual;
 
 
-select dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_USER', type => 'HTML', report_level => 'ALL', dbop_exec_id => 1) as html_rpt
-      ,dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_USER', type => 'text', report_level => 'ALL', dbop_exec_id => 1) as text_rpt
+select dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_PAYMENT', type => 'HTML', report_level => 'ALL', dbop_exec_id => 1) as html_rpt
+      ,dbms_sql_monitor.report_sql_monitor(dbop_name => 'CHECK_PAYMENT', type => 'text', report_level => 'ALL', dbop_exec_id => 1) as text_rpt
   from dual;

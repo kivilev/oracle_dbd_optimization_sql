@@ -12,7 +12,8 @@ select /*+ full(cc) use_hash(c cc) */round(avg(months_between(sysdate, c.bday)/1
 -- выводы: ничего не сделать. выбираем много данных - hash, fts.
 
 ---- Пример 2. данные за первый месяц предыдущего года
-select /*+ index(cc client_credit_create_dtime_i) use_nl(c cc) */round(avg(months_between(sysdate, c.bday)/12), 2) yrs
+-- индекса по дате ещё нет (создаём ниже), поэтому тот же план, что в примере 1
+select /*+ full(cc) use_hash(c cc) */round(avg(months_between(sysdate, c.bday)/12), 2) yrs
   from client c
   join client_credit cc on c.id = cc.client_id
  where cc.create_dtime >= add_months(trunc(sysdate,'YYYY'), -12)  
