@@ -56,13 +56,17 @@ select t.num_distinct
       ,(case
          when tc.data_type = 'NUMBER' then
           to_char(dbms_stats.convert_raw_to_number(t.low_value))
+         when tc.data_type = 'DATE' then
+          to_char(dbms_stats.convert_raw_to_date(t.low_value), 'YYYY-MM-DD HH24:MI:SS')
          else
-          dbms_stats.convert_raw_to_varchar2(t.low_value)
+          dbms_stats.convert_raw_to_varchar2(t.low_value) -- для VARCHAR2/CHAR; другие типы (TIMESTAMP и т.д.) не разбираем
        end) lvalue
-      
+
       ,(case
          when tc.data_type = 'NUMBER' then
           to_char(dbms_stats.convert_raw_to_number(t.high_value))
+         when tc.data_type = 'DATE' then
+          to_char(dbms_stats.convert_raw_to_date(t.high_value), 'YYYY-MM-DD HH24:MI:SS')
          else
            dbms_stats.convert_raw_to_varchar2(t.high_value)
        end) hvalue

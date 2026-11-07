@@ -12,6 +12,12 @@ grant debug connect session to student_role;
 grant create view to student_role;
 grant create materialized view to student_role;
 GRANT CREATE JOB TO student_role;
+-- как на учебном стенде (backend-pro-oracle-opt-study-db, stand/sql/03_users.sql)
+grant execute on sys.dbms_workload_repository to student_role;
+grant execute on sys.dbms_monitor to student_role;
+grant advisor to student_role;
+grant administer sql management object to student_role; -- SPM: 10. rollout changes/sql_plan_management(SPM).sql
+grant administer sql tuning set to student_role;
 
 
 declare

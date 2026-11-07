@@ -5,7 +5,8 @@
   Лекция. Поставка изменений
 
   Описание скрипта: Закрепление плана SQL-запроса (SQL plan baseline, SPM)
-   - выполнение под SYS   
+   - выполнение под kivi (не под SYS): нужна привилегия administer sql management object,
+     на стенде и в install/create_users.sql она выдана роли student_role
 */
 
 
@@ -48,7 +49,7 @@ end;
 /
 
 -- получаем информацию по нему -> sql_handle (у нас был SQL_e755192e9f4e0454, подставьте свой ниже)
-select sql_handle, to_char(sql_text), plan_name, t.* from dba_sql_plan_baselines t;
+select sql_handle, to_char(sql_text), plan_name, t.* from dba_sql_plan_baselines t where to_char(t.sql_text) like '%del$tab%some_value3%';
 
 -- отключаем план по sql_handle
 begin
